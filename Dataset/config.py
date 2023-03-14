@@ -1,6 +1,6 @@
 # Program Flags
 CRAWL_API = False   # Boolean to configure the crawling of data from PAJ's API
-CRAWL_WEB = True    # Boolean to configure the crawling of data from the bus webpages
+CRAWL_WEB = False   # Boolean to configure the crawling of data from the bus webpages
 
 # PAJ API
 api_endpoint = 'https://dataapi.paj.com.my/api/v1'
@@ -20,3 +20,4 @@ file_operators = data_folder + "operators.json"
 file_bus_live = data_folder + "bus_live.json"
 file_bus_stop = data_folder + "bus_stops.json"
 file_bus_list = data_folder + "bus_list.json"
+file_bus_schedule = data_folder + "bus_schedule.json"

@@ -89,6 +89,9 @@ def crawl_web():
 # Program Entrypoint
 if(CRAWL_API):
     crawl_api()
+if(CRAWL_WEB):
+    bus_schedule = crawl_web()
+    save_file(str(bus_schedule).replace("'", "\""), file_bus_schedule)
 
 """ Initialise API data """
 routes = json.load(open(file_routes))                   # Bus Route data (used to get overall distance)
@@ -110,6 +113,5 @@ geo_routes = geo_routes['data']
 # operators = json.load(open(file_operators))             # Bus Operators (Unused)
 # operators = operators['data']
 
-if(CRAWL_WEB):
-    bus_schedule = crawl_web()
-    print(bus_schedule)
+""" Webpage data """
+bus_schedule = json.load(open(file_bus_schedule))
