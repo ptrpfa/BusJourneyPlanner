@@ -56,17 +56,21 @@ def crawl_api():
 if(CRAWL):
     crawl_api()
 
-# Initialise data
-bus_stop = json.load(open(file_bus_stop))               # Bus Stop data
-bus_stop = bus_stop['data']
-routes = json.load(open(file_routes))                   # Bus Route data
+""" Initialise API data """
+routes = json.load(open(file_routes))                   # Bus Route data (used to get overall distance)
 routes = routes['data']
-geo_routes = json.load(open(file_geo_routes))           # Route Coordinates data
+geo_routes = json.load(open(file_geo_routes))           # Route Coordinates data (used for displaying of routes)
 geo_routes = geo_routes['data']
-route_schedule = json.load(open(file_route_schedule))   # Route Schedule data
-route_schedule = route_schedule['data']
-bus_live = json.load(open(file_bus_live))               # Live Bus data
-bus_live = bus_live['data']
+
+""" Dynamic API data """
+# bus_live = json.load(open(file_bus_live))               # Live Bus data (used for live bus tracking; to call API)
+# bus_live = bus_live['data']
+
+""" Unused API data """
+# route_schedule = json.load(open(file_route_schedule))   # Route Schedule data (Unused, will be using website data)
+# route_schedule = route_schedule['data']
+# bus_stop = json.load(open(file_bus_stop))               # Bus Stop data (Unused, will be using dataset given)
+# bus_stop = bus_stop['data']
 # bus_list = json.load(open(file_bus_list))               # Bus license plates (Unused)
 # bus_list = bus_list['data']
 # operators = json.load(open(file_operators))             # Bus Operators (Unused)
