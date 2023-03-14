@@ -1,6 +1,7 @@
 # Program Flags
 CRAWL_API = False   # Boolean to configure the crawling of data from PAJ's API
 CRAWL_WEB = False   # Boolean to configure the crawling of data from the bus webpages
+UPDATE_DB = True   # Boolean to configure the insertion of data into the database
 
 # PAJ API
 api_endpoint = 'https://dataapi.paj.com.my/api/v1'
@@ -10,6 +11,12 @@ api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
 schedule_link = "https://businterchange.net/johorbus/routes/routeinfo.php?service="
 loop_buses = ["P101", "P106", "P202", "P403"]       # Buses that run in a loop
 one_way_buses = ["P102", "P211", "P411"]            # Buses that only run one way
+
+# Database
+db_host = "34.143.210.189"
+db_user = "root"
+db_password = "LKP_OOP_STRONG"
+db_schema = "DSA_JP"
 
 # Files and folders
 data_folder = "data/"
