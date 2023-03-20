@@ -112,6 +112,23 @@ def crawl_web():
     # Return bus schedule obtained
     return bus_schedule
 
+# Function to crawl webpage for a list of all buses
+def crawl_web_list():
+    loop_buses = []
+    one_way_buses = []
+    response = requests.get(route_link)
+    response = bs_4(response.text, "lxml")
+    response = response.find_all('table')[1]    # Get table
+    response = response.find_all('tr')[1:]      # Get rows
+    # Loop through each row to get the buses
+    for row in response:
+        bus, route = re.search("<a.*>(.*)<\/a>.*<b>(.*)<\/b>", str(row)).group(1), re.search("<a.*>(.*)<\/a>.*<b>(.*)<\/b>", str(row)).group(2)
+        if(loop_char in route):
+            loop_buses.append(bus)
+        elif(one_way_char in route):
+            one_way_buses.append(bus)
+    return loop_buses, one_way_buses
+
 # Function to load bus dataset
 def load_dataset():
     # Load excel file
