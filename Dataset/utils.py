@@ -114,6 +114,7 @@ def crawl_web():
 
 # Function to crawl webpage for a list of all buses
 def crawl_web_list():
+    global loop_buses, one_way_buses
     loop_buses = []
     one_way_buses = []
     response = requests.get(route_link)
@@ -127,7 +128,7 @@ def crawl_web_list():
             loop_buses.append(bus)
         elif(one_way_char in route):
             one_way_buses.append(bus)
-    return loop_buses, one_way_buses
+    # return loop_buses, one_way_buses
 
 # Function to load bus dataset
 def load_dataset():

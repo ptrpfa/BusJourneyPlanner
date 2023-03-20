@@ -2,6 +2,7 @@
 CRAWL_API = False   # Boolean to configure the crawling of data from PAJ's API
 CRAWL_WEB = False   # Boolean to configure the crawling of data from the bus webpages
 UPDATE_DB = False   # Boolean to configure the insertion of data into the database
+LOCAL_DB = True     # Boolean to configure the use of local database
 
 # PAJ API
 api_endpoint = 'https://dataapi.paj.com.my/api/v1'
@@ -20,6 +21,8 @@ db_host = "34.143.210.189"
 db_user = "root"
 db_password = "LKP_OOP_STRONG"
 db_schema = "DSA_JP"
+if(LOCAL_DB):
+    from local_config import *
 
 # Files and folders
 data_folder = "data/"

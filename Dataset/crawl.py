@@ -6,6 +6,7 @@ from utils import *
 if(CRAWL_API):
     crawl_api()
 if(CRAWL_WEB):
+    # crawl_web_list() # Update bus lists
     bus_schedule = crawl_web()
     save_file(str(bus_schedule).replace("'", "\""), file_bus_schedule)
 
