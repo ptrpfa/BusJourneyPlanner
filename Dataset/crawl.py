@@ -1,5 +1,5 @@
+# Program for initial crawling of bus and bus stop information for population of the database
 import json
-import mysql.connector
 from utils import *
 
 # Program Entrypoint
@@ -44,7 +44,8 @@ if(UPDATE_DB):
     db_cursor = mysql_db.cursor(buffered=True)
 
     # Add Bus Stop data into the database
-    check_sql = "SELECT * FROM BusStop WHERE Name LIKE \"%%%s%%\";"
+    # check_sql = "SELECT * FROM BusStop WHERE Name LIKE \"%%%s%%\";"
+    check_sql = "SELECT * FROM BusStop WHERE Name = \"%s\";"
     insert_sql = "INSERT INTO BusStop (Name, Latitude, Longitude) VALUES (\"%s\", %s, %s);"
     # Loop through each bus route
     for route, df in dict_data.items():
@@ -59,7 +60,8 @@ if(UPDATE_DB):
                 db_cursor.execute(updated_sql)
 
     # Add Bus data into the database
-    check_sql = "SELECT BusStopID FROM BusStop WHERE Name LIKE \"%%%s%%\";"
+    # check_sql = "SELECT BusStopID FROM BusStop WHERE Name LIKE \"%%%s%%\";"
+    check_sql = "SELECT BusStopID FROM BusStop WHERE Name = \"%s\";"
     insert_sql = "INSERT INTO Bus (Name, Type, StartBusStopID, EndBusStopID) VALUES (\"%s\", %s, %s, %s);"
     # Loop through each bus route
     for route, df in dict_data.items():
@@ -93,8 +95,10 @@ if(UPDATE_DB):
         db_cursor.execute(updated_sql)
 
     # Add Bus Route data into the database
-    check_sql = "SELECT BusStopID FROM BusStop WHERE Name LIKE \"%%%s%%\";"
-    check_bus_sql = "SELECT BusID FROM Bus WHERE Name LIKE \"%%%s%%\";"
+    # check_sql = "SELECT BusStopID FROM BusStop WHERE Name LIKE \"%%%s%%\";"
+    check_sql = "SELECT BusStopID FROM BusStop WHERE Name = \"%s\";"
+    # check_bus_sql = "SELECT BusID FROM Bus WHERE Name LIKE \"%%%s%%\";"
+    check_bus_sql = "SELECT BusID FROM Bus WHERE Name = \"%s\";"
     insert_sql = "INSERT INTO BusRoute (BusID, BusStopID, StopOrder) VALUES (%s, %s, %s);"
     # Loop through each bus route
     for route, df in dict_data.items():
@@ -119,7 +123,8 @@ if(UPDATE_DB):
             db_cursor.execute(updated_sql)
 
     # Add Bus Schedule data into the database
-    check_bus_sql = "SELECT BusID FROM Bus WHERE Name LIKE \"%%%s%%\";"
+    # check_bus_sql = "SELECT BusID FROM Bus WHERE Name LIKE \"%%%s%%\";"
+    check_bus_sql = "SELECT BusID FROM Bus WHERE Name = \"%s\";"
     check_sql = "SELECT RouteID FROM BusRoute WHERE BusID = %s AND StopOrder = %s;"
     insert_sql = "INSERT INTO Schedule (RouteID, Time) VALUES (%s, \"%s\");"
     # Loop through each bus schedule

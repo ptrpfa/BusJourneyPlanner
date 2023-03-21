@@ -2,6 +2,8 @@ import requests
 import re
 import pickle
 import pandas as pd
+import mysql.connector
+import googlemaps
 from bs4 import BeautifulSoup as bs_4
 from config import *
 
@@ -153,3 +155,60 @@ def load_dataset():
         data[sheet] = df
     # Return data dictionary
     return data
+
+# Function to create route edges
+def create_route_edges():
+    # Initialise database connection
+    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    db_cursor = mysql_db.cursor(buffered=True)
+
+    # Get bus information
+    loop_buses = []
+    one_way_buses = []
+    sql = "SELECT BusID, Type FROM Bus;"
+    db_cursor.execute(sql)
+    for i in db_cursor:
+        if(i[1] == 1):
+            one_way_buses.append(i[0])
+        elif(i[1] == 2):
+            loop_buses.append(i[0])
+
+    # Get bus route information
+    for i in loop_buses:
+        # Get current route
+        sql = "SELECT BusRoute.*, BusStop.Latitude, BusStop.Longitude FROM BusRoute INNER JOIN BusStop ON BusRoute.BusStopID = BusStop.BusStopID WHERE BusID = %s ORDER BY StopOrder ASC;" % i
+        routes = []
+        db_cursor.execute(sql)
+        for j in db_cursor:
+            current_route = {'RouteID': j[0], 'BusID': j[1], 'BusStopID': j[2], 'StopOrder': j[3], 'Latitude': j[4], 'Longitude': j[5]}
+            routes.append(current_route)
+        # Create edges
+        for j in range(len(routes)):
+            insert_sql = "INSERT INTO Edge (FromBusStopID, ToBusStopID, RouteID) VALUES (%s, %s, %s)"
+            if(j == (len(routes) - 1)):
+                insert_sql = insert_sql % (routes[j]['BusStopID'], routes[0]['BusStopID'], routes[j]['RouteID'])        # Last bus stop in route is linked to the first bus stop
+            else:
+                insert_sql = insert_sql % (routes[j]['BusStopID'], routes[j + 1]['BusStopID'], routes[j]['RouteID'])    # Each bus stop is connected to the following bus stop in the route
+            db_cursor.execute(insert_sql)
+
+    for i in one_way_buses:
+        # Get current route
+        sql = "SELECT BusRoute.*, BusStop.Latitude, BusStop.Longitude FROM BusRoute INNER JOIN BusStop ON BusRoute.BusStopID = BusStop.BusStopID WHERE BusID = %s ORDER BY StopOrder ASC;" % i
+        routes = []
+        db_cursor.execute(sql)
+        for j in db_cursor:
+            current_route = {'RouteID': j[0], 'BusID': j[1], 'BusStopID': j[2], 'StopOrder': j[3], 'Latitude': j[4], 'Longitude': j[5]}
+            routes.append(current_route)
+        # Create edges
+        for j in range(len(routes) - 1):
+            insert_sql = "INSERT INTO Edge (FromBusStopID, ToBusStopID, RouteID) VALUES (%s, %s, %s)"
+            insert_sql = insert_sql % (routes[j]['BusStopID'], routes[j + 1]['BusStopID'], routes[j]['RouteID'])    # Each bus stop is connected to the following bus stop in the route
+            db_cursor.execute(insert_sql)
+
+    # Effect changes
+    mysql_db.commit()
+
+    # Close connections
+    db_cursor.close()
+    mysql_db.close()
+

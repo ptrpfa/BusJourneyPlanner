@@ -1,12 +1,15 @@
 # Program Flags
 CRAWL_API = False   # Boolean to configure the crawling of data from PAJ's API
 CRAWL_WEB = False   # Boolean to configure the crawling of data from the bus webpages
-UPDATE_DB = False   # Boolean to configure the insertion of data into the database
+UPDATE_DB = True   # Boolean to configure the insertion of data into the database
 LOCAL_DB = True     # Boolean to configure the use of local database
 
 # PAJ API
 api_endpoint = 'https://dataapi.paj.com.my/api/v1'
 api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+
+# Google Map API
+gmap_api_key = 'AIzaSyBV9jbLm29r5xYKHjJrv0UtZk5qMe-KPt4'
 
 # Bus Links
 schedule_link = "https://businterchange.net/johorbus/routes/routeinfo.php?service="
