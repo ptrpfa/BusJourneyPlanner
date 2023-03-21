@@ -159,3 +159,11 @@ if(UPDATE_DB):
     # Close connections
     db_cursor.close()
     mysql_db.close()
+
+""" Create edges/links between bus stops """
+if(UPDATE_EDGES):
+    create_route_edges()
+
+""" Create weights """
+if(UPDATE_WEIGHTS):
+    create_weights(1)

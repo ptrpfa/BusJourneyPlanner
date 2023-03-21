@@ -1,8 +1,10 @@
 # Program Flags
-CRAWL_API = False   # Boolean to configure the crawling of data from PAJ's API
-CRAWL_WEB = False   # Boolean to configure the crawling of data from the bus webpages
-UPDATE_DB = True   # Boolean to configure the insertion of data into the database
-LOCAL_DB = True     # Boolean to configure the use of local database
+CRAWL_API = False       # Boolean to configure the crawling of data from PAJ's API
+CRAWL_WEB = False       # Boolean to configure the crawling of data from the bus webpages
+UPDATE_DB = False       # Boolean to configure the insertion of crawled data into the database
+LOCAL_DB = True         # Boolean to configure the use of local database
+UPDATE_EDGES = False    # Boolean to configure the updating of edges
+UPDATE_WEIGHTS = False  # Boolean to configure the updating of weights
 
 # PAJ API
 api_endpoint = 'https://dataapi.paj.com.my/api/v1'

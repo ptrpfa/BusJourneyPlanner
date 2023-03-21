@@ -212,3 +212,48 @@ def create_route_edges():
     db_cursor.close()
     mysql_db.close()
 
+# Function to populate weights
+def create_weights(weight_type):
+    # Weight types:
+    # 1: Distance (km)
+    # 2: Duration (minutes)
+
+    # Initialise database connection
+    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    db_cursor = mysql_db.cursor(buffered=True)
+
+    # Get edges from the database
+    edges = []
+    sql = "SELECT Edge.*, bsfrom.Latitude AS \"FromLat\", bsfrom.Longitude AS \"FromLong\", bsto.Latitude AS \"ToLat\", bsto.Longitude AS \"ToLong\" FROM Edge INNER JOIN BusStop AS bsfrom ON Edge.FromBusStopID = bsfrom.BusStopID INNER JOIN BusStop AS bsto ON Edge.ToBusStopID = bsto.BusStopID;"
+    db_cursor.execute(sql)
+    for i in db_cursor:
+        current_edge = {'EdgeID': i[0], 'From':i[1], 'To': i[2], 'RouteID': i[3], 'FromLatitude':i[4], 'FromLongitude': i[5], 'ToLatitude': i[6], 'ToLongitude': i[7]}
+        edges.append(current_edge)
+
+    # Distance
+    if(weight_type == 1):
+        # Initialise Google Map client
+        gmaps = googlemaps.Client(key=gmap_api_key)
+        
+        # Calculate distance between starting point and destination
+        for i in range(len(edges)):
+            # Get starting and ending coordinates
+            from_bus_stop = (edges[i]['FromLatitude'], edges[i]['FromLongitude'])
+            to_bus_stop = (edges[i]['ToLatitude'], edges[i]['ToLongitude'])
+
+            # Get distance between points (in km)
+            current_dist = gmaps.distance_matrix(from_bus_stop, to_bus_stop, mode='driving')
+            current_dist = current_dist['rows'][0]['elements'][0]['distance']['value'] / 1000
+            edges[i]['Distance'] = current_dist
+
+        # Loop through each edge
+        for i in edges:
+            insert_sql = "INSERT INTO Weight (EdgeID, Weight, Type) VALUES (%s, %s, 1)" % (i['EdgeID'], i['Distance'])
+            db_cursor.execute(insert_sql)
+
+    # Effect changes
+    mysql_db.commit()
+
+    # Close connections
+    db_cursor.close()
+    mysql_db.close()
