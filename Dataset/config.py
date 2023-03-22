@@ -20,6 +20,7 @@ loop_char = '⊃'
 one_way_char = '⇔'
 loop_buses = ["P101", "P106", "P202", "P403"]       # Buses that run in a loop
 one_way_buses = ["P102", "P211", "P411"]            # Buses that only run one way
+bus_speed = 70                                      # Assumed bus speed (km/h)
 
 # Database
 db_host = "34.143.210.189"

@@ -166,4 +166,5 @@ if(UPDATE_EDGES):
 
 """ Create weights """
 if(UPDATE_WEIGHTS):
-    create_weights(1)
+    create_weights(1)   # Get distances between bus stops
+    create_weights(2)   # Get duration between bus stops

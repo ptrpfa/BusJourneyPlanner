@@ -222,16 +222,16 @@ def create_weights(weight_type):
     mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     db_cursor = mysql_db.cursor(buffered=True)
 
-    # Get edges from the database
-    edges = []
-    sql = "SELECT Edge.*, bsfrom.Latitude AS \"FromLat\", bsfrom.Longitude AS \"FromLong\", bsto.Latitude AS \"ToLat\", bsto.Longitude AS \"ToLong\" FROM Edge INNER JOIN BusStop AS bsfrom ON Edge.FromBusStopID = bsfrom.BusStopID INNER JOIN BusStop AS bsto ON Edge.ToBusStopID = bsto.BusStopID;"
-    db_cursor.execute(sql)
-    for i in db_cursor:
-        current_edge = {'EdgeID': i[0], 'From':i[1], 'To': i[2], 'RouteID': i[3], 'FromLatitude':i[4], 'FromLongitude': i[5], 'ToLatitude': i[6], 'ToLongitude': i[7]}
-        edges.append(current_edge)
-
     # Distance
     if(weight_type == 1):
+        # Get edges from the database
+        edges = []
+        sql = "SELECT Edge.*, bsfrom.Latitude AS \"FromLat\", bsfrom.Longitude AS \"FromLong\", bsto.Latitude AS \"ToLat\", bsto.Longitude AS \"ToLong\" FROM Edge INNER JOIN BusStop AS bsfrom ON Edge.FromBusStopID = bsfrom.BusStopID INNER JOIN BusStop AS bsto ON Edge.ToBusStopID = bsto.BusStopID;"
+        db_cursor.execute(sql)
+        for i in db_cursor:
+            current_edge = {'EdgeID': i[0], 'From':i[1], 'To': i[2], 'RouteID': i[3], 'FromLatitude':i[4], 'FromLongitude': i[5], 'ToLatitude': i[6], 'ToLongitude': i[7]}
+            edges.append(current_edge)
+
         # Initialise Google Map client
         gmaps = googlemaps.Client(key=gmap_api_key)
         
@@ -249,6 +249,24 @@ def create_weights(weight_type):
         # Loop through each edge
         for i in edges:
             insert_sql = "INSERT INTO Weight (EdgeID, Weight, Type) VALUES (%s, %s, 1)" % (i['EdgeID'], i['Distance'])
+            db_cursor.execute(insert_sql)
+    
+    # Duration
+    elif(weight_type == 2):
+        # Get edges from the database
+        edges = []
+        sql = "SELECT Edge.*, BusRoute.BusID, Weight.Weight FROM Edge JOIN Weight ON Edge.EdgeID = Weight.EdgeID JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID WHERE Weight.Type = 1;"
+        db_cursor.execute(sql)
+        for i in db_cursor:
+            current_edge = {'EdgeID': i[0], 'From':i[1], 'To': i[2], 'RouteID': i[3], 'BusID':i[4], 'Distance': i[5]}
+            edges.append(current_edge)
+    
+        # Loop through eah edge
+        for i in edges:
+            # Calculate duration (in minutes)
+            duration = (i['Distance'] / bus_speed) * 60
+            # Create new weights
+            insert_sql = "INSERT INTO Weight (EdgeID, Weight, Type) VALUES (%s, %s, 2)" % (i['EdgeID'], duration)
             db_cursor.execute(insert_sql)
 
     # Effect changes
