@@ -6,6 +6,7 @@ app=Flask(__name__)
 @app.route('/')
 def root():
     map_html = plotBus.generate_map()
+    # Refresh Map HTML
     return render_template('index.html',map=map_html)
 
 if __name__ == '__main__':
