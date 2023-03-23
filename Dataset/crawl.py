@@ -5,10 +5,12 @@ from utils import *
 # Program Entrypoint
 if(CRAWL_API):
     crawl_api()
+    print("Successfully crawled data from the PAJ API!")
 if(CRAWL_WEB):
     # crawl_web_list() # Update bus lists
     bus_schedule = crawl_web()
     save_file(str(bus_schedule).replace("'", "\""), file_bus_schedule)
+    print("Successfully crawled data from the BusInterchange website!")
 
 """ Load data from excel dataset, bus website and PAJ API """
 # Excel Dataset
@@ -160,11 +162,18 @@ if(UPDATE_DB):
     db_cursor.close()
     mysql_db.close()
 
+    print("Successfully added initial data into the database!")
+
 """ Create edges/links between bus stops """
 if(UPDATE_EDGES):
     create_route_edges()
+    print("Successfully added edges between Bus Stops!")
 
 """ Create weights """
 if(UPDATE_WEIGHTS):
-    create_weights(1)   # Get distances between bus stops
-    create_weights(2)   # Get duration between bus stops
+    create_weights(1)           # Get distances between bus stops
+    print("Successfully calculated weights for distance between bus stops!")
+    create_weights(2)           # Get duration between bus stops
+    print("Successfully calculated weights for duration between bus stops!")
+    estimate_bus_schedule()     # Estimate bus schedule
+    print("Successfully estimated bus schedules from calculated durations!")

@@ -4,6 +4,8 @@ import pickle
 import pandas as pd
 import mysql.connector
 import googlemaps
+import datetime
+from time import sleep
 from bs4 import BeautifulSoup as bs_4
 from config import *
 
@@ -65,6 +67,9 @@ def crawl_api():
     # Get bus stop data
     bus_stops = requests.get(api_endpoint + '/bus-stop', headers=headers, verify=False).text
     save_file(bus_stops, file_bus_stop)
+
+    # Sleep for 1 minute before performing next API call
+    sleep(60)
 
     # Get bus list data (bus license plates)
     bus_list = requests.get(api_endpoint + '/bus-list', headers=headers, verify=False).text
@@ -261,12 +266,70 @@ def create_weights(weight_type):
             current_edge = {'EdgeID': i[0], 'From':i[1], 'To': i[2], 'RouteID': i[3], 'BusID':i[4], 'Distance': i[5]}
             edges.append(current_edge)
     
-        # Loop through eah edge
+        # Loop through each edge
         for i in edges:
             # Calculate duration (in minutes)
             duration = (i['Distance'] / bus_speed) * 60
             # Create new weights
-            insert_sql = "INSERT INTO Weight (EdgeID, Weight, Type) VALUES (%s, %s, 2)" % (i['EdgeID'], duration)
+            i['Duration'] = duration
+            insert_sql = "INSERT INTO Weight (EdgeID, Weight, Type) VALUES (%s, %s, 2)" % (i['EdgeID'], i['Duration'])
+            db_cursor.execute(insert_sql)
+
+    # Effect changes
+    mysql_db.commit()
+
+    # Close connections
+    db_cursor.close()
+    mysql_db.close()
+
+# Function to create an estimated schedule for bus arrivals
+def estimate_bus_schedule():
+    # Assumptions: 
+    # Each bus only completes its route ONCE
+    # One way bus: Starting Bus Stop to Ending Bus Stop
+    # Loop bus: Starting Bus Stop to Starting Bus Stop (destination is the same)
+
+    # Initialise database connection
+    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    db_cursor = mysql_db.cursor(buffered=True)
+        
+    # Get starting bus schedule from the database
+    start_schedule = []
+    sql = "SELECT BusRoute.*, Schedule.Time FROM Schedule JOIN BusRoute ON Schedule.RouteID = BusRoute.RouteID;"
+    db_cursor.execute(sql)
+    for i in db_cursor:
+        # Convert schedule time obtained
+        schedule_time = datetime.datetime.min + i[4]
+        schedule = {'RouteID': i[0], 'BusID': i[1], 'BusStopID': i[2], 'StopOrder': i[3], 'Time': schedule_time}
+        start_schedule.append(schedule)
+
+    # Loop through each starting bus schedule 
+    for schedule in start_schedule:
+        # Get bus route information from the database
+        bus_route = []
+        route_sql = "SELECT Edge.*, Weight.Weight, BusRoute.StopOrder FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID JOIN Weight ON Edge.EdgeID = Weight.EdgeID WHERE BusRoute.BusID = %s AND Weight.Type = 2 ORDER BY BusRoute.StopOrder ASC;" % schedule['BusID']
+        db_cursor.execute(route_sql)
+        for i in db_cursor:
+            route = {'From': i[1], 'To': i[2], 'RouteID': i[3], 'Duration': i[4], 'StopOrder': i[5]}
+            bus_route.append(route)
+        # Exclude last route (Bus Schedule is the schedule for rideable buses only, will not track the time at which the bus reaches the last bus stop)
+        bus_route = bus_route[:-1]  
+
+        # Loop through each route in the bus route
+        current_time = schedule['Time']
+        for route in bus_route:
+            # Get RouteID
+            route_id = None
+            check_sql = "SELECT RouteID FROM BusRoute WHERE BusID = %s AND BusStopID = %s;" % (schedule['BusID'], route['To'])
+            db_cursor.execute(check_sql)
+            for i in db_cursor:
+                route_id = i[0]
+            
+            # Update timing that the bus will reach the specified bus stop
+            current_time += datetime.timedelta(0, round(route['Duration'] * 60))
+
+            # Add new bus schedule into the database
+            insert_sql = "INSERT INTO Schedule (RouteID, Time) VALUES (%s, \"%s\");" % (route_id, current_time.time())
             db_cursor.execute(insert_sql)
 
     # Effect changes

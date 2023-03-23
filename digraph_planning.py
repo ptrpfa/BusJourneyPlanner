@@ -6,6 +6,43 @@ import heapq
 from graphviz import Digraph
 import pydot
 
+def VisualiseGraph(multi_graph):
+    """
+    Visualize a MultiGraph using NetworkX and Matplotlib.
+    
+    Parameters:
+    -----------
+    multi_graph : networkx.MultiGraph
+    The MultiGraph to visualize.
+    """
+
+    # create a layout for the nodes
+    pos = nx.spring_layout(multi_graph)
+
+    # draw nodes and edges with labels
+    nx.draw(multi_graph, pos, with_labels=True)
+
+    # get a dictionary of edge labels
+    edge_labels = {}
+    for (u, v, key, data) in multi_graph.edges(keys=True, data=True):
+        route = data['route']
+        weight = data['weight']
+        label = (route, weight)
+        if (u, v) in edge_labels:
+            edge_labels[(u, v)].append(label)
+        else:
+            edge_labels[(u, v)] = [label]
+
+    # draw edge labels
+    for edge, labels in edge_labels.items():
+        label = '\n'.join([f"{label[0]}: {label[1]}" for label in labels])
+        nx.draw_networkx_edge_labels(multi_graph, pos, edge_labels={(edge[0], edge[1]): label})
+
+
+    # display the visualization and save to file
+    plt.savefig("spiderman.jpg", format='jpg')
+    plt.show()
+
 def shortest_path_with_min_transfers(graph, start, end):
 	# Create a dictionary to keep track of the minimum number of transfers required to reach each node
 	min_transfers = {node: float('inf') for node in graph.nodes()}
@@ -40,13 +77,14 @@ def shortest_path_with_min_transfers(graph, start, end):
 			path.reverse()
 			#Print the routes and the distance between each edge
 			shortest_path = {}
+
 			for i in range(len(path)-1):
 			    u, v = path[i], path[i+1]
 			    data = graph.get_edge_data(u, v)
 			    min_weight = total_distance[v] - total_distance[u]
 			    route = next(sub_data['route'] for sub_data in data.values() if sub_data['weight'] == min_weight)
 
-			    shortest_path[f"{u}-{v}"] = f"route-{data[0]['route']}, distance={min_weight}"
+			    shortest_path[f"{u}-{v}"] = f"route-{route}, distance={min_weight}"
 			    distance += min_weight
 
 			return shortest_path, total_distance[end]
@@ -66,7 +104,6 @@ def shortest_path_with_min_transfers(graph, start, end):
 			min_route_to_prev_neighbor = None	
 			min_route_to_neighbor = min(graph[curr_node][neighbor].values(), key=lambda x: x['weight'])
 			if previous[curr_node] is not None:
-				#pdb.set_trace()
 				min_route_to_prev_neighbor = min(graph[previous[curr_node]][curr_node].values(), key=lambda x: x['weight'])
 
 			# Calculate the number of transfers made to reach this neighbor
@@ -102,31 +139,35 @@ def shortest_path_with_min_transfers(graph, start, end):
 	return None, None
 
 #Create a graph with nodes representing bus stops and edges representing bus routes
-graph = nx.MultiGraph()
+graph = nx.MultiDiGraph()
 graph.add_edge('A', 'B', weight=5, time=10, route='1')
-graph.add_edge('A', 'C', weight=3, time=10, route='2')
-graph.add_edge('A', 'C', weight=8, time=5, route='1')
+graph.add_edge('A', 'C', weight=8, time=8, route='1')
+graph.add_edge('A', 'C', weight=3, time=7, route='2')
 graph.add_edge('B', 'D', weight=1, time=2, route='1')
 graph.add_edge('C', 'D', weight=2, time=5, route='2')
 graph.add_edge('D', 'E', weight=6, time=5, route='1')
+
 graph.add_edge('D', 'F', weight=5, time=2, route='2')
 graph.add_edge('D', 'F', weight=2, time=10, route='1')
+
 graph.add_edge('E', 'F', weight=3, time=8, route='1')
 graph.add_edge('F', 'G', weight=7, time=9, route='2')
 graph.add_edge('G', 'H', weight=1, time=8, route='2')
 graph.add_edge('F', 'H', weight=2, time=9, route='1')
 
 #print("Library shortest path", nx.shortest_path(graph, 'A', 'C', weight='weight') )
-path = nx.shortest_path(graph, 'A', 'G', weight='weight')
+path = nx.shortest_path(graph, 'A', 'G', weight='weight', method='dijkstra')
 print(path)
+
 shortest_path = {}
 distance = 0
 for i in range(len(path)-1):
     u, v = path[i], path[i+1]
     data = graph.get_edge_data(u, v)
     min_weight = min(value['weight'] for value in data.values())
+    route = next(sub_data['route'] for sub_data in data.values() if sub_data['weight'] == min_weight)
 
-    shortest_path[f"{u}-{v}"] = f"route-{data[0]['route']}, distance={min_weight}"
+    shortest_path[f"{u}-{v}"] = f"route-{route}, distance={min_weight}"
     distance += min_weight
 
 print(shortest_path)
@@ -136,25 +177,4 @@ shortest_path_new, shortest_distance = shortest_path_with_min_transfers(graph, '
 print(shortest_path_new)
 print(f"Shortest Distance: {shortest_distance}\n")
 
-# Create a graph visualization
-# dot = Digraph(comment='Example graph')
-# for u, v, data in graph.edges(data=True):
-# 	if data['route'] == '1':
-# 		dot.edge(u, v, label=str(data['weight']), color='red')
-# 	elif data['route'] == '2':
-# 		dot.edge(u, v, label=str(data['weight']), color='blue', style='dashed')
-
-# dot.render('multi.jpg', view=True)
-
-# #Draw the graph
-# pos = nx.spring_layout(graph)
-# nx.draw(graph, pos, with_labels=True, font_weight='bold')
-
-# # Add edge labels
-# edge_labels = nx.get_edge_attributes(graph, 'weight')
-# nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_color='red')
-
-# # Show the graph
-# plt.show()
-# plt.savefig("graph.png")
-# print("END")
+#VisualiseGraph(graph)
