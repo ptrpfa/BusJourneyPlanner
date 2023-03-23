@@ -19,16 +19,19 @@ body {
       "main sidebar"
       "footer footer";
     grid-gap: 0.2rem;
-    text-align: center;
+    text-align: left;
   }
   
   nav{
-    background: #a7ffeb;
+    background: #fff;
     grid-area: nav;
+    font-size: 25px;
+    padding: 20px 0px 10px 50px;
       
   }
   main{
-    background: #84ffff;
+    background: #ffffff;
+    margin: 50px;
     grid-area: main;
   }
   #sidebar{
@@ -40,18 +43,20 @@ body {
       "field2"
       "search"
       "results";
-    background:#6fffd2;
+    background:#ffffff;
+    border-left: 1px solid rgba(0,0,0,.1);
     grid-area: sidebar;
+    
   }
   
-  #sidebar input[type=text] {
+  #sidebar form input[type=text] {
     border: 0;
     outline: none;
     color: #8b7d77;
-    width: 90%;
-    margin: 10px auto;
-    padding: 5px 10px;
-    border-radius: 3px;
+    width: 80%;
+    margin: 10px 5px 5px 10px;
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
   }
   .start {
     grid-area: field1;
@@ -61,11 +66,11 @@ body {
     grid-area:field2;
   }
   
-  #sidebar button {
+  #sidebar form button {
     grid-area: search;
     width: 90%;
-    margin: 10px auto;
-    padding: 5px 10px;
+    margin: 0px 2px 0px 10px;
+    padding: 10px 15px;
     background: #122856;
     color: #fff;
     border: none;
@@ -102,8 +107,11 @@ body {
   }
   
   footer{
-    background:#1de9b6;
+    background:#ffffff;
     grid-area: footer;
+    color:#C6C6CC;
+    text-align: center;
+    font-size: small;
   }
 
 /* For Mobile Responsive */
