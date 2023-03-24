@@ -7,6 +7,16 @@ BUSSPEED = 70 #km/h
 
 #Create a graph with nodes representing bus stops and edges representing bus routes
 graph = nx.MultiDiGraph()
+graph.add_edge(69, 70, time=10, route='3')
+graph.add_edge(69, 70, time=12, route='4')
+graph.add_edge(69, 70, time=5, route='8')
+graph.add_edge(69, 70, time=5, route='10')
+
+graph.add_edge(70, 71, time=10, route='3')
+graph.add_edge(70, 93, time=12, route='4')
+graph.add_edge(70, 141, time=5, route='8')
+graph.add_edge(70, 93, time=5, route='10')
+
 graph.add_edge('A', 'B', time=10, route='3')
 graph.add_edge('A', 'C', time=12, route='4')
 graph.add_edge('A', 'D', time=5, route='8')
@@ -29,6 +39,7 @@ graph.add_edge('E', 'C', time=1, route='4')
 
 graph.add_edge('F', 'C', time=8, route='3')
 graph.add_edge('F', 'D', time=14, route='4')
+
 
 def VisualiseGraph(multi_graph):
     # Create a layout for the nodes
@@ -55,9 +66,10 @@ def VisualiseGraph(multi_graph):
 
 
     # Display the visualization and save to file
-    plt.savefig("amogus.jpg", format='jpg')
+    # plt.savefig("amogus.jpg", format='jpg')
     plt.show()
 
+# Djikstra but with heuristic function
 def aStarAlgo(startNode, endNode):
     # unvisited is list of nodes which has been visited but neighbors havent all been inspected
     unvisited = set([startNode])
@@ -91,17 +103,20 @@ def aStarAlgo(startNode, endNode):
 
             # If node is endNode, goal reached and reverse path to show travel seqeuence
             if neighbour == endNode:
-                tempPath = []
+                tempPath = {}
                 totalTime = time[neighbour]
 
                 while previous[neighbour] != neighbour:
-                    tempPath.append(neighbour)
-                    neighbour = previous[neighbour]
+                    u = previous[neighbour]
+                    data = graph.get_edge_data(u, neighbour)
+                    tempPath[str(u) + "-" + str(neighbour)] = data[0]['route']
+                    neighbour = u
 
-                tempPath.append(startNode)
-                tempPath.reverse()
+                reversedDict = {}
+                for key, value in reversed(tempPath.items()):
+                    reversedDict[key] = "BusID - " + str(value)
 
-                print("Path found: {}".format(tempPath))
+                print("Path found: {}".format(reversedDict))
                 print("Total time taken in minutes:", totalTime)
                 return tempPath
 
@@ -113,7 +128,7 @@ def aStarAlgo(startNode, endNode):
                     time[node] = time[neighbour] + weight
 
                 # Otherwise, check if quicker to visit other neighbours first, then node
-                # If yes, update parent data and g data and if the node was in the visited, move it to unvisited
+                # If yes, update parent data and time data and if the node was in the visited, move it to unvisited
                 else:
                     if time[node] > time[neighbour] + weight:
                         time[node] = time[neighbour] + weight
@@ -130,15 +145,25 @@ def aStarAlgo(startNode, endNode):
     print("No path found")
     return None
 
-# Returns edgeTo nodes to visit
+# Returns edgeTo nodes yet to be visited 
 def getNeighbours(v):
-    # print(graph.edges(v, data = "time"))
-    nextNodes = [(j, graph.get_edge_data(u, j, k)['time']) for u in [v] for j in graph.successors(u) for k in graph[u][j]]
+    nextNodes = [(j, 
+                 graph.get_edge_data(u, j, k)['time']) for u in [v] for j in graph.successors(u) for k in graph[u][j]]
+    # nextNodes = [(j, 
+    #               graph.get_edge_data(u, j, k)['time'], 
+    #               graph[u][j][k]['route']) for u in [v] for j in graph.successors(u) for k in graph[u][j]]
+
     return nextNodes
 
 # Method to find the estimated time from currentNode to endNode 
 def getHeuristic(v):
     H = {
+        69: 8,
+        70: 10,
+        71: 0,
+        93: 5,
+        141: 4,
+
         'A': 10,
         'B': 15,
         'C': 5,
@@ -183,8 +208,9 @@ def getHeuristic(v):
 
 
 # VisualiseGraph(graph)
-aStarAlgo('A', 'F')
-# currentBusStop = 67 
-# endBusStop = 110
-# aStarAlgo('67', '71')
+# aStarAlgo('A', 'F')
+
+currentBusStop = 69
+endBusStop = 141
+aStarAlgo(currentBusStop, endBusStop)
 
