@@ -5,6 +5,18 @@ import pydot
 import heapq
 from graphviz import Digraph
 import pydot
+import pickle 
+
+def getData():
+	# Open the pickled file in read binary mode
+	data = None
+	with open('pickled_file.pkl', 'rb') as f:
+		# Load the contents of the file
+		data = pickle.load(f)
+
+	# Close the file
+	f.close()
+	return data
 
 def VisualiseGraph(multi_graph):
     """
@@ -75,19 +87,21 @@ def shortest_path_with_min_transfers(graph, start, end):
 				curr_node = previous[curr_node]
 
 			path.reverse()
-			#Print the routes and the distance between each edge
-			shortest_path = {}
+			path_data = {"Path":path, "Total-Distance":total_distance[end]}
 
-			for i in range(len(path)-1):
-			    u, v = path[i], path[i+1]
-			    data = graph.get_edge_data(u, v)
-			    min_weight = total_distance[v] - total_distance[u]
-			    route = next(sub_data['route'] for sub_data in data.values() if sub_data['weight'] == min_weight)
+			# #Print the routes and the distance between each edge
+			# shortest_path = {}
 
-			    shortest_path[f"{u}-{v}"] = f"route-{route}, distance={min_weight}"
-			    distance += min_weight
+			# for i in range(len(path)-1):
+			#     u, v = path[i], path[i+1]
+			#     data = graph.get_edge_data(u, v)
+			#     min_weight = round(total_distance[v] - total_distance[u],3)
+			#     bus = next(sub_data['bus'] for sub_data in data.values() if sub_data['weight'] == min_weight)
 
-			return shortest_path, total_distance[end]
+			#     shortest_path[f"{u}-{v}"] = f"bus-{bus}, distance={min_weight}"
+			#     distance += min_weight
+
+			return path_data
 
 		# Check if we've already visited this node with a smaller number of transfers
 		if curr_transfers > min_transfers[curr_node]:
@@ -108,7 +122,7 @@ def shortest_path_with_min_transfers(graph, start, end):
 
 			# Calculate the number of transfers made to reach this neighbor
 			# previous[current_node] = gives the linking node to this current_node
-			if previous[curr_node] is None or min_route_to_neighbor['route'] != min_route_to_prev_neighbor['route']:
+			if previous[curr_node] is None or min_route_to_neighbor['bus'] != min_route_to_prev_neighbor['bus']:
 				transfers = curr_transfers + 1
 			else:
 				transfers = curr_transfers
@@ -138,43 +152,35 @@ def shortest_path_with_min_transfers(graph, start, end):
 	# return None to indicate that there is no path between the nodes
 	return None, None
 
-#Create a graph with nodes representing bus stops and edges representing bus routes
-graph = nx.MultiDiGraph()
-graph.add_edge('A', 'B', weight=5, time=10, route='1')
-graph.add_edge('A', 'C', weight=8, time=8, route='1')
-graph.add_edge('A', 'C', weight=3, time=7, route='2')
-graph.add_edge('B', 'D', weight=1, time=2, route='1')
-graph.add_edge('C', 'D', weight=2, time=5, route='2')
-graph.add_edge('D', 'E', weight=6, time=5, route='1')
+def test():
+	graph = getData()
 
-graph.add_edge('D', 'F', weight=5, time=2, route='2')
-graph.add_edge('D', 'F', weight=2, time=10, route='1')
+	#This the Python networtx lib to find shortest path
+	path = nx.shortest_path(graph, 1, 5, weight='weight', method='dijkstra')
 
-graph.add_edge('E', 'F', weight=3, time=8, route='1')
-graph.add_edge('F', 'G', weight=7, time=9, route='2')
-graph.add_edge('G', 'H', weight=1, time=8, route='2')
-graph.add_edge('F', 'H', weight=2, time=9, route='1')
+	shortest_path = {}
+	distance = 0
+	for i in range(len(path)-1):
+		u, v = path[i], path[i+1]
+		data = graph.get_edge_data(u, v)
+		min_weight = min(value['weight'] for value in data.values())
+		bus = next(sub_data['bus'] for sub_data in data.values() if sub_data['weight'] == min_weight)
 
-#print("Library shortest path", nx.shortest_path(graph, 'A', 'C', weight='weight') )
-path = nx.shortest_path(graph, 'A', 'G', weight='weight', method='dijkstra')
-print(path)
+		shortest_path[f"{u}-{v}"] = f"bus-{bus}, distance={min_weight}"
+		distance += min_weight
 
-shortest_path = {}
-distance = 0
-for i in range(len(path)-1):
-    u, v = path[i], path[i+1]
-    data = graph.get_edge_data(u, v)
-    min_weight = min(value['weight'] for value in data.values())
-    route = next(sub_data['route'] for sub_data in data.values() if sub_data['weight'] == min_weight)
+	print(shortest_path)
+	print(f"Shortest Distance: {distance}\n")
 
-    shortest_path[f"{u}-{v}"] = f"route-{route}, distance={min_weight}"
-    distance += min_weight
+def busRoute(start, end):
+	graph = getData()
 
-print(shortest_path)
-print(f"Shortest Distance: {distance}\n")
+	path_data = shortest_path_with_min_transfers(graph, start, end)
 
-shortest_path_new, shortest_distance = shortest_path_with_min_transfers(graph, 'A', 'G')
-print(shortest_path_new)
-print(f"Shortest Distance: {shortest_distance}\n")
+	print(path_data)
 
+
+
+#Call Bus_route
+busRoute(1,5)
 #VisualiseGraph(graph)
