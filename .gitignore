@@ -3,5 +3,5 @@ brief/
 .vscode/
 .venv/
 ~*
-__pycache__
+**/__pycache__
 **/local_config.py
