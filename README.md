@@ -115,10 +115,10 @@ A high level overview of each table in the database is provided below:
         - `2`: Duration
 
 <u>Pengangkutan Awam Johor (PAJ) API</u><br>
-The API provided by Malaysia's (Johor) public transportation provider, PAJ is used during the initial population of data into the database, and the planning of routes (specifically live bus data).
+The API provided by Malaysia's (Johor) public transportation provider, [PAJ](https://dataapi.paj.com.my/) is used during the initial population of data into the database, and the planning of routes (specifically live bus data).
 
 <u>Google Maps API</u><br>
-The API provided by Google Maps is used, specifically for the calculation of distances between bus stops, as well as general wayfinding to the starting bus stop and to the destination point during the last mile connectivity.
+The [API](https://developers.google.com/maps) provided by Google Maps is used, specifically for the calculation of distances between bus stops, as well as general wayfinding to the starting bus stop and to the destination point during the last mile connectivity.
 
 
 ## Project Components
@@ -209,7 +209,7 @@ Follow the instructions below to setup an empty database, and populate it with c
     db_schema = "DSA_JP" (Generally unchanged, unless your schema has a different name)
     ```
 6. Execute the crawler program (`crawl.py`) to obtain the required information using the following command on a terminal: <br>
-    **Ensure that you are in the crawler/ working directory*
+    **Ensure that you are in the `crawler/` working directory*
     ```
     python3 crawl.py
     ```
