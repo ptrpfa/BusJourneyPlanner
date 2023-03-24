@@ -56,6 +56,15 @@ Due to the complexity of designing a bus journey planning application, this appl
             - Start: Larkin Terminal
             - End: Kulai Terminal
 
+The following bus stops were excluded (*instructed to ignore bus stops in the dataset*):
+- KFC (Road side)
+    - P202
+- Tesco Lotus (Road side)
+    - P202
+- bef Jalan Kempas Lama
+    - P211-01
+    - P411-01
+
 The following assumptions were also taken to simplify the development of the application:
 1. Assume all bus service information (ie coordinates) provided in the `bus_stop.xlsx` dataset are correct (minor corrections were made).
 2. Assume all buses will adhere to the specified bus schedule every day of the week, not taking into account any other factors (ie bus breakdowns).
