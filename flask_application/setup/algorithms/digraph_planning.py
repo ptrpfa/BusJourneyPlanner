@@ -10,7 +10,7 @@ import pickle
 def getData():
 	# Open the pickled file in read binary mode
 	data = None
-	with open('pickled_file.pkl', 'rb') as f:
+	with open('flask_application/setup/graph.pkl', 'rb') as f:
 		# Load the contents of the file
 		data = pickle.load(f)
 

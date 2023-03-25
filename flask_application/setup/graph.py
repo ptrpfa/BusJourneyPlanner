@@ -93,7 +93,7 @@ def VisualiseGraph(multi_graph):
 
 
     # display the visualization and save to file
-    plt.savefig("spiderman.jpg", format='jpg')
+    # plt.savefig("spiderman.jpg", format='jpg')
     plt.show()
 
 
@@ -110,6 +110,7 @@ def pickle_object (pickle_object, filepath):
 
 
 graph = getGraph()
-VisualiseGraph(graph)
+print(vars(graph))
+# VisualiseGraph(graph)
 
-pickle_object(graph,'Dataset/graph.pkl')       # pickle object to file path 'Dataset/pickled_file.pkl'
+# pickle_object(graph,'Dataset/graph.pkl')       # pickle object to file path 'Dataset/pickled_file.pkl'

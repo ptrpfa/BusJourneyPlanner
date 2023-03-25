@@ -15,7 +15,7 @@ connection = mysql.connector.connect(
     database = "DSA_JP"
 )
 
-# A-Star algoritm which is Djikstra but with heuristic function (CURRENTLY WEIGHT IS DISTANCE! NEED TO CHANGE TO TIME)
+# A-Star algoritm which is Djikstra but with heuristic function
 def aStarAlgo(startNode, endNode):
     # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
     unvisited = PriorityQueue()
@@ -39,8 +39,11 @@ def aStarAlgo(startNode, endNode):
 
         # If node is endNode, goal reached and reverse path to show travel sequence
         if neighbour == endNode:
-            tempPath = {}
+            tempPath = {}            
             totalTime = time[neighbour]
+            totalSeconds = int(totalTime * 60)
+            minutes = (totalSeconds % 3600) // 60
+            seconds = totalSeconds % 60
 
             # Take note of current and previous node to get route info and reverse the list
             while previous[neighbour] != neighbour:
@@ -58,11 +61,12 @@ def aStarAlgo(startNode, endNode):
             # Print counter, steps and bus taken
             for key, value in reversed(tempPath.items()):
                 count += 1
+                minutes += 2 # Assumes every stop is being held for average of 2 mins
                 reversedDict[key] = "BusID - " + str(value)
                 print(f"{count:<3}| {key:<12}({reversedDict[key]})")
 
             # Prints total duration of journey
-            print("\nJourney time in minutes:", totalTime)
+            print("\nJourney time is estimated to be about {} minutes {} seconds".format(minutes, seconds))
             return tempPath
 
         # Add neighbour to visited because edges will be inspected
@@ -147,8 +151,8 @@ def VisualiseGraph(multi_graph):
     # Get a dictionary of edge labels
     edge_labels = {}
     for (u, v, key, data) in multi_graph.edges(keys=True, data=True):
-        route = data['route']
-        weight = data['weight']
+        route = data['bus']
+        weight = data['time']
         label = (route, weight)
         if (u, v) in edge_labels:
             edge_labels[(u, v)].append(label)
@@ -185,7 +189,7 @@ graph = loadPickle('flask_application/setup/graph.pkl')
 # VisualiseGraph(graph)
 
 # Get user to input current location and destination
-currentBusStop = 5
-endBusStop = 70
+currentBusStop = 1
+endBusStop = 5
 aStarAlgo(currentBusStop, endBusStop)
 
