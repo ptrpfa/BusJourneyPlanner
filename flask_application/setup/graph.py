@@ -183,4 +183,9 @@ schedule_obj = schedule(BusstopID,BusID)
 #    "bus2": ["9:00am", "11:00am", "1:00pm"],
 #    "bus3": ["8:30am", "10:30am", "12:30pm"]}
 
+# Display the query
+#for bus_stop_id, bus_stops in schedule.items():
+#    for bus_id, times in bus_stops.items():
+#        print(f"Bus stop ID: {bus_stop_id}, Bus ID: {bus_id}, Timing: {times}")
+
 #pickle_object(schedule_obj, 'schedule.pkl')               # pickle object to file path 
