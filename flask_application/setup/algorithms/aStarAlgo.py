@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 from queue import PriorityQueue
 
+# Initialise constant assumed speed and connection to database
 BUSSPEED = 70 #km/h  
-
 connection = mysql.connector.connect(
     user = "root",
     password = "LKP_OOP_STRONG",
@@ -15,7 +15,7 @@ connection = mysql.connector.connect(
     database = "DSA_JP"
 )
 
-# Djikstra but with heuristic function
+# A-Star algoritm which is Djikstra but with heuristic function (CURRENTLY WEIGHT IS DISTANCE! NEED TO CHANGE TO TIME)
 def aStarAlgo(startNode, endNode):
     # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
     unvisited = PriorityQueue()
@@ -34,8 +34,8 @@ def aStarAlgo(startNode, endNode):
 
     # Traverse through all nodes that hasnt been visited
     while not unvisited.empty():
-        # Checking the neighbors of the current node
-        f, neighbour = unvisited.get()  # get the node with smallest f(n) value
+        # Checking the neighbors of the current node and get node with smallest f(n) value
+        f, neighbour = unvisited.get()  
 
         # If node is endNode, goal reached and reverse path to show travel sequence
         if neighbour == endNode:
@@ -44,21 +44,22 @@ def aStarAlgo(startNode, endNode):
 
             # Take note of current and previous node to get route info and reverse the list
             while previous[neighbour] != neighbour:
-                u = previous[neighbour]
-                data = graph.get_edge_data(u, neighbour)
-                tempPath[str(u) + "-" + str(neighbour)] = data[0]['bus']
-                neighbour = u
+                previousNode = previous[neighbour]
+                data = graph.get_edge_data(previousNode, neighbour)
+                tempPath[str(previousNode) + "-" + str(neighbour)] = data[0]['bus']
+                neighbour = previousNode
 
-            # Reverse the dictionary and print sequential steps
+            # Reverse dictionary and print sequential steps
+            count = 0
             reversedDict = {}
-            count = 1
             print("No | Stops        (BusID)")
             print("--------------------------")
             
+            # Print counter, steps and bus taken
             for key, value in reversed(tempPath.items()):
+                count += 1
                 reversedDict[key] = "BusID - " + str(value)
                 print(f"{count:<3}| {key:<12}({reversedDict[key]})")
-                count += 1
 
             # Prints total duration of journey
             print("\nJourney time in minutes:", totalTime)
@@ -81,10 +82,10 @@ def aStarAlgo(startNode, endNode):
     print("No path found")
     return None
 
-# Returns edgeTo nodes yet to be visited and its data. eg. time and/or route
-def getNeighbours(v):
+# Returns edgeTo nodes yet to be visited and its data. Eg. time and/or route
+def getNeighbours(currentNode):
     nextNodes = [(j, 
-                 graph.get_edge_data(u, j, k)['weight']) for u in [v] for j in graph.neighbors(u) for k in graph[u][j]]
+                 graph.get_edge_data(u, j, k)['weight']) for u in [currentNode] for j in graph.neighbors(u) for k in graph[u][j]]
 
     # nextNodes = [(j, 
     #               graph.get_edge_data(u, j, k)['time'], 
@@ -94,7 +95,7 @@ def getNeighbours(v):
 
 # Method to find the estimated time from currentNode to endNode 
 def getHeuristic(currentNode, endNode):
-    # Get coordinates of both bus stops
+    # Get coordinates of both current and end stops
     currentNodeCoord = getCoordinatesOfBusStop(currentNode)
     endNodeCoord = getCoordinatesOfBusStop(endNode)
     
@@ -105,10 +106,11 @@ def getHeuristic(currentNode, endNode):
     # Get Haversine/Euclidean distance of location1 and location2
     distance1 = hs.haversine(loc1, loc2)
     
-    # Get estimated time in minutes between the 2 busstops
+    # Get estimated time in minutes between the 2 busstops. Time = Distance / Speed
     time = distance1 / BUSSPEED
     estimatedTime = convertHourToMinSec(time)
 
+    # Return heuristic time of currentNode in minutes
     return estimatedTime
 
 # Method to convert time in hours to minutes
@@ -121,11 +123,17 @@ def convertHourToMinSec(time):
 
 # Method to get coordinates of busstop given its ID
 def getCoordinatesOfBusStop(busstopID):
+    # Query template to pull from DB
     query1 = "SELECT Latitude, Longitude FROM BusStop WHERE BusStopID = {}".format(busstopID)
+
+    # Connection cursor
     cursor = connection.cursor()
+
+    # Pull requested data which is coordinates of inputted busstopID
     cursor.execute(query1)
     result = cursor.fetchall()
 
+    # Return coordinates in list form [Latitude][Longitude]
     return result
 
 # Method to generate and display graph with weight and edges
@@ -158,12 +166,12 @@ def VisualiseGraph(multi_graph):
     plt.show()
 
 # Method to pre-load graph
-def load_pickle (filepath):
+def loadPickle(filepath):
     # Create file object accessing the pickle file
-    file_pickle = open (filepath, 'rb') # r = read, b = bytes
+    file_pickle = open(filepath, 'rb') # r = read, b = bytes
 
     # Get pickled object
-    pickled_object = pickle.load (file_pickle)
+    pickled_object = pickle.load(file_pickle)
 
     # Close file object
     file_pickle.close ()
@@ -171,13 +179,13 @@ def load_pickle (filepath):
     # Return pickle object
     return pickled_object
 
-
-graph = load_pickle('flask_application/setup/graph.pkl')
+# Load map
+graph = loadPickle('flask_application/setup/graph.pkl')
 # print(vars(graph))
 # VisualiseGraph(graph)
 
-currentBusStop = 69
-endBusStop = 141
-
+# Get user to input current location and destination
+currentBusStop = 5
+endBusStop = 70
 aStarAlgo(currentBusStop, endBusStop)
 
