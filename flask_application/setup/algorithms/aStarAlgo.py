@@ -1,46 +1,19 @@
-# import mysql.connector
-# import haversine as hs
+import mysql.connector
+import haversine as hs
+import pickle
 import networkx as nx
 import matplotlib.pyplot as plt
 
 BUSSPEED = 70 #km/h  
 
-#Create a graph with nodes representing bus stops and edges representing bus routes
-graph = nx.MultiDiGraph()
-graph.add_edge(69, 70, time=10, route='3')
-graph.add_edge(69, 70, time=12, route='4')
-graph.add_edge(69, 70, time=5, route='8')
-graph.add_edge(69, 70, time=5, route='10')
+connection = mysql.connector.connect(
+    user = "root",
+    password = "LKP_OOP_STRONG",
+    host = "34.143.210.189",
+    database = "DSA_JP"
+)
 
-graph.add_edge(70, 71, time=10, route='3')
-graph.add_edge(70, 93, time=12, route='4')
-graph.add_edge(70, 141, time=5, route='8')
-graph.add_edge(70, 93, time=5, route='10')
-
-graph.add_edge('A', 'B', time=10, route='3')
-graph.add_edge('A', 'C', time=12, route='4')
-graph.add_edge('A', 'D', time=5, route='8')
-
-graph.add_edge('B', 'A', time=10, route='3')
-graph.add_edge('B', 'E', time=11, route='4')
-
-graph.add_edge('C', 'A', time=12, route='3')
-graph.add_edge('C', 'D', time=6, route='4')
-graph.add_edge('C', 'E', time=11, route='8')
-graph.add_edge('C', 'F', time=8, route='3')
-
-
-graph.add_edge('D', 'A', time=5, route='3')
-graph.add_edge('D', 'C', time=6, route='4')
-graph.add_edge('D', 'F', time=14, route='8')
-
-graph.add_edge('E', 'B', time=11, route='3')
-graph.add_edge('E', 'C', time=1, route='4')
-
-graph.add_edge('F', 'C', time=8, route='3')
-graph.add_edge('F', 'D', time=14, route='4')
-
-
+# Generate graph to view weight and edges
 def VisualiseGraph(multi_graph):
     # Create a layout for the nodes
     pos = nx.spring_layout(multi_graph)
@@ -52,7 +25,7 @@ def VisualiseGraph(multi_graph):
     edge_labels = {}
     for (u, v, key, data) in multi_graph.edges(keys=True, data=True):
         route = data['route']
-        weight = data['time']
+        weight = data['weight']
         label = (route, weight)
         if (u, v) in edge_labels:
             edge_labels[(u, v)].append(label)
@@ -87,56 +60,63 @@ def aStarAlgo(startNode, endNode):
 
     # Traverse through all nodes that hasnt been visited
     while len(unvisited) > 0:
-        # For all neighbors of the current node
-        for neighbour in graph.nodes():
-            neighbour = None
+        # Checking the neighbors of the current node
+        neighbour = None
 
-            # Finding node with the lowest value of estimatedTotalTime(): shortestTime() + heuristicTime(), f(n) = g(n) + h(n)
-            for count1 in unvisited:
-                if (neighbour == None) or (time[count1] + getHeuristic(count1)) < (time[neighbour] + getHeuristic(count1)):
-                    neighbour = count1;
+        # Finding node with the lowest value of estimatedTotalTime(): shortestTime() + heuristicTime(), f(n) = g(n) + h(n)
+        for count1 in unvisited:
+            if neighbour == None or time[count1] + getHeuristic(count1, endNode) < time[neighbour] + getHeuristic(neighbour, endNode):
+                neighbour = count1
 
-            # If no more neighbours and is not endNode, no path found
-            if neighbour == None:
-                print("No path found")
-                return None
+        # If no more neighbours and is not endNode, no path found
+        if neighbour == None:
+            print("No path found")
+            return None
 
+        for (node, weight) in getNeighbours(neighbour):
             # If node is endNode, goal reached and reverse path to show travel seqeuence
             if neighbour == endNode:
                 tempPath = {}
                 totalTime = time[neighbour]
 
+                # Take note of current and previous node to get route info and reverse the list
                 while previous[neighbour] != neighbour:
                     u = previous[neighbour]
                     data = graph.get_edge_data(u, neighbour)
-                    tempPath[str(u) + "-" + str(neighbour)] = data[0]['route']
+                    tempPath[str(u) + "-" + str(neighbour)] = data[0]['bus']
                     neighbour = u
 
+                # Reverse the dictionary and template to display format
                 reversedDict = {}
+                count = 1
+                print("No | Stops        (BusID)")
+                print("--------------------------")
+                count = 1
                 for key, value in reversed(tempPath.items()):
                     reversedDict[key] = "BusID - " + str(value)
+                    print(f"{count:<3}| {key:<12}({reversedDict[key]})")
+                    count += 1
 
-                print("Path found: {}".format(reversedDict))
-                print("Total time taken in minutes:", totalTime)
+                # Prints path found and duration of journey
+                print("\nJourney time in minutes:", totalTime)
                 return tempPath
 
-            for (node, weight) in getNeighbours(neighbour):
-                # If current node not in both unvisited and visited set, add it to unvisited and note neighbour as its parent
-                if node not in unvisited and node not in visited:
-                    unvisited.add(node)
-                    previous[node] = neighbour
+            # If current node not in both unvisited and visited set, add it to unvisited and note neighbour as its parent
+            if node not in unvisited and node not in visited:
+                unvisited.add(node)
+                previous[node] = neighbour
+                time[node] = time[neighbour] + weight
+
+            # Otherwise, check if quicker to visit other neighbours first, then node
+            # If yes, update parent data and time data and if the node was in the visited, move it to unvisited
+            else:
+                if time[node] > time[neighbour] + weight:
                     time[node] = time[neighbour] + weight
+                    previous[node] = neighbour
 
-                # Otherwise, check if quicker to visit other neighbours first, then node
-                # If yes, update parent data and time data and if the node was in the visited, move it to unvisited
-                else:
-                    if time[node] > time[neighbour] + weight:
-                        time[node] = time[neighbour] + weight
-                        previous[node] = neighbour
-
-                        if node in visited:
-                            visited.remove(node)
-                            unvisited.add(node)
+                    if node in visited:
+                        visited.remove(node)
+                        unvisited.add(node)
 
         # Remove neighbour from unvisited and add to visited because edges already inspected
         unvisited.remove(neighbour)
@@ -145,72 +125,74 @@ def aStarAlgo(startNode, endNode):
     print("No path found")
     return None
 
-# Returns edgeTo nodes yet to be visited 
+# Returns edgeTo nodes yet to be visited and its data. eg. time and/or route
 def getNeighbours(v):
     nextNodes = [(j, 
-                 graph.get_edge_data(u, j, k)['time']) for u in [v] for j in graph.successors(u) for k in graph[u][j]]
+                 graph.get_edge_data(u, j, k)['weight']) for u in [v] for j in graph.neighbors(u) for k in graph[u][j]]
+
     # nextNodes = [(j, 
     #               graph.get_edge_data(u, j, k)['time'], 
-    #               graph[u][j][k]['route']) for u in [v] for j in graph.successors(u) for k in graph[u][j]]
+    #               graph[u][j][k]['route']) for u in [v] for j in graph.neighbors(u) for k in graph[u][j]]
 
     return nextNodes
 
 # Method to find the estimated time from currentNode to endNode 
-def getHeuristic(v):
-    H = {
-        69: 8,
-        70: 10,
-        71: 0,
-        93: 5,
-        141: 4,
-
-        'A': 10,
-        'B': 15,
-        'C': 5,
-        'D': 5,
-        'E': 10,
-        'F': 0,
-    }
-
-    # # Get coordinates of both bus stops
-    # currentNodeCoord = getCoordinatesOfBusStop(currentNode)
-    # endNodeCoord = getCoordinatesOfBusStop(endNode)
+def getHeuristic(currentNode, endNode):
+    # Get coordinates of both bus stops
+    currentNodeCoord = getCoordinatesOfBusStop(currentNode)
+    endNodeCoord = getCoordinatesOfBusStop(endNode)
     
-    # # Filter them into location1 and location2
-    # loc1 = currentNodeCoord[0][0], currentNodeCoord[0][1]
-    # loc2 = endNodeCoord[0][0], endNodeCoord[0][1]
+    # Filter them into location1 and location2
+    loc1 = currentNodeCoord[0][0], currentNodeCoord[0][1]
+    loc2 = endNodeCoord[0][0], endNodeCoord[0][1]
 
-    # # Get Haversine/Euclidean distance of location1 and location2
-    # distance1 = hs.haversine(loc1, loc2)
+    # Get Haversine/Euclidean distance of location1 and location2
+    distance1 = hs.haversine(loc1, loc2)
     
-    # # Get estimated time in minutes between the 2 busstops
-    # time = distance1 / BUSSPEED
-    # estimatedTime = convertHourToMinSec(time)
+    # Get estimated time in minutes between the 2 busstops
+    time = distance1 / BUSSPEED
+    estimatedTime = convertHourToMinSec(time)
 
-    return H[v]
+    return estimatedTime
 
 # Method to convert time in hours to minutes
-# def convertHourToMinSec(time):
-#     totalSeconds = int(time * 3600)
-#     # hours = totalSeconds // 3600
-#     minutes = (totalSeconds % 3600) // 60
-#     # seconds = totalSeconds % 60
-#     return minutes
+def convertHourToMinSec(time):
+    totalSeconds = int(time * 3600)
+    # hours = totalSeconds // 3600
+    minutes = (totalSeconds % 3600) // 60
+    # seconds = totalSeconds % 60
+    return minutes
 
-# # Method to get coordinates of busstop given its ID
-# def getCoordinatesOfBusStop(busstopID):
-#     query1 = "SELECT Latitude, Longitude FROM BusStop WHERE BusStopID = {}".format(busstopID)
-#     cursor = connection.cursor()
-#     cursor.execute(query1)
-#     result = cursor.fetchall()
+# Method to get coordinates of busstop given its ID
+def getCoordinatesOfBusStop(busstopID):
+    query1 = "SELECT Latitude, Longitude FROM BusStop WHERE BusStopID = {}".format(busstopID)
+    cursor = connection.cursor()
+    cursor.execute(query1)
+    result = cursor.fetchall()
 
-#     return result
+    return result
+
+# Method to pre-load graph
+def load_pickle (filepath):
+    # Create file object accessing the pickle file
+    file_pickle = open (filepath, 'rb') # r = read, b = bytes
+
+    # Get pickled object
+    pickled_object = pickle.load (file_pickle)
+
+    # Close file object
+    file_pickle.close ()
+
+    # Return pickle object
+    return pickled_object
 
 
+graph = load_pickle('flask_application/setup/graph.pkl')
+# print(vars(graph))
 # VisualiseGraph(graph)
-# aStarAlgo('A', 'F')
 
-currentBusStop = 69
-endBusStop = 141
+currentBusStop = 1 #'A'
+endBusStop = 40 #'F'
+
 aStarAlgo(currentBusStop, endBusStop)
 
