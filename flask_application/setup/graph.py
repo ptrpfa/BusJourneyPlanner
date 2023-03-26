@@ -112,9 +112,6 @@ def pickle_object (pickle_object, filepath):
 
 def schedule (bus_stop_id,bus_id):
 
-<<<<<<< HEAD
-#pickle_object(graph,'Dataset/graph.pkl')       # pickle object to file path 'Dataset/pickled_file.pkl'
-=======
     # Create a empty dictionary 
     schedule = {}
 
@@ -192,4 +189,3 @@ schedule_obj = schedule(BusstopID,BusID)
 #        print(f"Bus stop ID: {bus_stop_id}, Bus ID: {bus_id}, Timing: {times}")
 
 #pickle_object(schedule_obj, 'schedule.pkl')               # pickle object to file path 
->>>>>>> 14dd4cd6f146eeb9d71e47518c1bc8c0a2f3ed98
