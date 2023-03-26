@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pydot
 from graphviz import Digraph
 import pickle
+import json
 
 
 def DBQuery(query):
@@ -93,7 +94,7 @@ def VisualiseGraph(multi_graph):
 
 
     # display the visualization and save to file
-    plt.savefig("spiderman.jpg", format='jpg')
+    # plt.savefig("spiderman.jpg", format='jpg')
     plt.show()
 
 
@@ -109,7 +110,86 @@ def pickle_object (pickle_object, filepath):
     file_pickle.close ()
 
 
-graph = getGraph()
-VisualiseGraph(graph)
+def schedule (bus_stop_id,bus_id):
 
+<<<<<<< HEAD
 #pickle_object(graph,'Dataset/graph.pkl')       # pickle object to file path 'Dataset/pickled_file.pkl'
+=======
+    # Create a empty dictionary 
+    schedule = {}
+
+    # Define the SELECT query
+    query2 = """
+            SELECT 
+            bs.BusStopID, 
+            JSON_OBJECTAGG(br.BusID, (
+                SELECT 
+                CONCAT('[', GROUP_CONCAT(TIME_FORMAT(s.Time, '"%h:%i%p"')), ']')
+                FROM 
+                Schedule s
+                WHERE 
+                s.RouteID = br.RouteID
+            )) AS Schedule
+            FROM 
+            BusStop bs
+            LEFT JOIN BusRoute br ON bs.BusStopID = br.BusStopID
+            GROUP BY 
+            bs.BusStopID;
+            """
+    
+    #Get Results 
+    rows = DBQuery(query2)
+
+    for row in rows:
+        bus_stop_id = int(row[0])
+        schedule[bus_stop_id] = {}
+        schedule_json = row[1]
+        if schedule_json:                                  # If the schedule JSON string is not `None`, parse it as a JSON object
+            schedule_json = json.loads(schedule_json)
+            for bus_id_str, times_json in schedule_json.items():            # Iterate over each bus ID and corresponding schedule times in the JSON object
+                bus_id = int(bus_id_str)
+                if isinstance(times_json, str):                     # If the schedule times are in string format, parse them as a JSON array
+                    times = json.loads(times_json)
+                else:
+                    times = times_json
+                schedule[bus_stop_id][bus_id] = times
+
+
+    if bus_stop_id not in schedule:
+        print(f"Bus stop ID {bus_stop_id} not found in schedule.")
+    elif bus_id not in schedule[bus_stop_id]:
+        print(f"Bus ID {bus_id} not found for bus stop ID {bus_stop_id}.")
+    else:
+        print(schedule[bus_stop_id][bus_id])
+
+    return rows
+
+
+
+
+#graph = getGraph()
+#print(vars(graph))      # VisualiseGraph(graph)
+#pickle_object(graph,'Dataset/graph.pkl')               # pickle object to file path
+
+BusstopID= 160      # Example
+BusID = 10          # Example 
+
+schedule_obj = schedule(BusstopID,BusID)     
+
+# Get schedule timing of the bus stop  use --->  schedule(BusstopID,BusID)
+#bus_stop_id1 = {
+#    "bus1": ["8:00am", "10:00am", "12:00pm"],
+#    "bus2": ["9:00am", "11:00am", "1:00pm"],
+#    "bus3": ["8:30am", "10:30am", "12:30pm"]},
+#bus_stop_id2 = {
+#    "bus1": ["8:00am", "10:00am", "12:00pm"],
+#    "bus2": ["9:00am", "11:00am", "1:00pm"],
+#    "bus3": ["8:30am", "10:30am", "12:30pm"]}
+
+# Display the query
+#for bus_stop_id, bus_stops in schedule.items():
+#    for bus_id, times in bus_stops.items():
+#        print(f"Bus stop ID: {bus_stop_id}, Bus ID: {bus_id}, Timing: {times}")
+
+#pickle_object(schedule_obj, 'schedule.pkl')               # pickle object to file path 
+>>>>>>> 14dd4cd6f146eeb9d71e47518c1bc8c0a2f3ed98
