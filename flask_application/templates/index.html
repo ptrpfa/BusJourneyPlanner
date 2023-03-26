@@ -1,93 +1,114 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Johor Journey Planner</title>
+        <meta name="veiwport" consent="initial-scale=1.0">
+        <meta charset="utf-8">
 
-<head>
-	<title>新山巴士规划师</title>
-	<!-- Fonts -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="{{ url_for('static', filename='main.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-	<script src="{{ url_for('static', filename='main.js') }}"></script>
+		<script>
+			// $(document).ready(function () {
+			// 	$("#show-results-btn").click(function (event) {
+			// 		event.preventDefault();
+			// 		submitForm();
+			// 	});
+			// });
+		</script>
+    </head>
+    <body>
+        <div class="container">
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+            <ul class="hex-area">
+                <li class="hex1"></li>
+                <li class="hex2"></li>
+                <li class="hex3"></li>
+                <li class="hex4"></li>
+                <li class="hex5"></li>
+                <li class="hex6"></li>
+            </ul>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <h1>大马新山-巴士寻找图</h1>
+                </div>
+            </div>
 
-	<script>
-		$(document).ready(function () {
-			$("#submit-button").click(function (event) {
-				event.preventDefault();
-				submitForm();
-			});
-		});
-	</script>
-	<!--Leaflet css and javascript -->
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-		integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-		crossorigin="" />
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-		crossorigin=""></script>
-
-	<!--End-->
-</head>
-
-<!-- <script src="{{ url_for('static', filename='main.js') }}" /></script> -->
-
-
-<body>
-	<div class="container">
-		<nav>
-			新山巴士规划师
-		</nav>
-		<main>
-			<!-- embed map html -->
-			<div id="map">
-				{{ map | safe }}
-			</div>
-		</main>
-		<div id="sidebar">
-			<form action="/">
-				<input id="start" type="text" placeholder="Start location"><br>
-				<input id="destination" type="text" placeholder="Destination"><br>
-				<br>
-				<button id="submit-button" type="submit">Go</button>
-			</form>
-
-			<ul id=results>
-				<li>
-					<div class="route">
-						<h3>Route 1</h3>
+            <div class="row mt-2">
+                <div class="col">
+					<div class="form-container">
+					  <form>
+					    <div class="form-group">
+					      <label for="start-location">Start Location</label>
+					      <input class="form-control" id="start-location" type="text" placeholder="Enter start location"/>
+					    </div>
+					    <div class="form-group">
+					      <label for="destination">Destination</label>
+					      <input class="form-control" id="destination" type="text" placeholder="Enter destination"/>
+					    </div>
+					    <button id="show-results-btn" type="button" class="btn btn-primary">Show Results</button>
+					  </form>
 					</div>
-					<p>10 min | Bus Number</p>
-				</li>
-				<li>
-					<div class="route">
-						<h3>Route 2</h3>
-					</div>
-					<p>15 min | Bus Number</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                	<div class = "display">
+                    	
+                    <ul id=results>
+						<li>
+							<div class="route">
+								<h3>Route 1</h3>
+							</div>
+							<p>10 min | Bus Number</p>
+						</li>
+						<li>
+							<div class="route">
+								<h3>Route 2</h3>
+							</div>
+							<p>15 min | Bus Number</p>
 
-				</li>
-				<li>
-					<div class="route">
-						<h3>Route 3</h3>
-					</div>
-					<p>17 min | Bus Number</p>
-				</li>
-				<li>
-					<div class="route">
-						<h3>Route 4</h3>
-					</div>
-					<p>40 min | Alex Binder Bus</p>
+						</li>
+						<li>
+							<div class="route">
+								<h3>Route 3</h3>
+							</div>
+							<p>17 min | Bus Number</p>
+						</li>
+						<li>
+							<div class="route">
+								<h3>Route 4</h3>
+							</div>
+							<p>40 min | Alex Binder Bus</p>
 
-				</li>
-			</ul>
-		</div>
-		<footer>Developed by Group 7 for CSC1108 Data Structures and Algorithms Project</footer>
-	</div>
-</body>
-
+						</li>
+					</ul>
+					<div id="map">
+                    		{{map | safe}}
+                    </div>
+                	</div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer bg-dark py-3">
+		  <div class="container">
+		    <div class="row">
+		      <div class="col-md-6">
+		        <p class="text-muted">&copy; DSA Group 7 Journey to Malaysia	</p>
+		      </div>
+		      <div class="col-md-6">
+		        <ul class="list-inline text-md-end">
+		          <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+		          <li class="list-inline-item"><a href="#">Terms of Use</a></li>
+		          <li class="list-inline-item"><a href="#">Contact Us</a></li>
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+		</footer>
+    </body>
 </html>

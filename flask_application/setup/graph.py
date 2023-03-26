@@ -112,4 +112,4 @@ def pickle_object (pickle_object, filepath):
 graph = getGraph()
 VisualiseGraph(graph)
 
-pickle_object(graph,'Dataset/graph.pkl')       # pickle object to file path 'Dataset/pickled_file.pkl'
+#pickle_object(graph,'Dataset/graph.pkl')       # pickle object to file path 'Dataset/pickled_file.pkl'

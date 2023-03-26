@@ -10,7 +10,7 @@ import pickle
 def getData():
 	# Open the pickled file in read binary mode
 	data = None
-	with open('pickled_file.pkl', 'rb') as f:
+	with open('../graph.pkl', 'rb') as f:
 		# Load the contents of the file
 		data = pickle.load(f)
 
@@ -183,4 +183,5 @@ def busRoute(start, end):
 
 #Call Bus_route
 busRoute(1,5)
+#graph = getData()
 #VisualiseGraph(graph)

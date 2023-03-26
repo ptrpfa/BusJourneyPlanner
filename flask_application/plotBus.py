@@ -72,5 +72,13 @@ def generate_map():
 
     return m._repr_html_()
 
+def generate_map2():
+
+    # Create a map centered at the first stop
+    m = folium.Map(location=(1.4964559999542668, 103.74374661113058), zoom_start=15) #Larkin Terminal
+
+    return m._repr_html_()
+
+
 # # Display the map
 # m.save("map2.html")
