@@ -1,15 +1,45 @@
 from cloud_config import *
-from setup.py import *
+# from setup.py import *
 
 import re
 import mysql.connector
 import datetime
-import smtplib                                  
+import smtplib      
+import pickle
 from bs4 import BeautifulSoup as bs_4
 from email.mime.text import MIMEText            
 from email.mime.multipart import MIMEMultipart  
 from email.header import Header                 
 from email.utils import formataddr    
+
+def pickle_object (pickle_object, filepath):
+    """ 
+    Function for pickling an object
+    """
+    # Create file object to store object to pickle
+    file_pickle = open (filepath, 'wb') # w = write, b = bytes (overwrite pre-existing files if any)
+
+    # Pickle (serialise) object [store object as a file]
+    pickle.dump (pickle_object, file_pickle)
+
+    # Close file object
+    file_pickle.close ()
+
+def load_pickle (filepath):
+    """
+    Function for de-pickling an object
+    """
+    # Create file object accessing the pickle file
+    file_pickle = open (filepath, 'rb') # r = read, b = bytes
+
+    # Get pickled object
+    pickled_object = pickle.load (file_pickle)
+
+    # Close file object
+    file_pickle.close ()
+
+    # Return pickle object
+    return pickled_object
 
 def validate_coordinates(latitude, longitude):
     """
@@ -22,7 +52,6 @@ def validate_coordinates(latitude, longitude):
     else:
         return False
 
-
 def get_location(latitude, longitude):
     """
     Function to get a readable address from a set of coordinates
@@ -32,7 +61,6 @@ def get_location(latitude, longitude):
     coordinates = (latitude, longitude)
     address = gmaps.reverse_geocode(coordinates)[0]['formatted_address']
     return address
-
 
 def get_coordinates(location):
     """
@@ -50,7 +78,6 @@ def get_coordinates(location):
     else:
         return None
     
-
 def get_nearest_bus_stop(latitude, longitude):
     """
     Function to get the nearest bus stop to a set of coordinates
@@ -67,7 +94,6 @@ def get_nearest_bus_stop(latitude, longitude):
 
     # Return nearest bus stop
     return nearest_bus_stop
-
 
 def get_directions(origin_coordinates, destination_coordinates):
     """
@@ -105,8 +131,10 @@ def get_directions(origin_coordinates, destination_coordinates):
     # Return directions
     return str_directions
 
-# Function for sending email 
 def send_email(incoming_email, subject, message):
+    """ 
+    Function for sending email
+    """
     # Set email header
     msg = MIMEMultipart ()
     msg ['From'] = formataddr ((str (Header (outgoing_email_name, 'utf-8')), outgoing_email))
@@ -132,3 +160,40 @@ def send_email(incoming_email, subject, message):
         # Close server regardless whether the email was sent successfully or not
         server.quit ()
         return email_sent
+    
+def get_bus_schedule():
+    """
+    Function to get the bus schedules
+    """
+    # Load bus schedule from database
+    if(LOAD_BUS_FROM_DB):
+        # Initialise database connection
+        mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+        db_cursor = mysql_db.cursor(buffered=True)
+        # Initialise bus schedule
+        bus_schedule = {}
+        # Ignore duplicate bus schedule timings for now (in practice, multiple buses for the same bus number are deployed at the same time at different bus stops)
+        sql = "SELECT Bus.BusID, Bus.Name, Schedule.* FROM Schedule JOIN BusRoute ON Schedule.RouteID = BusRoute.RouteID JOIN Bus ON BusRoute.BusID = BusRoute.BusID ORDER BY BusID ASC, Time ASC;"
+        db_cursor.execute(sql)
+        for i in db_cursor:
+            # Get BusID
+            bus_id = i[0]
+            # Convert schedule time obtained
+            schedule_time = datetime.datetime.min + i[4]
+            # schedule = {'BusID': i[0], 'Bus': i[1], 'ScheduleID': i[2], 'RouteID': i[3], 'Time': schedule_time}
+            # Check if bus is already in dictionary
+            if(bus_id in bus_schedule.keys()):
+                bus_schedule[bus_id].append(schedule_time)
+            else:
+                bus_schedule[bus_id] = [schedule_time]
+        # Remove duplicate bus schedule timings
+        for k in bus_schedule.keys():
+            bus_schedule[k] = sorted(list(set(bus_schedule[k])))
+        # Pickle bus schedule
+        pickle_object(bus_schedule, file_pickle_bus_schedule)
+        # Return bus schedule
+        return bus_schedule
+    # Load bus schedule from pickled file
+    else:
+        # Return pickled bus schedule
+        return load_pickle(file_pickle_bus_schedule)
