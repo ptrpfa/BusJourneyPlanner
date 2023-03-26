@@ -1,61 +1,6 @@
-from config import *
-import re
-import mysql.connector
+from utils import *
 
-
-# Function to validate a set of coordinates
-def validate_coordinates(latitude, longitude):
-    if(latitude >= -90 and latitude <= 90 and longitude >= -180 and longitude <= 180):
-        return True
-    else:
-        return False
-
-# Function to get a readable address from a set of coordinates (latitude & longitude)
-def get_location(latitude, longitude):
-    coordinates = (latitude, longitude)
-    address = gmaps.reverse_geocode(coordinates)[0]['formatted_address']
-    return address
-
-# Function to get the approximate coordinates of a given address (inputs should be as unambiguous as possible for better accuracy)
-def get_coordinates(location):
-    coordinates = gmaps.geocode(location)
-    # Check if a result was received
-    if(coordinates):
-        coordinates = coordinates[0]
-        coordinates = (coordinates['geometry']['location']['lat'], coordinates ['geometry']['location']['lng'])
-        return coordinates
-    else:
-        return None
-    
-# Function to get the nearest bus stop to a set of coordinates
-def get_nearest_bus_stop(latitude, longitude):
-    # Initialise database connection
-    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
-    db_cursor = mysql_db.cursor(buffered=True)
-
-    # Get nearest bus stop
-    nearest_bus_stop = None
-    sql = "SELECT *, ST_Distance_Sphere(POINT(Longitude, Latitude), POINT(%s, %s)) / 1000 as Distance FROM BusStop ORDER BY Distance LIMIT 1;" % (longitude, latitude)
-    db_cursor.execute(sql)
-    for i in db_cursor:
-        nearest_bus_stop = {'BusStopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Distance': i[4]}
-
-    # Close connections
-    db_cursor.close()
-    mysql_db.close()
-
-    # Return nearest bus stop
-    return nearest_bus_stop
-
-# from datetime import datetime
-# # Request directions via public transit
-# now = datetime.now()
-# directions_result = gmaps.directions("Sydney Town Hall",
-#                                      "Parramatta, NSW",
-#                                      mode="transit",
-#                                      departure_time=now)
-
-# Program entrypoint
+""" Program Entrypoint """
 # Initialise variables
 start = None
 start_coordinates = None
@@ -156,6 +101,8 @@ while(True):
             # Break out of loop
             break
 
+# Display starting and end points
+print("\n", "-" * 20)
 print("Starting Points:")
 print("Address:", start)
 print("Coordinates:", start_coordinates)
@@ -165,3 +112,27 @@ print("\nEnding Points:")
 print("Address:", end)
 print("Coordinates:", end_coordinates)
 print("Nearest Bus Stop:", end_bus_stop)
+print("\n", "-" * 20)
+
+""" Journey Planning """
+# Check if start and end locations are the same
+if(start_coordinates == end_coordinates): 
+    print("Both starting and ending locations are the same! No bus journey planning will be provided.")
+else:
+    # Guide user to starting bus stop
+    if(start_bus_stop['Distance'] > 0):
+        print("\nHead to Bus Stop %s (%s)\n" % (start_bus_stop['StopID'], start_bus_stop['Name']))
+        print(get_directions(start_coordinates, start_bus_stop['Coordinates']))
+    
+    # Assumption: User will always take the bus, regardless of the distance between the start and end locations, unless both points are the same
+    # Get bus route plan
+    print("\n", "-" * 20)
+    print("\n*" * 3)
+    print("\n\nBUS ROUTE\n\n")
+    print("\n*" * 3)
+    print("\n", "-" * 20)
+
+    # Guide user to destination from end bus stop
+    if(end_bus_stop['Distance'] > 0):
+        print("\nDirections to %s\n" % end) 
+        print(get_directions(end_bus_stop['Coordinates'], end_coordinates))
