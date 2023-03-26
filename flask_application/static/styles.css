@@ -131,6 +131,41 @@ h1 {
 .btn{
     background-color: #395583;
 }
+.dropdown-menu {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    min-width: 150px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#dropdownMenuButton:focus,
+#dropdownMenuButton:hover {
+    background-color: #3B71CA;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+}
+
+.dropdown-item {
+    color: #333;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #ADD8E6;
+    color: #333;
+    text-decoration: none;
+}
+
 
 #results {
     position: absolute;
@@ -206,3 +241,4 @@ h1 {
 .footer {
     margin-top:50px;
 }
+

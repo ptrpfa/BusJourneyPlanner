@@ -1,24 +1,43 @@
-from config import *
+from cloud_config import *
+from setup.py import *
+
 import re
 import mysql.connector
 import datetime
 from bs4 import BeautifulSoup as bs_4
+import pickle
 
-# Function to validate a set of coordinates
+
 def validate_coordinates(latitude, longitude):
+    """
+    Function to validate a set of coordinates
+
+    """
+
     if(latitude >= -90 and latitude <= 90 and longitude >= -180 and longitude <= 180):
         return True
     else:
         return False
 
-# Function to get a readable address from a set of coordinates (latitude & longitude)
+
 def get_location(latitude, longitude):
+    """
+    Function to get a readable address from a set of coordinates
+
+    """
+
     coordinates = (latitude, longitude)
     address = gmaps.reverse_geocode(coordinates)[0]['formatted_address']
     return address
 
-# Function to get the approximate coordinates of a given address (inputs should be as unambiguous as possible for better accuracy)
+
 def get_coordinates(location):
+    """
+    Function to get the approximate coordinates of a given address
+    Note: inputs should be as unambiguous as possible for better accuracy
+
+    """
+
     coordinates = gmaps.geocode(location)
     # Check if a result was received
     if(coordinates):
@@ -28,28 +47,31 @@ def get_coordinates(location):
     else:
         return None
     
-# Function to get the nearest bus stop to a set of coordinates
+
 def get_nearest_bus_stop(latitude, longitude):
-    # Initialise database connection
-    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
-    db_cursor = mysql_db.cursor(buffered=True)
+    """
+    Function to get the nearest bus stop to a set of coordinates
+
+    """
 
     # Get nearest bus stop
     nearest_bus_stop = None
     sql = "SELECT *, ST_Distance_Sphere(POINT(Longitude, Latitude), POINT(%s, %s)) / 1000 as Distance FROM BusStop ORDER BY Distance LIMIT 1;" % (longitude, latitude)
-    db_cursor.execute(sql)
-    for i in db_cursor:
-        nearest_bus_stop = {'StopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Coordinates': [i[2], i[3]], 'Distance': i[4]}
+    results = sql_query.execute(sql)
 
-    # Close connections
-    db_cursor.close()
-    mysql_db.close()
+    for i in results:
+        nearest_bus_stop = {'StopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Coordinates': [i[2], i[3]], 'Distance': i[4]}
 
     # Return nearest bus stop
     return nearest_bus_stop
 
-# Function to get directions from an origin to a destination point
+
 def get_directions(origin_coordinates, destination_coordinates):
+    """
+    Function to get directions from an origin to a destination point
+
+    """
+
     # Set strings
     origin_string = "%s,%s" % (origin_coordinates[0], origin_coordinates[1])
     destination_string = "%s,%s" % (destination_coordinates[0], destination_coordinates[1])
