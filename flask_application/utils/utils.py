@@ -4,9 +4,12 @@ from setup.py import *
 import re
 import mysql.connector
 import datetime
+import smtplib                                  
 from bs4 import BeautifulSoup as bs_4
-import pickle
-
+from email.mime.text import MIMEText            
+from email.mime.multipart import MIMEMultipart  
+from email.header import Header                 
+from email.utils import formataddr    
 
 def validate_coordinates(latitude, longitude):
     """
@@ -101,3 +104,31 @@ def get_directions(origin_coordinates, destination_coordinates):
 
     # Return directions
     return str_directions
+
+# Function for sending email 
+def send_email(incoming_email, subject, message):
+    # Set email header
+    msg = MIMEMultipart ()
+    msg ['From'] = formataddr ((str (Header (outgoing_email_name, 'utf-8')), outgoing_email))
+    msg ['To'] = incoming_email
+    msg ['Subject'] = subject
+    # Set email message
+    msg.attach (MIMEText(message, 'html'))
+    text = msg.as_string ()
+    # Initialise send status
+    email_sent = None
+    try:
+        # Start SMTP server
+        server = smtplib.SMTP ('smtp.gmail.com', 587)
+        server.starttls ()
+        # Login to server
+        server.login (outgoing_email, outgoing_email_password)
+        # Send email notification
+        server.sendmail (outgoing_email, incoming_email, text)
+        email_sent = True
+    except Exception as error:
+        email_sent = False
+    finally:
+        # Close server regardless whether the email was sent successfully or not
+        server.quit ()
+        return email_sent

@@ -14,5 +14,10 @@ db_schema = "DSA_JP"
 if(LOCAL_DB):
     from local_config import *
 
+# Email
+outgoing_email = '2023.dsa.group7@gmail.com'    # Outgoing email address
+outgoing_email_password = 'wmnhjzitsbsepjow'    # Outgoing email password
+outgoing_email_name = "DSA Group 7"             # Outgoing email name
+
 # Initialise Google Map client
 gmaps = googlemaps.Client(key=gmap_api_key)
