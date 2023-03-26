@@ -121,8 +121,11 @@ if(start_coordinates == end_coordinates):
 else:
     # Guide user to starting bus stop
     if(start_bus_stop['Distance'] > 0):
-        print("\nHead to Bus Stop %s (%s)\n" % (start_bus_stop['StopID'], start_bus_stop['Name']))
-        print(get_directions(start_coordinates, start_bus_stop['Coordinates']))
+        header = "\nHead to Bus Stop %s (%s)\n" % (start_bus_stop['StopID'], start_bus_stop['Name'])
+        start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
+        # Print guiding instructions
+        print(header)
+        print(start_instructions)
     
     # Assumption: User will always take the bus, regardless of the distance between the start and end locations, unless both points are the same
     # Get bus route plan
@@ -134,5 +137,16 @@ else:
 
     # Guide user to destination from end bus stop
     if(end_bus_stop['Distance'] > 0):
-        print("\nDirections to %s\n" % end) 
-        print(get_directions(end_bus_stop['Coordinates'], end_coordinates))
+        footer = "\nDirections to %s\n" % end
+        end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
+        # Print guiding instructions
+        print(footer) 
+        print(end_instructions)
+
+    # Check for email notification
+    user_input = input("\nDo you want a copy of these directions sent to your email? (Yes or No): ")
+    if(user_input.lower() == "yes"):
+        user_email = input("Enter your email address: ")
+        # Send email
+        if(send_email(user_email, "Directions from %s to %s" % (start, end), header + start_instructions + footer + end_instructions)):
+            print("Email sent to", user_email, "!")
