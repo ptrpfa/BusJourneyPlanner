@@ -140,8 +140,8 @@ def send_email(incoming_email, subject, message):
     msg ['To'] = incoming_email
     msg ['Subject'] = subject
     # Set email message
-    msg.attach (MIMEText(message, 'html'))
-    text = msg.as_string ()
+    msg.attach (MIMEText(message + email_footer, 'html'))
+    text = msg.as_string () 
     # Initialise send status
     email_sent = None
     try:

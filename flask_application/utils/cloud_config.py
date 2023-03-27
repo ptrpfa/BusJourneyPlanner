@@ -20,6 +20,7 @@ if(LOCAL_DB):
 outgoing_email = '2023.dsa.group7@gmail.com'    # Outgoing email address
 outgoing_email_password = 'wmnhjzitsbsepjow'    # Outgoing email password
 outgoing_email_name = "DSA Group 7"             # Outgoing email name
+email_footer = "<br><br><hr><p><i>An automated message sent by DSA Group 7's Journey Planning Application</i></p>"
 
 # File paths 
 cwd = os.getcwd()
