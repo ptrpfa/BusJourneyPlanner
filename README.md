@@ -69,6 +69,7 @@ The following assumptions were also taken to simplify the development of the app
 1. Assume all bus service information (ie coordinates) provided in the `bus_stop.xlsx` dataset are correct (minor corrections were made).
 2. Assume all buses will adhere to the specified bus schedule every day of the week, not taking into account any other factors (ie bus breakdowns).
 3. Assume all buses will travel at the normal speed of `70km/h`.
+4. Assume users will take a bus to travel to their destination, regardless of the distance between their starting point and ending point (ie 10 meter difference only).
 
 ## System Design
 ---
