@@ -1,5 +1,5 @@
 from cloud_config import *
-# from setup.py import *
+from setup import *
 
 import re
 import mysql.connector
@@ -87,7 +87,7 @@ def get_nearest_bus_stop(latitude, longitude):
     # Get nearest bus stop
     nearest_bus_stop = None
     sql = "SELECT *, ST_Distance_Sphere(POINT(Longitude, Latitude), POINT(%s, %s)) / 1000 as Distance FROM BusStop ORDER BY Distance LIMIT 1;" % (longitude, latitude)
-    results = sql_query.execute(sql)
+    results = sql_query(sql)
 
     for i in results:
         nearest_bus_stop = {'StopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Coordinates': [i[2], i[3]], 'Distance': i[4]}
@@ -119,15 +119,14 @@ def get_directions(origin_coordinates, destination_coordinates):
     directions = directions['steps']
     for i in range(len(directions)):
         # Header
-        str_directions += "\n\nStep %s:\nDistance: %s m\nWalking Time: %s" % (i + 1, directions[i]['distance']['value'], directions[i]['duration']['text'])
+        if('maneuver' in directions[i].keys()):
+            str_directions += "\n\nStep %s:\nInstruction: %s\nGuide: %s" % (i + 1, directions[i]['maneuver'].title().replace("-", " "), bs_4(directions[i]['html_instructions'], 'html.parser').get_text())
+        else:
+            str_directions += "\n\nStep %s:\nInstruction: %s" % (i + 1, bs_4(directions[i]['html_instructions'], 'html.parser').get_text())
+        # Body
+        str_directions += "\nDistance: %s m\nWalking Time: %s" % (directions[i]['distance']['value'], directions[i]['duration']['text'])
         str_directions += "\nStart Point: %s (%s, %s)" % (get_location(directions[i]['start_location']['lat'], directions[i]['start_location']['lng']), directions[i]['start_location']['lat'], directions[i]['start_location']['lng'])
         str_directions += "\nEnd Point: %s (%s, %s)" % (get_location(directions[i]['end_location']['lat'], directions[i]['end_location']['lng']), directions[i]['end_location']['lat'], directions[i]['end_location']['lng'])
-        # Body
-        if('maneuver' in directions[i].keys()):
-            str_directions += "\nInstruction: %s\nGuide: %s" % (directions[i]['maneuver'].title().replace("-", " "), bs_4(directions[i]['html_instructions'], 'html.parser').get_text())
-        else:
-            str_directions += "\nInstruction: %s" % bs_4(directions[i]['html_instructions'], 'html.parser').get_text()
-
     # Return directions
     return str_directions
 
