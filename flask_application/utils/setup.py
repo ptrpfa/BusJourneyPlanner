@@ -21,7 +21,7 @@ def sql_query(query):
     db_cursor.execute(query)
 
     #Fetch the results
-    results = cursor.fetchall()
+    results = db_cursor.fetchall()
 
     # Close the cursor and connection
     db_cursor.close()
@@ -41,7 +41,7 @@ def pickle_object(pickle_object, filepath):
     file_pickle.close()
 
 def getSchedule(bus_stop_id,bus_id):
-	"""
+    """
     Get bus arrival timings at a bus stop
     
     Parameter:
@@ -56,7 +56,6 @@ def getSchedule(bus_stop_id,bus_id):
 
     # Create a empty dictionary 
     schedule = {}
-
     # Define the SELECT query
     query2 = """
             SELECT 
@@ -104,7 +103,8 @@ def getSchedule(bus_stop_id,bus_id):
     return rows
 
 def createGraph():
-	"""
+
+    """
     Create Graph Object and save to file, "graph.pkl"
     
     Graph Edge:
@@ -145,16 +145,16 @@ def createGraph():
         graph.add_edge(from_bus_stop_id, to_bus_stop_id, weight=distance, time=time, bus=bus_id)
 
 	# pickle object to file path
-	if graph not None:
-		pickle_object(graph,'Dataset/graph.pkl')
-		print("Graph is created and saved...")
-	else:
-		print("Error: Graph is Empty...")            
+    if(graph is not None):
+        pickle_object(graph,'Dataset/graph.pkl')
+        print("Graph is created and saved...")
+    else:
+        print("Error: Graph is Empty...")            
 
 def VisualiseGraph(multi_graph):
     """
     Visualize a MultiGraph using NetworkX and Matplotlib.
-    
+
     Parameters:
     -----------
     multi_graph : networkx.MultiGraph

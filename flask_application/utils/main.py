@@ -148,5 +148,8 @@ else:
     if(user_input.lower() == "yes"):
         user_email = input("Enter your email address: ")
         # Send email
-        if(send_email(user_email, "Directions from %s to %s" % (start, end), header + start_instructions + footer + end_instructions)):
+        email_subject = "Directions from %s to %s" % (start, end)
+        email_message = header + start_instructions + footer + end_instructions
+        email_message = email_message.replace("\n", "<br>")
+        if(send_email(user_email, email_subject, email_message)):
             print("Email sent to", user_email, "!")
