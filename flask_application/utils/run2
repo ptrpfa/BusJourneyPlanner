@@ -80,12 +80,38 @@ def process_data():
                 if coordinates is not None:
                     folium.Marker(coordinates, popup=name).add_to(map)
 
-            # Generate the Google Maps API request for the route between stops
-            stops = [start_coordinates] + [location[1:] for location in path_names_coordinates if location[1:] is not None] + [end_coordinates]
+            # Generate the Google Maps API request for the walking path from the starting location to the first stop
             origin = f'{start_coordinates[0]},{start_coordinates[1]}'
+            destination = f'{start_bus_stop["Latitude"]},{start_bus_stop["Longitude"]}'
+            url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={API_KEY}'
+            response = requests.get(url)
+            route = response.json()['routes'][0]['overview_polyline']['points']
+
+            # Decode the polyline into a list of latitude and longitude coordinates
+            decoded_route = polyline.decode(route)
+
+            # Add polyline to map
+            folium.PolyLine(locations=decoded_route, color='red').add_to(map)
+
+            # Generate the Google Maps API request for the walking path from the last stop to the destination
+            origin = f'{end_bus_stop["Latitude"]},{end_bus_stop["Longitude"]}'
             destination = f'{end_coordinates[0]},{end_coordinates[1]}'
-            waypoints = '|'.join([f'{stop[0]},{stop[1]}' for stop in stops[1:-1]])
-            url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&key={API_KEY}'
+            url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={API_KEY}'
+            response = requests.get(url)
+            route = response.json()['routes'][0]['overview_polyline']['points']
+
+            # Decode the polyline into a list of latitude and longitude coordinates
+            decoded_route = polyline.decode(route)
+
+            # Add polyline to map
+            folium.PolyLine(locations=decoded_route, color='red').add_to(map)
+
+            # Generate the Google Maps API request for the route between stops
+            stops = [location[1:] for location in path_names_coordinates if location[1:] is not None]
+            origin = f'{stops[0][0]},{stops[0][1]}'
+            destination = f'{stops[-1][0]},{stops[-1][1]}'
+            waypoints = '|'.join([f'{stop[0]},{stop[1]}' for stop in stops[1:]])
+            url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&mode=driving&key={API_KEY}'
             response = requests.get(url)
             route = response.json()['routes'][0]['overview_polyline']['points']
 
