@@ -1,7 +1,8 @@
 import folium
 import polyline
+import requests
 
-def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates):
+def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop):
     map = folium.Map(location=start_coordinates, zoom_start=13)
 
     # Add markers for starting and ending locations
