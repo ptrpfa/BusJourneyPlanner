@@ -361,7 +361,7 @@ def aStarAlgo(startNode, endNode):
                 count += 1
                 minutes += 2 # Assumes every stop is being held for average of 2 mins
                 reversedDict[key] = "BusID - " + str(value)
-                second_col = key.split("-")[1].strip() # Extracts second column's first number
+                second_col = key.split("-")[0].strip() # Extracts second column's first number
                 second_col_list.append(int(second_col))
 
 
