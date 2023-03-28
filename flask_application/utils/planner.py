@@ -1,4 +1,5 @@
 from utils import mapping
+from utils import *
 
 def process_data(start, destination, option):
 
