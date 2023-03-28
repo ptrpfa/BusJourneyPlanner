@@ -47,7 +47,7 @@ def process_data(start, destination, option):
 
                 # Guide user to destination from end bus stop
                 if(end_bus_stop['Distance'] > 0):
-                    footer = "\nDirections to %s\n" % end_address
+                    footer = "\nDirections to %s\n" % destination
                     end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
                     # Print guiding instructions
                     print(footer) 
