@@ -58,3 +58,14 @@ function submitForm() {
     });
 }
 
+function refreshMap() {
+  fetch('/get_map')
+    .then(response => response.json())
+    .then(data => {
+      document.querySelector('#map').innerHTML = data.map_html;
+    });
+}
+
+// Refresh the map every 15 seconds
+setInterval(refreshMap, 15000);
+
