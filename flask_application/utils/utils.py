@@ -214,7 +214,7 @@ def get_fastest_bus_stop(start_bus_stop_id):
     for i in db_cursor:
         # Parse each row
         schedule_time = datetime.datetime.min + i[6]
-        bus_stop = {'EdgeID': i[0], 'BusStopID': i[2], 'BusID': i[4], 'Bus': i[5], 'NextBus': schedule_time, 'Duration': i[7], 'Wait': i[8], 'Total': i[9]}
+        bus_stop = {'EdgeID': i[0], 'BusStopID': i[2], 'BusID': i[4], 'Bus': i[5], 'NextBus': schedule_time, 'Duration': i[7], 'Wait': float(i[8]), 'Total': i[9]}
         # Get BusID
         bus_stops.append(bus_stop)
 
