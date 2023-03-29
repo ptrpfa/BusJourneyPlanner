@@ -109,6 +109,30 @@ def get_nearest_bus_stop(latitude, longitude):
     # Return nearest bus stop
     return nearest_bus_stop
 
+# Function to get fastest bus stop, taking into account the duration from the starting bus stop to the next bus stop, as well as the next available bus
+def get_fastest_bus_stop(start_bus_stop_id):
+    # Initialise database connection
+    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    db_cursor = mysql_db.cursor(buffered=True)
+
+    # Get list of nearest bus stops, in ascending order (fastest one in lower index)
+    bus_stops = []
+    sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID  JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID  WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 AND Time >= CURRENT_TIME() ORDER BY Total_Time ASC;" % start_bus_stop_id
+    db_cursor.execute(sql)
+    for i in db_cursor:
+        # Parse each row
+        schedule_time = datetime.datetime.min + i[6]
+        bus_stop = {'EdgeID': i[0], 'BusStopID': i[2], 'BusID': i[4], 'Bus': i[5], 'NextBus': schedule_time, 'Duration': i[7], 'Wait': float(i[8]), 'Total': i[9]}
+        # Get BusID
+        bus_stops.append(bus_stop)
+
+    # Close the cursor and connection
+    db_cursor.close()
+    mysql_db.close()
+
+    # Return next fastest path
+    return bus_stops
+
 def get_directions(origin_coordinates, destination_coordinates):
     """
     Function to get directions from an origin to a destination point
