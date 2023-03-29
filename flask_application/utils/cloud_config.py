@@ -30,7 +30,7 @@ folder_pickles = "%s/pickles/" % cwd
 folder_utils = "%s/utils/" % cwd
 
 # Files
-# Add some files here
+file_pkl_graph = "%sgraph.pkl" % folder_pickles
 
 # Initialise Google Map client
 gmaps = googlemaps.Client(key=gmap_api_key)

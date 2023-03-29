@@ -83,7 +83,7 @@ def get_coordinates(location):
     else:
         return None
     
-def get_nearest_bus_stop(latitude, longitude):
+def get_nearest_bus_stop(latitude, longitude): # Weight: Distance
     """
     Function to get the nearest bus stop to a set of coordinates
 
@@ -100,8 +100,12 @@ def get_nearest_bus_stop(latitude, longitude):
     # Return nearest bus stop
     return nearest_bus_stop
 
-# Function to get fastest bus stop, taking into account the duration from the starting bus stop to the next bus stop, as well as the next available bus
-def get_fastest_bus_stop(start_bus_stop_id):
+def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
+    """
+    Function to get fastest bus stop, taking into account the duration from the starting bus stop to the next bus stop, 
+    as well as the next available bus
+    """
+
     # Initialise database connection
     mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     db_cursor = mysql_db.cursor(buffered=True)
@@ -192,15 +196,19 @@ def send_email(incoming_email, subject, message):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def getData():
-	# Open the pickled file in read binary mode
-	data = None
-	with open('C:/Users/Jeffr/Desktop/123/flask_application/utils/graph.pkl', 'rb') as f:
-		# Load the contents of the file
-		data = pickle.load(f)
+    """ 
+    Function to load graph and return the graph object to caller 
+    """
 
-	# Close the file
-	f.close()
-	return data
+    # Open the pickled file in read binary mode
+    data = None
+    with open(file_pkl_graph, 'rb') as f:
+        # Load the contents of the file
+        data = pickle.load(f)
+
+    # Close the file
+    f.close()
+    return data
 
 def shortest_path_with_min_transfers(start, end):
 	"""
