@@ -374,15 +374,15 @@ def aStarAlgo(startNode, endNode):
             # Reverse dictionary and print sequential steps
             reversedDict = {}
             stopList.reverse()
-            print("No | Stops      Bus")
-            print("------------------------")
+            #print("No | Stops      Bus")
+            #print("------------------------")
             
             # Count stops and busIDs for bus changes
             for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
                 reversedDict[key] = str(value)
 
                 # Print format to left align with 3 and 11 width counts
-                print(f"{count: <3}| {key: <11}{reversedDict[key]}")
+                #print(f"{count: <3}| {key: <11}{reversedDict[key]}")
 
             # Prints total duration of journey
             print("\nJourney time is estimated to be about {} hours {} minutes {} seconds".format(totalTime[0], totalTime[1], totalTime[2]))
@@ -502,6 +502,30 @@ def getBusFromBusID(busID):
     # Return next fastest path
     return result[0]
 
+#Store all BusStopID and corresponding names and coordinates into name_list 
+def getBusStopNamesFromID():
+    # Connection cursor
+    connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    cursor = connection.cursor()
+
+    # Get BusStopID,Names,Latitude and longitude from BusStop table in DB
+    query = "SELECT * FROM BusStop"
+    cursor.execute(query)
+
+
+    # Store the result set in a list
+    result_set = []
+    for row in cursor:
+        result_set.append(row)
+
+    # Close the cursor and connection
+    cursor.close()
+    connection.close()
+
+
+    # Return coordinates in list form [Latitude][Longitude]
+    return result_set
+
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def mainTest(start, end, option):
@@ -510,32 +534,34 @@ def mainTest(start, end, option):
 
     if option == '1':
         #If Shortest time in BusStopID
-        pathID = aStarAlgo(start, end)
-        print(pathID)
+        busName,pathID = aStarAlgo(start, end)
+
 
     elif option == '2':
         #If Shortest path in BusStopID
         pathID,total_distance= shortest_path_with_min_transfers(start, end)
+        print(total_distance)
+
+    #Get the list of busStopID , names, lat , long from sql
+    ID_Name_Coordinates = getBusStopNamesFromID()
         
-    # #Store all BusStopID and corresponding names and coordinates into name_list  
-    # ID_Name_Coordinates = load_pickle('pickles/BusStopIDNamesLatLong.pkl')
     
-    # # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
-    # id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
+    # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
+    id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
-    # # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
-    # path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
+    # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
+    path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
 
-    # # Extract the coordinates from the list of names and coordinates
-    # path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
+    # Extract the coordinates from the list of names and coordinates
+    path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
-    # # Print out Bus stop names and coordinates 
-    # for name in path_names_coordinates:
-    #     print(name)
-    #     print()
+    # Print out Bus stop names and coordinates 
+    for name, bus in zip(path_names_coordinates, busName):
+        print(name[0], bus)
+        print()
 
     # return path_names_coordinates, path_coordinates
-         
+
 
 start = int(input("Enter starting busStopID: "))
 end = int(input("Enter ending busStopID: "))
