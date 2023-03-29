@@ -30,7 +30,7 @@ folder_pickles = "%s/pickles/" % cwd
 folder_utils = "%s/utils/" % cwd
 
 # Files
-file_pickle_bus_schedule = "%sbus_schedule.pkl" % folder_pickles
+# Add some files here
 
 # Initialise Google Map client
 gmaps = googlemaps.Client(key=gmap_api_key)
