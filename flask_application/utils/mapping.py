@@ -1,6 +1,7 @@
 import folium
 import polyline
-import requests
+import requests 
+from flask import json, jsonify
 
 # Set API key for Google Maps API
 API_KEY = 'AIzaSyBMvvKkWWJ3Nw-sIpBraBIwAGiXG_WYV9Y'
@@ -94,13 +95,29 @@ class Live_Map:
         # Make API request to get bus data
         bus_live = requests.get(api_endpoint + '/bus-live', headers=headers, verify=True)
         bus_data_json = bus_live.json()
+
+        if 'data' not in bus_data_json:
+            # handle missing 'data' key in the API response
+            print("Error: 'data' key is missing in API response")
+            return
+
         print("Grabbed Data")
+
+        # Write the contents of bus_data_json to a file
+        with open('bus_data.json', 'w') as f:
+            json.dump(bus_data_json, f)
 
         # Define the routes to display
         routes_to_display = ["P101", "P102", "P106"]
 
         # Clear the bus feature group of previous markers
         self.bus_group._children.clear()
+
+        # Create a new feature collection
+        self.feature_collection = {
+            "type": "FeatureCollection",
+            "features": []
+        }
 
         # Add markers for buses on specified routes
         for bus_data in bus_data_json['data']:
@@ -110,12 +127,46 @@ class Live_Map:
                 longitude = bus_data['longitude']
                 bus_plate = bus_data['bus']
                 speed = bus_data['speed']
+                print(bus_plate, speed)
 
                 # Create marker with popup
                 popup_html = f"<b>Bus Plate:</b> {bus_plate}<br><b>Speed:</b> {speed} km/h"
-                marker = folium.Marker(location=[latitude, longitude], icon=folium.Icon(icon='bus', prefix='fa', color="green"), popup=folium.Popup(html=popup_html))
+                icon = folium.Icon(icon='bus', prefix='fa', color="green")
+                marker = folium.Marker(location=[latitude, longitude], icon=icon, popup=folium.Popup(html=popup_html))
+                
+                # Create a feature for the marker and add it to the feature collection
+                feature = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            longitude,
+                            latitude
+                        ]
+                    },
+                    "properties": {
+                        "popup": popup_html,
+                        "icon": {
+                            "iconUrl": None,
+                            "iconSize": [0, 0],
+                            "iconAnchor": [0, 0],
+                            "popupAnchor": [0, 0],
+                            "className": "fa-bus marker-icon"
+                        }
+                    }
+                }
+                self.feature_collection['features'].append(feature)
+
+                #Add the new feature group
                 self.bus_group.add_child(marker)
 
+    def getFeatureGroup(self):
+
+        # convert the GeoJSON object to a JSON string
+        json_data = json.dumps(self.feature_collection)
+
+        # return the JSON string as a JSON response
+        return jsonify(json_data)
 
     def getMap(self):
 

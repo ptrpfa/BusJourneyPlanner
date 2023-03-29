@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,json, jsonify
 import planner
 from utils import mapping
+import folium
 
 app=Flask(__name__)
 
@@ -29,9 +30,9 @@ def process_data():
 @app.route('/update_markers')
 def update_markers():
     live_map_obj.update_markers()
-    map_html = live_map_obj.getMap()
+    map_fg = live_map_obj.getFeatureGroup()
 
-    return map_html
+    return map_fg
 
 if __name__ == '__main__':
     app.run(host="localhost", port=8080, debug=True)                                                                         
@@ -53,3 +54,26 @@ if __name__ == '__main__':
 # if option == 1: #Shortest path
 
 # elif option == 2: #Shortest Time
+
+
+# # filter out any markers or shapes with missing geometry
+# valid_children = []
+# for child in map_fg._children.values():
+#     print(child.location)
+#     try:
+#         if child.feature.geometry is not None:
+#             valid_children.append(child)
+#     except AttributeError:
+#         pass
+
+# # create a GeoJSON object from the valid markers and shapes
+# if valid_children:
+#     geojson = folium.features.GeoJson(valid_children).data
+# else:
+#     geojson = {"type": "FeatureCollection", "features": []}
+#     print("Empty features")
+
+# # convert the GeoJSON object to a JSON string
+# json_data = json.dumps(geojson)
+
+# return the JSON string as a JSON response

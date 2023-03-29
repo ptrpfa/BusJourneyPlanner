@@ -28,6 +28,34 @@ document.addEventListener('DOMContentLoaded', () => {
       resultsList.classList.remove('show');
     }
     });
+
+    /* Refreshes Live Map*/
+
+    // initialize the map container
+    var leaflet_map = L.map('map');
+
+    // create a GeoJSON layer for the markers
+    var markerLayer = L.geoJSON().addTo(leaflet_map);
+
+    // update the marker data every 15 seconds
+    var intervalID =setInterval(function() {
+        console.log("Updating markers...");
+        $.ajax({
+            url: "/update_markers",
+            type: "GET",
+            success: function(data) {
+                // update the GeoJSON layer with the updated marker data
+                markerLayer.clearLayers();
+                markerLayer.addData(JSON.parse(data));
+                console.log("Update Successful")
+            },
+            error: function(xhr, status, error) {
+                console.log("Error updating markers: " + error);
+            }
+        });
+    }, 15000);
+
+
 });
 
 function submitForm() {
@@ -44,6 +72,8 @@ function submitForm() {
         type: "POST",
         data: { Start: start, Destination: destination, Option: dropdownValue},
         success: function (data) {
+            //Stop the live data
+            clearInterval(intervalId);
             // Update the target div with the processed data
             $("#map").html(data);
             resultsList.classList.toggle('show');
@@ -60,16 +90,46 @@ function submitForm() {
 
 /* Refreshes Live Map*/
 
-setInterval(function() {
-    console.log("Updating markers...");
-    $.ajax({
-        url: "/update_markers",
-        type: "GET",
-        success: function(data) {
-            $("#map").html(data);
-        },
-        error: function(xhr, status, error) {
-            console.log("Error updating markers: " + error);
-        }
-    });
-}, 15000);
+// setInterval(function() {
+//     console.log("Updating markers...");
+//     $.ajax({
+//         url: "/update_markers",
+//         type: "GET",
+//         success: function(data) {
+//             var map = L.map('map');
+
+//             // create a new GeoJSON layer with the updated marker data
+//             var newLayer = L.geoJSON(JSON.parse(data));
+
+//             // clear the current markers on the map
+//             map.eachLayer(function(layer) {
+//                 if (layer instanceof L.Marker) {
+//                 map.removeLayer(layer);
+//             }
+//             });
+//             // add the new markers to the map
+//             newLayer.addTo(map);
+//             console.log("Update Successful")
+//         },
+//         error: function(xhr, status, error) {
+//             console.log("Error updating markers: " + error);
+//         }
+//     });
+// }, 15000);
+
+
+// make an AJAX request to get the initial marker data
+// $.ajax({
+//     url: "/update_markers",
+//     type: "GET",
+//     success: function(data) {
+//         // update the GeoJSON layer with the initial marker data
+//         markerLayer.clearLayers();
+//         markerLayer.addData(JSON.parse(data));
+//     },
+//     error: function(xhr, status, error) {
+//         console.log("Error updating markers: " + error);
+//     }
+// });
+
+
