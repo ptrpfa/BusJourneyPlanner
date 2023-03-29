@@ -42,5 +42,5 @@ cursor.close()
 cnx.close()
 
 # Pickle the result set to a file
-pickle_object(result_set, 'C:/Users/Jeffr/Desktop/CSC1108-JourneyPlanner/flask_application/utils/BusStopIDNamesLatLong.pk1')
+pickle_object(result_set, 'BusStopIDNamesLatLong.pkl')
 

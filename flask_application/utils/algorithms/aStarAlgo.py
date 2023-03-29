@@ -216,7 +216,7 @@ def VisualiseGraph(multiGraph):
 
 
 # Current location and destination
-currentBusStop = 5
-endBusStop = 15
+currentBusStop = 1
+endBusStop = 2
 
 aStarAlgo(currentBusStop, endBusStop)

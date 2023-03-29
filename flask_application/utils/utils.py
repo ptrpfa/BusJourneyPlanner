@@ -1,30 +1,21 @@
 from cloud_config import *
 from setup import *
+from bs4 import BeautifulSoup as bs_4
+from email.mime.text import MIMEText            
+from email.mime.multipart import MIMEMultipart  
+from email.header import Header                 
+from email.utils import formataddr    
+from queue import PriorityQueue
 
 import re
 import mysql.connector
 import datetime
 import smtplib      
 import pickle
-from bs4 import BeautifulSoup as bs_4
-from email.mime.text import MIMEText            
-from email.mime.multipart import MIMEMultipart  
-from email.header import Header                 
-from email.utils import formataddr    
-import heapq
-import utils
-import folium
-
-
-from queue import PriorityQueue
 import haversine as hs
+import heapq
+
 BUSSPEED = 70 #km/h  
-connection = mysql.connector.connect(
-    user = "root",
-    password = "LKP_OOP_STRONG",
-    host = "34.143.210.189",
-    database = "DSA_JP"
-)
 
 def pickle_object (pickle_object, filepath):
     """ 
@@ -333,73 +324,71 @@ def shortest_path_with_min_transfers(start, end):
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 # A-Star algoritm which is Djikstra but with heuristic function
 def aStarAlgo(startNode, endNode):
-
-    #Get Graph
-    graph = getData()
-
     # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
     unvisited = PriorityQueue()
-    unvisited.put((0, startNode))  # Priority is the shortestTime() + heuristicTime(), which is 0 for startNode
+    unvisited.put((0, startNode)) 
     
     # Set of nodes which has been visited and neighbors have been inspected
     visited = set([])
 
-    # Store time from startNode to other nodes, default value is infinity
+    # Store time from startNode to other nodes
     time = {}
     time[startNode] = 0
 
-    # Store current node as parent then check edges
+    # Store current node as parent to check edges
     previous = {}
     previous[startNode] = startNode
 
+    # Store bus changes along the way
+    previousBus = None
+    busChanges = {}
+    busChanges[startNode] = previousBus
+
     # Traverse through all nodes that hasnt been visited
     while not unvisited.empty():
-        # Checking the neighbors of the current node and get node with smallest f(n) value
+        # Get neighbors of the current node with smallest f(n) value
         f, neighbour = unvisited.get()  
 
         # If node is endNode, goal reached and reverse path to show travel sequence
         if neighbour == endNode:
-            tempPath = {}            
-            totalTime = time[neighbour]
-            totalSeconds = int(totalTime * 60)
-            minutes = (totalSeconds % 3600) // 60
-            seconds = totalSeconds % 60
+            tempPath = {}    
+
+            # Convert journet time in mins to hours, minutes and seconds 
+            totalTime = getTimeFromHour(time[neighbour] / 60)
 
             # Take note of current and previous node to get route info and reverse the list
             while previous[neighbour] != neighbour:
                 previousNode = previous[neighbour]
-                data = graph.get_edge_data(previousNode, neighbour)
-                tempPath[str(previousNode) + "-" + str(neighbour)] = data[0]['bus']
+                previousBus = busChanges[neighbour]
+
+                if previousBus != None:
+                    tempPath[str(previousNode) + "-" + str(neighbour)] = getBusFromBusID(previousBus)
                 neighbour = previousNode
 
             # Reverse dictionary and print sequential steps
-            count = 0
             reversedDict = {}
+            print("No | Stops      Bus")
+            print("------------------------")
             
-            # Print counter, steps and bus taken
-            second_col_list = []
-            for key, value in reversed(tempPath.items()):
-                count += 1
-                minutes += 2 # Assumes every stop is being held for average of 2 mins
-                reversedDict[key] = "BusID - " + str(value)
-                second_col = key.split("-")[0].strip() # Extracts second column's first number
-                second_col_list.append(int(second_col))
+            # Count stops and busIDs for bus changes
+            for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
+                reversedDict[key] = str(value)
 
+                # Print format to left align with 3 and 11 width counts
+                print(f"{count: <3}| {key: <11}{reversedDict[key]}")
 
             # Prints total duration of journey
-            print("\nJourney time is estimated to be about {} minutes {} seconds".format(minutes, seconds))
-            
-            
-            return second_col_list
+            print("\nJourney time is estimated to be about {} hours {} minutes {} seconds".format(totalTime[0], totalTime[1], totalTime[2]))
+            return tempPath
 
         # Add neighbour to visited because edges will be inspected
         visited.add(neighbour)
 
-        for (node, weight) in getNeighbours(neighbour):
-            # If current node not in both unvisited and visited set, add it to unvisited and note neighbour as its parent
+        # Iterate current node's neighbours
+        for (node, weight, busID) in getNeighbours(neighbour, previousBus):
+            # If any node not in visited set new time for it
             if node not in visited:
                 newTime = time[neighbour] + weight
 
@@ -408,31 +397,48 @@ def aStarAlgo(startNode, endNode):
                     f = newTime + getHeuristic(node, endNode) 
                     previous[node] = neighbour
                     unvisited.put((f, node))
+                    busChanges[node] = busID if previousBus != busID else busChanges[neighbour]
+
+            previousBus = busID
 
     print("No path found")
     return None
 
-# Returns edgeTo nodes yet to be visited and its data. Eg. time and/or route
-def getNeighbours(currentNode):
-    #Get Graph
-    graph = getData()
+# Method to get edgeTo nodes yet to be visited and its data given its currentNode. Eg. total time (waiting + travelling) and busID
+def getNeighbours(currentNode, previousBus):
+    # Returns a list of dictionaries that with each busstop details/schdules
+    fastestBusList = get_fastest_bus_stop(currentNode)
 
-    nextNodes = [(j, 
-                 graph.get_edge_data(u, j, k)['weight']) for u in [currentNode] for j in graph.neighbors(u) for k in graph[u][j]]
+    neighbours = []
 
-    # nextNodes = [(j, 
-    #               graph.get_edge_data(u, j, k)['time'], 
-    #               graph[u][j][k]['route']) for u in [v] for j in graph.neighbors(u) for k in graph[u][j]]
+    # Convert list of dictionaries into tuples to read multiple data at once
+    for index in fastestBusList:
+        busStopID = index['BusStopID']
+        busID = index['BusID']
+        weight = index['Duration']
+        totalTime = index['Total']
 
-    return nextNodes
+        # Check if there is a bus change or not
+        if previousBus != busID:
+            neighbours.append((busStopID, totalTime, busID))
+            
+        else:
+            neighbours.append((busStopID, weight, busID))
 
-# Method to find the estimated time from currentNode to endNode 
+    # print("\nCurrent node: ", currentNode)
+    # print("Current bus: ", previousBus)
+    # print("\n", neighbours)
+
+    # Return tuple with BusStopID[x], Time[x], BusID[x]
+    return neighbours
+
+# Method to get estimated time to endNode given its currentNode 
 def getHeuristic(currentNode, endNode):
     # Get coordinates of both current and end stops
     currentNodeCoord = getCoordinatesOfBusStop(currentNode)
     endNodeCoord = getCoordinatesOfBusStop(endNode)
     
-    # Filter them into location1 and location2
+    # Filter into location1 and location2
     loc1 = currentNodeCoord[0][0], currentNodeCoord[0][1]
     loc2 = endNodeCoord[0][0], endNodeCoord[0][1]
 
@@ -441,50 +447,71 @@ def getHeuristic(currentNode, endNode):
     
     # Get estimated time in minutes between the 2 busstops. Time = Distance / Speed
     time = distance1 / BUSSPEED
-    estimatedTime = convertHourToMinSec(time)
+    estimatedTime = getTimeFromHour(time)
 
     # Return heuristic time of currentNode in minutes
-    return estimatedTime
+    return estimatedTime[1]
 
-# Method to convert time in hours to minutes
-def convertHourToMinSec(time):
+# Method to get time in hours, minutes and seconds given the hours in decimals 
+def getTimeFromHour(time):
     totalSeconds = int(time * 3600)
-    # hours = totalSeconds // 3600
+    hours = totalSeconds // 3600
     minutes = (totalSeconds % 3600) // 60
-    # seconds = totalSeconds % 60
-    return minutes
+    seconds = totalSeconds % 60
+    timeList = [hours, minutes, seconds]
+    return timeList
 
-# Method to get coordinates of busstop given its ID
-def getCoordinatesOfBusStop(busstopID):
-    # Query template to pull from DB
-    query1 = "SELECT Latitude, Longitude FROM BusStop WHERE BusStopID = {}".format(busstopID)
-
+# Method to get coordinates of busstop given its busStopID
+def getCoordinatesOfBusStop(busStopID):
     # Connection cursor
+    connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     cursor = connection.cursor()
 
-    # Pull requested data which is coordinates of inputted busstopID
-    cursor.execute(query1)
+    # Get latitude and longitude from BusStop table in DB
+    query = "SELECT Latitude, Longitude FROM BusStop WHERE BusStopID = {}".format(busStopID)
+    cursor.execute(query)
     result = cursor.fetchall()
+
+    # Close the cursor and connection
+    cursor.close()
+    connection.close()
 
     # Return coordinates in list form [Latitude][Longitude]
     return result
 
+# Method to get bus numbers given its busID
+def getBusFromBusID(busID):
+    # Initialise database connection
+    connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    cursor = connection.cursor()
+
+    # Get busName from busID from Bus table in DB
+    query = "SELECT Name FROM Bus WHERE BusID = {}".format(busID)
+    cursor.execute(query)
+    result = cursor.fetchone()
+
+    # Close the cursor and connection
+    cursor.close()
+    connection.close()
+
+    # Return next fastest path
+    return result[0]
 
 def mainTest(start, end, option):
 
-    user_input = input("Select route method:\n1) Shortest time\n2) Shortest path \n")
+    # user_input = input("Select route method:\n1) Shortest time\n2) Shortest path \n")
 
-    if user_input == '1':
-             #If Shortest time in BusStopID
-             pathID = aStarAlgo(start, end)
+    if option == '1':
+        #If Shortest time in BusStopID
+        pathID = aStarAlgo(start, end)
 
-    elif user_input == '2':
-            #If Shortest path in BusStopID
-            pathID,total_distance= shortest_path_with_min_transfers(start, end)
+    elif option == '2':
+        #If Shortest path in BusStopID
+        pathID,total_distance= shortest_path_with_min_transfers(start, end)
     
     
     #Store all BusStopID and corresponding names and coordinates into name_list  
-    ID_Name_Coordinates = load_pickle('C:/Users/Jeffr/Desktop/123/flask_application/utils/BusStopIDNamesLatLong.pk1')
+    ID_Name_Coordinates = load_pickle('pickles/BusStopIDNamesLatLong.pkl')
     
     # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
     id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
@@ -500,8 +527,10 @@ def mainTest(start, end, option):
         print(name)
         print()
 
-    return path_names_coordinates,path_coordinates
+    return path_names_coordinates, path_coordinates
          
 
-
-
+start = int(input("Enter starting busStopID: "))
+end = int(input("Enter ending busStopID: "))
+user_input = input("\n1) Shortest time\n2) Shortest path \nSelect route method: ")
+mainTest(start, end, user_input)
