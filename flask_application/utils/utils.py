@@ -322,7 +322,7 @@ def shortest_path_with_min_transfers(start, end):
 	# return None to indicate that there is no path between the nodes
 	return None
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # A-Star algoritm which is Djikstra but with heuristic function
 def aStarAlgo(startNode, endNode):
@@ -354,6 +354,8 @@ def aStarAlgo(startNode, endNode):
         # If node is endNode, goal reached and reverse path to show travel sequence
         if neighbour == endNode:
             tempPath = {}    
+            busList = []
+            stopList = []
 
             # Convert journet time in mins to hours, minutes and seconds 
             totalTime = getTimeFromHour(time[neighbour] / 60)
@@ -362,13 +364,16 @@ def aStarAlgo(startNode, endNode):
             while previous[neighbour] != neighbour:
                 previousNode = previous[neighbour]
                 previousBus = busChanges[neighbour]
+                stopList.append(previousNode)
 
                 if previousBus != None:
                     tempPath[str(previousNode) + "-" + str(neighbour)] = getBusFromBusID(previousBus)
+                    busList.append(getBusFromBusID(previousBus))
                 neighbour = previousNode
 
             # Reverse dictionary and print sequential steps
             reversedDict = {}
+            stopList.reverse()
             print("No | Stops      Bus")
             print("------------------------")
             
@@ -381,7 +386,7 @@ def aStarAlgo(startNode, endNode):
 
             # Prints total duration of journey
             print("\nJourney time is estimated to be about {} hours {} minutes {} seconds".format(totalTime[0], totalTime[1], totalTime[2]))
-            return tempPath
+            return busList, stopList
 
         # Add neighbour to visited because edges will be inspected
         visited.add(neighbour)
@@ -497,6 +502,8 @@ def getBusFromBusID(busID):
     # Return next fastest path
     return result[0]
 
+#------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 def mainTest(start, end, option):
 
     # user_input = input("Select route method:\n1) Shortest time\n2) Shortest path \n")
@@ -504,30 +511,30 @@ def mainTest(start, end, option):
     if option == '1':
         #If Shortest time in BusStopID
         pathID = aStarAlgo(start, end)
+        print(pathID)
 
     elif option == '2':
         #If Shortest path in BusStopID
         pathID,total_distance= shortest_path_with_min_transfers(start, end)
+        
+    # #Store all BusStopID and corresponding names and coordinates into name_list  
+    # ID_Name_Coordinates = load_pickle('pickles/BusStopIDNamesLatLong.pkl')
     
-    
-    #Store all BusStopID and corresponding names and coordinates into name_list  
-    ID_Name_Coordinates = load_pickle('pickles/BusStopIDNamesLatLong.pkl')
-    
-    # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
-    id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
+    # # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
+    # id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
-    # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
-    path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
+    # # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
+    # path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
 
-    # Extract the coordinates from the list of names and coordinates
-    path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
+    # # Extract the coordinates from the list of names and coordinates
+    # path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
-    # Print out Bus stop names and coordinates 
-    for name in path_names_coordinates:
-        print(name)
-        print()
+    # # Print out Bus stop names and coordinates 
+    # for name in path_names_coordinates:
+    #     print(name)
+    #     print()
 
-    return path_names_coordinates, path_coordinates
+    # return path_names_coordinates, path_coordinates
          
 
 start = int(input("Enter starting busStopID: "))
