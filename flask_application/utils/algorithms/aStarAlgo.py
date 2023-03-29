@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 BUSSPEED = 70 #km/h  
 
 # A-Star algoritm which is Djikstra but with heuristic function
-def aStarAlgo(startNode, endNode):
+def get_path(startNode, endNode):
     # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
     unvisited = PriorityQueue()
     unvisited.put((0, startNode)) 
@@ -216,7 +216,7 @@ def VisualiseGraph(multiGraph):
 
 
 # Current location and destination
-currentBusStop = 1
-endBusStop = 2
+# currentBusStop = 1
+# endBusStop = 2
 
-aStarAlgo(currentBusStop, endBusStop)
+# aStarAlgo(currentBusStop, endBusStop)

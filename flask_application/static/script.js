@@ -58,14 +58,18 @@ function submitForm() {
     });
 }
 
-function refreshMap() {
-  fetch('/get_map')
-    .then(response => response.json())
-    .then(data => {
-      document.querySelector('#map').innerHTML = data.map_html;
+/* Refreshes Live Map*/
+
+setInterval(function() {
+    console.log("Updating markers...");
+    $.ajax({
+        url: "/update_markers",
+        type: "GET",
+        success: function(data) {
+            $("#map").html(data);
+        },
+        error: function(xhr, status, error) {
+            console.log("Error updating markers: " + error);
+        }
     });
-}
-
-// Refresh the map every 15 seconds
-setInterval(refreshMap, 15000);
-
+}, 15000);

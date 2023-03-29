@@ -1,14 +1,17 @@
 from flask import Flask, render_template, request
-from utils import planner
+import planner
+from utils import mapping
 
 app=Flask(__name__)
+
+live_map_obj = mapping.Live_Map()
 
 @app.route('/')
 def root():
     #Get Live traffic data
-    # map_html = plotBus.generate_map()
-    
-    return render_template('index.html')
+    map_html = live_map_obj.getMap()
+        
+    return render_template('index.html', map=map_html)
 
 @app.route("/process-data", methods=["POST"])
 def process_data():
@@ -18,9 +21,17 @@ def process_data():
     option = request.form.get("Option")
 
     map_html = planner.process_data(start, destination, option)    
-
+    print(map_html)
     # Return the processed data as a string
     return map_html 
+
+#Updating the live map periodically
+@app.route('/update_markers')
+def update_markers():
+    live_map_obj.update_markers()
+    map_html = live_map_obj.getMap()
+
+    return map_html
 
 if __name__ == '__main__':
     app.run(host="localhost", port=8080, debug=True)                                                                         

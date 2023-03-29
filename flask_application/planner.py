@@ -1,5 +1,6 @@
-from utils import mapping
-from utils import *
+from utils.mapping import *
+from utils.utils import * 
+from utils.alogrithms import aStarAlgo
 
 def process_data(start, destination, option):
 
@@ -40,20 +41,74 @@ def process_data(start, destination, option):
             path_names_coordinates, path_coordinates = mainTest(start_bus_stop['StopID'], end_bus_stop['StopID'], option)
             print("\n*" * 3)
             print("\n", "-" * 20)
+    
+            #Main Test in util
+            if option == '1':
+                #If Shortest time in BusStopID
+                busName,pathID = aStarAlgo.get_path(start, end)
+
+            elif option == '2':
+                """
+                Maintenace
+                """
+                #If Shortest path in BusStopID
+                # pathID,total_distance= shortest_path_with_min_transfers(start, end)
+                # print(total_distance)
+
+            #Get the list of busStopID , names, lat , long from sql
+            ID_Name_Coordinates = getBusStopNamesFromID()
+        
+    
+            # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
+            id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
+
+            # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
+            path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
+
+            # Extract the coordinates from the list of names and coordinates
+            path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
+
+            # Print out Bus stop names and coordinates 
+            for name, bus in zip(path_names_coordinates, busName):
+                print(name[0], bus)
+                print()
 
             # Plot bus stops and route on map
             if path_names_coordinates:
                 map_html = mapping.generateUserMap(path_names_coordinates, start_coordinates, end_coordinates)
 
-                # Guide user to destination from end bus stop
-                if(end_bus_stop['Distance'] > 0):
-                    footer = "\nDirections to %s\n" % destination
-                    end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
-                    # Print guiding instructions
-                    print(footer) 
-                    print(end_instructions)
+                # # Guide user to destination from end bus stop
+                # if(end_bus_stop['Distance'] > 0):
+                #     footer = "\nDirections to %s\n" % destination
+                #     end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
+                #     # Print guiding instructions
+                #     print(footer) 
+                #     print(end_instructions)
 
                 return map_html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # Check for email notification
         # user_input = input("\nDo you want a copy of these directions sent to your email? (Yes or No): ")
