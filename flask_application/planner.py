@@ -1,6 +1,8 @@
 from utils.mapping import *
 from utils.utils import * 
 from utils.algorithms import aStarAlgo
+#from utils.alogrithms import aStarAlgo
+
 
 def process_data(start, destination, option):
 
@@ -38,22 +40,31 @@ def process_data(start, destination, option):
             print("\n", "-" * 20)
             print("\n*" * 3)
             print("\n\nBUS ROUTE\n\n")
-            path_names_coordinates, path_coordinates = mainTest(start_bus_stop['StopID'], end_bus_stop['StopID'], option)
             print("\n*" * 3)
             print("\n", "-" * 20)
     
             #Main Test in util
             if option == '1':
                 #If Shortest time in BusStopID
-                busName,pathID = aStarAlgo.get_path(start, end)
+                busName,pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+                
+                #start_bus_stop['StopID']
 
             elif option == '2':
                 """
                 Maintenace
                 """
                 #If Shortest path in BusStopID
-                # pathID,total_distance= shortest_path_with_min_transfers(start, end)
-                # print(total_distance)
+                # pathID,total_distance= shortest_path_with_min_transfers(start, destination)
+                # total_duration = total_distance / BUSSPEED * 60 * 60  # in seconds
+
+                # # Convert the total duration to hours, minutes, and seconds
+                # hours = int(total_duration // 3600)
+                # minutes = int((total_duration % 3600) // 60)
+                # seconds = int(total_duration % 60)
+
+                # # Print the total duration in the desired format
+                # print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
 
             #Get the list of busStopID , names, lat , long from sql
             ID_Name_Coordinates = getBusStopNamesFromID()
@@ -66,7 +77,7 @@ def process_data(start, destination, option):
             path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
 
             # Extract the coordinates from the list of names and coordinates
-            path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
+            #path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
             # Print out Bus stop names and coordinates 
             for name, bus in zip(path_names_coordinates, busName):
@@ -75,7 +86,7 @@ def process_data(start, destination, option):
 
             # Plot bus stops and route on map
             if path_names_coordinates:
-                map_html = mapping.generateUserMap(path_names_coordinates, start_coordinates, end_coordinates)
+                map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop)
 
                 # # Guide user to destination from end bus stop
                 # if(end_bus_stop['Distance'] > 0):
@@ -256,3 +267,8 @@ def process_data(start, destination, option):
 # if __name__ == '__main__':
 #     app.run(host="localhost", port=8080, debug=True)                                                                         
 
+
+# start = 'Larkin Terminal'
+# end = 'Hospital Sultanah Aminah'
+# user_input = '1'
+# process_data(start, end, user_input)
