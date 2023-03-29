@@ -14,6 +14,8 @@ import smtplib
 import pickle
 import haversine as hs
 import heapq
+import requests
+import math
 
 BUSSPEED = 70 #km/h  
 
@@ -83,22 +85,145 @@ def get_coordinates(location):
     else:
         return None
     
-def get_nearest_bus_stop(latitude, longitude): # Weight: Distance
+def get_nearest_bus_stop(latitude, longitude, limit=True): # Weight: Distance
     """
     Function to get the nearest bus stop to a set of coordinates
 
     """
+    if(limit):
+        # Get nearest bus stop
+        nearest_bus_stop = None
+        sql = "SELECT *, ST_Distance_Sphere(POINT(Longitude, Latitude), POINT(%s, %s)) / 1000 as Distance FROM BusStop ORDER BY Distance LIMIT 1;" % (longitude, latitude)
+        results = sql_query(sql)
 
-    # Get nearest bus stop
-    nearest_bus_stop = None
-    sql = "SELECT *, ST_Distance_Sphere(POINT(Longitude, Latitude), POINT(%s, %s)) / 1000 as Distance FROM BusStop ORDER BY Distance LIMIT 1;" % (longitude, latitude)
-    results = sql_query(sql)
+        for i in results:
+            nearest_bus_stop = {'StopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Coordinates': [i[2], i[3]], 'Distance': i[4]}
+    else:
+        # Get nearest bus stop
+        nearest_bus_stop = []
+        sql = "SELECT *, ST_Distance_Sphere(POINT(Longitude, Latitude), POINT(%s, %s)) / 1000 as Distance FROM BusStop ORDER BY Distance;" % (longitude, latitude)
+        results = sql_query(sql)
 
-    for i in results:
-        nearest_bus_stop = {'StopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Coordinates': [i[2], i[3]], 'Distance': i[4]}
+        for i in results:
+            current_bus_stop = {'StopID': i[0], 'Name': i[1], 'Latitude': i[2], 'Longitude': i[3], 'Coordinates': [i[2], i[3]], 'Distance': i[4]}
+            nearest_bus_stop.append(current_bus_stop)
 
     # Return nearest bus stop
     return nearest_bus_stop
+
+def get_bearing(lat1, long1, lat2, long2):
+    """
+    Function to calculate the bearing between two given coordinates
+    From: (lat1, long1)
+    To: (lat2, long2)
+    """
+    # Convert latitude and longitude to radians
+    lat1 = math.radians(lat1)
+    long1 = math.radians(long1)
+    lat2 = math.radians(lat2)
+    long2 = math.radians(long2)
+
+    # Calculate the bearing
+    bearing = math.degrees(math.atan2(math.sin(long2 - long1) * math.cos(lat2), math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(long2 - long1)))
+
+    # Ensure bearing is positive
+    bearing = (bearing + 360) % 360
+
+    # Return bearing
+    return bearing
+
+def get_live_bus():
+    """ 
+    Function to get live bus data from PAJ's API, function will add new bus arrival timings into the Schedule table 
+    and return a list of the respective ScheduleIDs that have been added. These temporary rows will be required to be removed in later parts of the program.
+    """
+    # Initialise list of scheduleIDs that have been added by this function
+    list_schedules = []
+
+    # Initialise list of live buses
+    list_buses = []
+
+    # API endpoint and key
+    headers = {'api-key': paj_api_key}
+
+    # Make API request to get bus data
+    live_bus = requests.get(paj_api_live_bus, headers=headers, verify=True)
+    live_bus = live_bus.json()['data']
+
+    # Parse API data
+    for bus in live_bus:
+        # Check bus service and moving buses
+        if((bus['route'][0] in loop_buses + one_way_buses) and bus['speed'] > 0):
+            current_bus = {'Bus': bus['route'][0], 'BusPlate': bus['bus'], 'Datetime': datetime.datetime.strptime(bus['timestamp'], '%Y-%m-%d %H:%M:%S'), 
+                           'Latitude': bus['latitude'], 'Longitude': bus['longitude'], 'Coordinates': [bus['latitude'], bus['longitude']], 'Speed': bus['speed'], 'Bearing': bus['bearing']}
+            list_buses.append(current_bus)
+
+    # Initialise database connection
+    mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
+    db_cursor = mysql_db.cursor(buffered=True)
+
+    # Get max scheduleID from database
+    max_sql = "SELECT MAX(ScheduleID) FROM Schedule;"
+    db_cursor.execute(max_sql)
+    schedule_id = db_cursor.fetchall()[0][0] + 1
+
+    # Loop through each bus to determine the bus stop that the bus is heading towards
+    for bus in list_buses:
+        # Initialise target bus stop
+        target_bus_stop = None
+        # Initialise routeID
+        route_id = None
+        # Initialise list of potential bus stops that the bus is heading to
+        list_bus_stops = []
+        # Get the distance between the bus and all other bus stops in the database (list returned will be sorted in ascending order, according to the distance between the bus stop and the bus)
+        bus_stops = get_nearest_bus_stop(bus['Latitude'], bus['Longitude'], False)
+
+        # Loop through each bus stop
+        for bus_stop in bus_stops:
+            # Calculate the bearing between the bus to the current bus stop (order matters)
+            bus_stop['Bearing'] = abs(bus['Bearing'] - get_bearing(bus['Latitude'], bus['Longitude'], bus_stop['Latitude'], bus_stop['Longitude']))
+            # Add bus stop to list of potential bus stops if its bearing is within 45 degrees of the bus's current bearing 
+            if(abs(bus_stop['Bearing']) <= bearing_threshhold):    # Bus is assumed to be headed towards the bus stop if its bearing is within the specified threshold
+                list_bus_stops.append(bus_stop)
+
+        # Loop through each potential bus stop
+        for bus_stop in list_bus_stops:
+            # Check if an edge exists between the bus to the bus stop
+            # Limitation: We are unable to distinguish which one-way bus service is being used currently (direction 1 or 2), queries for one-way buses might be wrong
+            sql = "SELECT Edge.*, BusRoute.BusID, Bus.Name FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID JOIN Bus ON BusRoute.BusID = Bus.BusID WHERE Edge.ToBusStopID = %s AND Bus.Name LIKE \"%%%s%%\";" % (bus_stop['StopID'], bus['Bus'])
+            db_cursor.execute(sql)
+            # Get first matching bus stop to be the target bus stop (current list of bus stops is already implicitly sorted according to its distance from the bus, lower index = closer to bus)
+            if(db_cursor.rowcount):
+                # Set target bus stop to be the first match
+                target_bus_stop = bus_stop
+                # Get RouteID
+                route_id = db_cursor.fetchall()[0][3]
+                # Break out of loop
+                break
+
+        # Check for a matching bus stop
+        if(target_bus_stop and route_id):
+            # Calculate duration (in minutes)
+            duration = (target_bus_stop['Distance'] / bus['Speed']) * 60
+            # Get estimated time of bus arrival
+            arrival_time = datetime.timedelta(minutes=duration) + datetime.datetime.now()
+            # Add new bus schedule into the database
+            insert_sql = "INSERT INTO Schedule VALUES (%s, %s, \"%s\");" % (schedule_id, route_id, arrival_time.time())
+            db_cursor.execute(insert_sql)
+            # Add scheduleID into list of temporarily created bus schedules
+            list_schedules.append(schedule_id)
+            # Update scheduleID
+            schedule_id += 1
+
+    # Effect changes
+    mysql_db.commit()
+                
+    # Close connections
+    db_cursor.close()
+    mysql_db.close()
+
+    # Return list of scheduleIDs that have been added
+    return list_schedules
 
 def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
     """
@@ -109,6 +234,9 @@ def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
     # Initialise database connection
     mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     db_cursor = mysql_db.cursor(buffered=True)
+
+    # Get list of scheduleIDs for the arrival timings of live bus
+    list_schedules = get_live_bus()
 
     # Get list of nearest bus stops, in ascending order (fastest one in lower index)
     bus_stops = []
@@ -121,6 +249,15 @@ def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
         # Get BusID
         bus_stops.append(bus_stop)
 
+    # Loop through each scheduleID that have been created for live bus
+    for schedule_id in list_schedules:
+        # Delete temporarily created schedule
+        delete_sql = "DELETE FROM Schedule WHERE ScheduleID = %s;" % schedule_id
+        db_cursor.execute(delete_sql)
+
+    # Effect changes
+    mysql_db.commit()
+    
     # Close the cursor and connection
     db_cursor.close()
     mysql_db.close()

@@ -8,6 +8,14 @@ LOAD_BUS_FROM_DB = False    # Boolean to configure the loading of bus schedule f
 # Google Map API
 gmap_api_key = 'AIzaSyBV9jbLm29r5xYKHjJrv0UtZk5qMe-KPt4'
 
+# PAJ API
+paj_api_endpoint = 'https://dataapi.paj.com.my/api/v1'
+paj_api_live_bus = '%s/bus-live' % paj_api_endpoint
+paj_api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+loop_buses = ["P101", "P106", "P202", "P403"]       # Buses that run in a loop
+one_way_buses = ["P102", "P211", "P411"]            # Buses that only run one way
+bearing_threshhold = 45                             # Bearing threshold (if bearing between a live bus and a bus stop is within this threshold, assume that the bus is headed towards the bus stop)
+
 # Database
 db_host = "34.143.210.189"
 db_user = "root"
