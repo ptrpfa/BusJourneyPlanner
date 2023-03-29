@@ -5,7 +5,7 @@ def process_data(start, destination, option):
 
     """ Journey Planning """
     # Step 1: Get starting coordinates of user
-    start_coordinates = get_coordinates(start_address)
+    start_coordinates = get_coordinates(start)
 
     # Step 2: Get nearest bus stop to starting coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
@@ -13,7 +13,7 @@ def process_data(start, destination, option):
     print("Starting Bus Stop: ", start_bus_stop['StopID'], start_bus_stop['Name'])
 
     # Step 3: Get ending coordinates of user 
-    end_coordinates = get_coordinates(end_address)
+    end_coordinates = get_coordinates(destination)
 
     # Step 4: Get nearest bus stop to ending coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
