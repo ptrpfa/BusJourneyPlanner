@@ -1,6 +1,6 @@
 from utils.mapping import *
 from utils.utils import * 
-from utils.alogrithms import aStarAlgo
+from utils.algorithms import aStarAlgo
 
 def process_data(start, destination, option):
 
