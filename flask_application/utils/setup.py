@@ -1,5 +1,4 @@
-from utils.cloud_config import *
-
+from cloud_config import *
 import mysql.connector
 import networkx as nx
 import matplotlib.pyplot as plt

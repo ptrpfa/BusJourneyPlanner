@@ -15,6 +15,7 @@ paj_api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
 loop_buses = ["P101", "P106", "P202", "P403"]       # Buses that run in a loop
 one_way_buses = ["P102", "P211", "P411"]            # Buses that only run one way
 bearing_threshhold = 45                             # Bearing threshold (if bearing between a live bus and a bus stop is within this threshold, assume that the bus is headed towards the bus stop)
+bus_speed = 70                                      # Assumed speed of a bus (in km/h)
 
 # Database
 db_host = "34.143.210.189"
@@ -34,11 +35,12 @@ email_footer = "<br><br><hr><p><i>An automated message sent by DSA Group 7's Jou
 cwd = os.getcwd()
 folder_static = "%s/static/" % cwd
 folder_templates = "%s/template/" % cwd
-folder_pickles = "%s/pickles/" % cwd
+folder_files = "%s/files/" % cwd
 folder_utils = "%s/utils/" % cwd
 
 # Files
-file_pkl_graph = "%sgraph.pkl" % folder_pickles
+file_pkl_graph = "%sgraph.pkl" % folder_files
+file_live_bus = "%sbus_live.json" % folder_files
 
 # Initialise Google Map client
 gmaps = googlemaps.Client(key=gmap_api_key)

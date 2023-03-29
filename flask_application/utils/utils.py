@@ -1,5 +1,6 @@
-from utils.cloud_config import *
-from utils.setup import *
+from cloud_config import *
+from setup import *
+from algorithms import *
 from bs4 import BeautifulSoup as bs_4
 from email.mime.text import MIMEText            
 from email.mime.multipart import MIMEMultipart  
@@ -17,7 +18,12 @@ import heapq
 import requests
 import math
 
-BUSSPEED = 70 #km/h  
+def save_file(text, file_name):
+    """
+    Function to write to a file
+    """
+    with open(file_name, 'w') as f:
+        f.write(text)
 
 def pickle_object (pickle_object, filepath):
     """ 
@@ -596,7 +602,7 @@ def getHeuristic(currentNode, endNode):
     distance1 = hs.haversine(loc1, loc2)
     
     # Get estimated time in minutes between the 2 busstops. Time = Distance / Speed
-    time = distance1 / BUSSPEED
+    time = distance1 / bus_speed
     estimatedTime = getTimeFromHour(time)
 
     # Return heuristic time of currentNode in minutes
