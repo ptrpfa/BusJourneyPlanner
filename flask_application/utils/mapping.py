@@ -3,6 +3,9 @@ import polyline
 import requests 
 from flask import json, jsonify
 
+# Set API key for Google Maps API
+API_KEY = 'AIzaSyBMvvKkWWJ3Nw-sIpBraBIwAGiXG_WYV9Y'
+
 def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop):
     map = folium.Map(location=start_coordinates, zoom_start=13)
 
@@ -59,7 +62,7 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     folium.PolyLine(locations=decoded_route, color='blue').add_to(map)
 
     # Save map to HTML file
-    # map.save('C:/Users/Jeffr/Desktop/123/flask_application/utils/map.html')
+    map.save('C:/Users/Jeffr/Downloads/CSC1108-JourneyPlanner-main (3)/CSC1108-JourneyPlanner-main/flask_application/utils/map.html')
 
     return map._repr_html_()
 
