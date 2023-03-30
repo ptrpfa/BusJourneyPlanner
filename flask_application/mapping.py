@@ -61,7 +61,7 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     folium.PolyLine(locations=decoded_route, color='blue').add_to(map)
 
     # Save map to HTML file
-    # map.save('C:/Users/Jeffr/Downloads/CSC1108-JourneyPlanner-main (3)/CSC1108-JourneyPlanner-main/flask_application/utils/map.html')
+    map.save(file_map_html)
 
     return map._repr_html_()
 
