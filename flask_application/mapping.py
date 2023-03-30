@@ -1,10 +1,9 @@
+from cloud_config import *
+
 import folium
 import polyline
 import requests 
 from flask import json, jsonify
-
-# Set API key for Google Maps API
-API_KEY = 'AIzaSyBMvvKkWWJ3Nw-sIpBraBIwAGiXG_WYV9Y'
 
 def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop):
     map = folium.Map(location=start_coordinates, zoom_start=13)
@@ -23,7 +22,7 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     # Generate the Google Maps API request for the walking path from the starting location to the first stop
     origin = f'{start_coordinates[0]},{start_coordinates[1]}'
     destination = f'{start_bus_stop["Latitude"]},{start_bus_stop["Longitude"]}'
-    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={API_KEY}'
+    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={gmap_api_key}'
     response = requests.get(url)
     route = response.json()['routes'][0]['overview_polyline']['points']
 
@@ -36,7 +35,7 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     # Generate the Google Maps API request for the walking path from the last stop to the destination
     origin = f'{end_bus_stop["Latitude"]},{end_bus_stop["Longitude"]}'
     destination = f'{end_coordinates[0]},{end_coordinates[1]}'
-    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={API_KEY}'
+    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={gmap_api_key}'
     response = requests.get(url)
     route = response.json()['routes'][0]['overview_polyline']['points']
 
@@ -51,7 +50,7 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     origin = f'{stops[0][0]},{stops[0][1]}'
     destination = f'{stops[-1][0]},{stops[-1][1]}'
     waypoints = '|'.join([f'{stop[0]},{stop[1]}' for stop in stops[1:]])
-    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&mode=driving&key={API_KEY}'
+    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&mode=driving&key={gmap_api_key}'
     response = requests.get(url)
     route = response.json()['routes'][0]['overview_polyline']['points']
 
@@ -89,8 +88,8 @@ class Live_Map:
     def update_markers(self):
         # API endpoint and key
         api_endpoint = 'https://dataapi.paj.com.my/api/v1'
-        api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
-        headers = {'api-key': api_key}
+        gmap_api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+        headers = {'api-key': gmap_api_key}
 
         # Make API request to get bus data
         bus_live = requests.get(api_endpoint + '/bus-live', headers=headers, verify=True)
@@ -104,7 +103,7 @@ class Live_Map:
         print("Grabbed Data")
 
         # Write the contents of bus_data_json to a file
-        with open('bus_data.json', 'w') as f:
+        with open(file_live_bus, 'w') as f:
             json.dump(bus_data_json, f)
 
         # Define the routes to display

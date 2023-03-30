@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request,json, jsonify
+import mapping
 import planner
-from utils import mapping
 import folium
 
 app=Flask(__name__)

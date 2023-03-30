@@ -1,13 +1,14 @@
 from cloud_config import *
 from setup import *
-from algorithms import *
+
+# from algorithms import *
+
 from bs4 import BeautifulSoup as bs_4
 from email.mime.text import MIMEText            
 from email.mime.multipart import MIMEMultipart  
 from email.header import Header                 
 from email.utils import formataddr    
 from queue import PriorityQueue
-
 import re
 import mysql.connector
 import datetime
@@ -17,6 +18,7 @@ import haversine as hs
 import heapq
 import requests
 import math
+import json
 
 def save_file(text, file_name):
     """

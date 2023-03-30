@@ -40,7 +40,7 @@ folder_utils = "%s/utils/" % cwd
 
 # Files
 file_pkl_graph = "%sgraph.pkl" % folder_files
-file_live_bus = "%sbus_live.json" % folder_files
+file_live_bus = "%sbus_data.json" % folder_files
 
 # Initialise Google Map client
 gmaps = googlemaps.Client(key=gmap_api_key)

@@ -1,4 +1,6 @@
 from cloud_config import *
+from utils import *
+
 import mysql.connector
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -27,17 +29,6 @@ def sql_query(query):
     mysql_db.close()
 
     return results
-
-# Function to pickle object (accepts object to pickle and its filename to save as)
-def pickle_object(pickle_object, filepath):
-    # Create file object to store object to pickle
-    file_pickle = open(filepath, 'wb') # w = write, b = bytes (overwrite pre-existing files if any)
-
-    # Pickle (serialise) object [store object as a file]
-    pickle.dump(pickle_object, file_pickle)
-
-    # Close file object
-    file_pickle.close()
 
 def getSchedule(bus_stop_id,bus_id):
     """

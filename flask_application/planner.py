@@ -1,8 +1,6 @@
-from utils.mapping import *
-from utils.utils import * 
-from utils.algorithms import aStarAlgo
-#from utils.alogrithms import aStarAlgo
-
+from mapping import *
+from utils import *
+from algorithms import aStarAlgo
 
 def process_data(start, destination, option):
 
@@ -131,7 +129,6 @@ def process_data(start, destination, option):
         #     email_message = email_message.replace("\n", "<br>")
         #     if(send_email(user_email, email_subject, email_message)):
         #         print("Email sent to", user_email, "!")
-
 
 # def process_data():
 #     # Get the input data from the request
