@@ -1,6 +1,7 @@
 from mapping import *
 from utils import *
 from algorithms import aStarAlgo
+from algorithms import dijkstra_Algo
 
 def process_data(start, destination, option):
 
@@ -9,7 +10,6 @@ def process_data(start, destination, option):
     start_coordinates = get_coordinates(start)
 
     # Step 2: Get nearest bus stop to starting coordinates
-    #start_bus_stop = {StopID, Name, Coordinate}
     start_bus_stop = get_nearest_bus_stop(start_coordinates[0], start_coordinates[1])
     print("Starting Bus Stop: ", start_bus_stop['StopID'], start_bus_stop['Name'])
 
@@ -25,93 +25,52 @@ def process_data(start, destination, option):
     if(start_coordinates == end_coordinates): 
         print("Both starting and ending locations are the same! No bus journey planning will be provided.")
     else:
-        # Guide user to starting bus stop
-        if(start_bus_stop['Distance'] > 0):
-            header = "\nHead to Bus Stop %s (%s)\n" % (start_bus_stop['StopID'], start_bus_stop['Name'])
-            start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
-            # Print guiding instructions
-            print(header)
-            print(start_instructions)
+        #Step 5 Guide user to nearest bus stop => Error in Google AP
         
-            # Assumption: User will always take the bus, regardless of the distance between the start and end locations, unless both points are the same
-            # Get bus route plan
-            print("\n", "-" * 20)
-            print("\n*" * 3)
-            print("\n\nBUS ROUTE\n\n")
-            print("\n*" * 3)
-            print("\n", "-" * 20)
-    
-            #Main Test in util
-            if option == '1':
-                #If Shortest time in BusStopID
-                busName,pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
-                
-                #start_bus_stop['StopID']
-
-            elif option == '2':
-                """
-                Maintenace
-                """
-                #If Shortest path in BusStopID
-                # pathID,total_distance= shortest_path_with_min_transfers(start, destination)
-                # total_duration = total_distance / BUSSPEED * 60 * 60  # in seconds
-
-                # # Convert the total duration to hours, minutes, and seconds
-                # hours = int(total_duration // 3600)
-                # minutes = int((total_duration % 3600) // 60)
-                # seconds = int(total_duration % 60)
-
-                # # Print the total duration in the desired format
-                # print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
-
-            # #Get the list of busStopID , names, lat , long from sql
-            # ID_Name_Coordinates = getBusStopNamesFromID()
-        
-    
-            # # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
-            # id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
-
-            # # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
-            # path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
-
-            # Extract the coordinates from the list of names and coordinates
-            #path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
-
-            # # Print out Bus stop names and coordinates 
-            # for name, bus in zip(path_names_coordinates, busName):
-            #     print(name[0], bus)
-            #     print()
-
-            # Plot bus stops and route on map
-            if path_names_coordinates:
-                map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop)
-
-                # # Guide user to destination from end bus stop
-                # if(end_bus_stop['Distance'] > 0):
-                #     footer = "\nDirections to %s\n" % destination
-                #     end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
-                #     # Print guiding instructions
-                #     print(footer) 
-                #     print(end_instructions)
-
-                return map_html
+        #Step 6 Find Shortest Path for bus to travel to end bus stop
+        busName, pathID = None, None
+        if option == '1':  #Sortest-Distance
+            path_data = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            print(path_data)
+        elif option == '2': #Shortest-Time
+            #Maintenance
+            #busName,pathID = aStarAlgo.get_path(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            pass
+        else:
+            print("Error in Options")
 
 
+        #Get the list of [busStopID , names, lat , long] 
+        ID_Name_Coordinates = getBusStopNamesFromID()
+        print(ID_Name_Coordinates)
 
+        # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
+        id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
+        # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
+        path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
 
+        #Extract the coordinates from the list of names and coordinates
+        path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
+        # Print out Bus stop names and coordinates 
+        for name, bus in zip(path_names_coordinates, busName):
+            print(name[0], bus)
+            print()
 
+        if path_names_coordinates:
+            
+            map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop)
 
+            # Guide user to destination from end bus stop
+            if(end_bus_stop['Distance'] > 0):
+                footer = "\nDirections to %s\n" % destination
+                end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
+                # Print guiding instructions
+                print(footer) 
+                print(end_instructions)
 
-
-
-
-
-
-
-
-
+            return map_html
 
 
 

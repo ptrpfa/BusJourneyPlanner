@@ -14,6 +14,7 @@ BUSSPEED = 70 #km/h
 
 # A-Star algoritm which is Djikstra but with heuristic function
 def get_path(startNode, endNode):
+
     # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
     unvisited = PriorityQueue()
     unvisited.put((0, startNode)) 
@@ -33,6 +34,7 @@ def get_path(startNode, endNode):
     previousBus = None
     busChanges = {}
     busChanges[startNode] = previousBus
+
 
     # Traverse through all nodes that hasnt been visited
     while not unvisited.empty():
@@ -73,7 +75,7 @@ def get_path(startNode, endNode):
 
         # Add neighbour to visited because edges will be inspected
         visited.add(neighbour)
-
+        
         # Iterate current node's neighbours
         for (node, weight, busID) in getNeighbours(neighbour, previousBus):
             # If any node not in visited set new time for it

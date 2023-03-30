@@ -73,7 +73,7 @@ class Live_Map:
         self.m = folium.Map(location=[1.4964559999542668, 103.74374661113058], zoom_start=12)
 
         # Define the feature group for bus markers
-        self.bus_group = folium.FeatureGroup(name='Buses')
+        self.bus_group = folium.FeatureGroup(name='Buses', overlay=True, control=True)
 
         # Add the feature group to the map
         self.m.add_child(self.bus_group)
@@ -86,6 +86,9 @@ class Live_Map:
 
 
     def update_markers(self):
+        # Clear the bus feature group of previous markers
+        self.bus_group._children.clear()
+
         # API endpoint and key
         api_endpoint = 'https://dataapi.paj.com.my/api/v1'
         gmap_api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
@@ -108,9 +111,6 @@ class Live_Map:
 
         # Define the routes to display
         routes_to_display = ["P101", "P102", "P106"]
-
-        # Clear the bus feature group of previous markers
-        self.bus_group._children.clear()
 
         # Create a new feature collection
         self.feature_collection = {
@@ -159,6 +159,8 @@ class Live_Map:
                 #Add the new feature group
                 self.bus_group.add_child(marker)
 
+                
+
     def getFeatureGroup(self):
 
         # convert the GeoJSON object to a JSON string
@@ -168,6 +170,18 @@ class Live_Map:
         return jsonify(json_data)
 
     def getMap(self):
+
+
+        # js_string = '''
+        #     window.onload = function() {
+        #         var bus_group = L.featureGroup();
+        #         console.log(bus_group.getLayers());
+        #     }
+        # '''
+
+        # self.m.get_root().script.add_child(folium.Element(js_string))
+    
+
 
         map_html = self.m._repr_html_()
 
