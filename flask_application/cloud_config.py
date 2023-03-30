@@ -37,10 +37,12 @@ folder_static = "%s/static/" % cwd
 folder_templates = "%s/template/" % cwd
 folder_files = "%s/files/" % cwd
 folder_utils = "%s/utils/" % cwd
+folder_live = "%s/live/" % cwd
 
 # Files
 file_pkl_graph = "%sgraph.pkl" % folder_files
-file_live_bus = "%sbus_data.json" % folder_files
+file_live_bus = "%sbus_data.json" % folder_live
+file_map_html = "%smap.html" % folder_live
 
 # Initialise Google Map client
 gmaps = googlemaps.Client(key=gmap_api_key)
