@@ -265,7 +265,15 @@ def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
 
     # Get list of nearest bus stops, in ascending order (fastest one in lower index)
     bus_stops = []
-    sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID  JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID  WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 AND Time >= CURRENT_TIME() ORDER BY Total_Time ASC;" % start_bus_stop_id
+    # Check if there are any scheduled buses for the day
+    check_sql = "SELECT IF(CURRENT_TIME() <= (SELECT MAX(Time) FROM Schedule), \"Today\", \"Tomorrow\");"
+    db_cursor.execute(check_sql)
+    bus_day = db_cursor.fetchall()[0][0]
+    # Get bus stops
+    if(bus_day == "Today"):
+        sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID  JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID  WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 AND Time >= CURRENT_TIME() ORDER BY Total_Time ASC;" % start_bus_stop_id
+    else:
+        sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), CONCAT(DATE(NOW() + INTERVAL 1 DAY), \' \', Time)) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), CONCAT(DATE(NOW() + INTERVAL 1 DAY), \' \', Time)) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 ORDER BY Total_Time ASC;" % start_bus_stop_id
     db_cursor.execute(sql)
     for i in db_cursor:
         # Parse each row
