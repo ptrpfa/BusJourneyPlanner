@@ -258,8 +258,10 @@ def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
     mysql_db = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     db_cursor = mysql_db.cursor(buffered=True)
 
-    # Get list of scheduleIDs for the arrival timings of live bus
-    list_schedules = get_live_bus()
+    # Check if live bus data is to be incorporated
+    if(INTEGRATE_LIVE_BUS):
+        # Get list of scheduleIDs for the arrival timings of live buses, if the program flag is set (limitation: function execution is slow due to the calculations required to determine the direction of each bus, and which bus stop that it is headed to)
+        list_schedules = get_live_bus()
 
     # Get list of nearest bus stops, in ascending order (fastest one in lower index)
     bus_stops = []
@@ -272,11 +274,13 @@ def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
         # Get BusID
         bus_stops.append(bus_stop)
 
-    # Loop through each scheduleID that have been created for live bus
-    for schedule_id in list_schedules:
-        # Delete temporarily created schedule
-        delete_sql = "DELETE FROM Schedule WHERE ScheduleID = %s;" % schedule_id
-        db_cursor.execute(delete_sql)
+    # Check if live bus data is to be incorporated
+    if(INTEGRATE_LIVE_BUS):
+        # Loop through each scheduleID that have been created for live bus
+        for schedule_id in list_schedules:
+            # Delete temporarily created schedule
+            delete_sql = "DELETE FROM Schedule WHERE ScheduleID = %s;" % schedule_id
+            db_cursor.execute(delete_sql)
 
     # Effect changes
     mysql_db.commit()

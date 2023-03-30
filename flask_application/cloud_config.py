@@ -4,6 +4,7 @@ import os
 # Program Flags
 LOCAL_DB = False            # Boolean to configure the use of a local database
 LOAD_BUS_FROM_DB = False    # Boolean to configure the loading of bus schedule from the database (otherwise, will load using pickled file)
+INTEGRATE_LIVE_BUS = False  # Boolean to configure the integration of live bus data into the calculations of the fastest path
 
 # Google Map API
 gmap_api_key = 'AIzaSyBV9jbLm29r5xYKHjJrv0UtZk5qMe-KPt4'
