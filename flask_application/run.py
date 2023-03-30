@@ -21,10 +21,10 @@ def process_data():
     destination = request.form.get("Destination")
     option = request.form.get("Option")
 
-    planner.process_data(start, destination, option)    
-    #print(map_html)
+    map_html = planner.process_data(start, destination, option)    
+    
     # Return the processed data as a string
-    return "good"
+    return map_html
 
 #Updating the live map periodically
 @app.route('/update_markers')
