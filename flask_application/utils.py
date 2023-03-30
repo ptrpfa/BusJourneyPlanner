@@ -694,6 +694,25 @@ def getBusStopNamesFromID():
     # Return coordinates in list form [Latitude][Longitude]
     return result_set
 
+def getBusRouteDuration(total_distance):
+    total_duration = total_distance / 70 * 60 * 60  # in seconds
+    
+    # Convert the total duration to hours, minutes, and seconds
+    hours = int(total_duration // 3600)
+    minutes = int((total_duration % 3600) // 60)
+    seconds = int(total_duration % 60)
+
+    # Print the total duration in the desired format
+    print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
+
+
+def convertBusIDListToNameList(busIDList):
+    busNameList = []
+    for busID in busIDList:
+        busName = getBusFromBusID(busID)
+        busNameList.append(busName)
+    return busNameList
+
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # def mainTest(start, end, option):
