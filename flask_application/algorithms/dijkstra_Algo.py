@@ -81,7 +81,12 @@ def shortest_path_with_min_transfers(start, end):
 				data = graph.get_edge_data(u, v)
 				buses.append(data[0]['bus'])
 				
-			path_data['Bus'] = buses
+			# match the length of buses with the length of path by adding a final element
+			# to buses that corresponds to the last node in the path
+			data = graph.get_edge_data(path[-2], path[-1])
+			buses.append(data[0]['bus'])
+			
+			
 			# 	for sub_data in data.values():
 			# 		bus = sub_data['bus']
 			# 		#Check transfer
@@ -105,7 +110,7 @@ def shortest_path_with_min_transfers(start, end):
 			#     shortest_path[f"{u}-{v}"] = f"bus-{bus}, distance={min_weight}"
 			#     distance += min_weight
 
-			return path_data
+			return path,total_distance[end],buses
 
 		# Check if we've already visited this node with a smaller number of transfers
 		if curr_transfers > min_transfers[curr_node]:
@@ -181,6 +186,9 @@ def mainTest(start, end):
 
 	path_data = shortest_path_with_min_transfers(start, end)
 
-	print(path_data)
+	#print(path_data)
 
-path_data = shortest_path_with_min_transfers(1, 117)
+
+# for testing algro
+#mainTest(25, 30)        
+
