@@ -18,9 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdownMenu.on('click', 'a', function() {
         // Get the selected dropdown item's text
         var selectedText = $(this).text();
-        
+        var selectedValue = $(this).attr('value');
         // Set the dropdown button text to the selected text
         dropdownButton.text(selectedText);
+        console.log(selectedValue)
     });
 
     document.addEventListener('click', (event) => {
