@@ -9,6 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header                 
 from email.utils import formataddr    
 from queue import PriorityQueue
+from pathlib import Path
 import re
 import mysql.connector
 import datetime
@@ -26,6 +27,12 @@ def save_file(text, file_name):
     """
     with open(file_name, 'w') as f:
         f.write(text)
+
+def check_file_exists(file_path):
+    """
+    Function to check if a particular file exists
+    """
+    return Path(file_path).exists()
 
 def pickle_object (pickle_object, filepath):
     """ 
@@ -154,9 +161,17 @@ def get_live_bus():
     # API endpoint and key
     headers = {'api-key': paj_api_key}
 
-    # Make API request to get bus data
-    live_bus = requests.get(paj_api_live_bus, headers=headers, verify=True)
-    live_bus = live_bus.json()['data']
+    # Check if live bus data JSON file exists
+    if(not check_file_exists(file_live_bus)):
+        # Make API request to get bus data only if the file does not exist (calling of PAJ API left to mapping functions)
+        live_bus = requests.get(paj_api_live_bus, headers=headers, verify=True)
+        # Save file
+        save_file(live_bus.text, file_live_bus)
+        live_bus = live_bus.json()['data']
+    else:
+        # Load bus data from JSON file directly
+        live_bus = json.load(open(file_live_bus))
+        live_bus = live_bus['data']
 
     # Parse API data
     for bus in live_bus:
