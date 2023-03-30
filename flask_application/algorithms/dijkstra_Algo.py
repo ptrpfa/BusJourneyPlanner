@@ -10,7 +10,7 @@ import pickle
 def getData():
 	# Open the pickled file in read binary mode
 	data = None
-	with open('flask_application/utils/Dataset/graph.pkl', 'rb') as f:
+	with open('files/graph.pkl', 'rb') as f:
 		# Load the contents of the file
 		data = pickle.load(f)
 
@@ -30,8 +30,9 @@ def shortest_path_with_min_transfers(start, end):
 	Output:
 	------
 	path_data = {
-		"Path":[ busStopID_1, busStopID_2, busStopID_3 ], 
-		"Total-Distance": Distance for journey from start to end bus stop
+		"Path":[ busStopID_1:bus_id, busStopID_2:bus_id, busStopID_3:bus_id], 
+		"Total-Distance": Distance for journey from start to end bus stop,
+		"Bus": [Bus1, Bus2, Bus3]
 	}
     """
 
@@ -73,6 +74,24 @@ def shortest_path_with_min_transfers(start, end):
 
 			path.reverse()
 			path_data = {"Path":path, "Total-Distance":total_distance[end]}
+
+			buses = []
+			for i in range(len(path)-1):
+				u, v = path[i], path[i+1]
+				data = graph.get_edge_data(u, v)
+				buses.append(data[0]['bus'])
+				
+			path_data['Bus'] = buses
+			# 	for sub_data in data.values():
+			# 		bus = sub_data['bus']
+			# 		#Check transfer
+			# 		transfer = min_transfers[v]
+			# 		if bus not in busses:
+			# 		if transfer == min_transfers[u] + 1:
+			# 		busses.append(bus)
+			# 		min_transfers[v] = transfer
+			# 		elif transfer < min_transfers[v]:
+			# 		min_transfers[v] = transfer
 
 			# #Print the routes and the distance between each edge
 			# shortest_path = {}
@@ -160,7 +179,8 @@ def validaeWithLib():
 def mainTest(start, end):
 	graph = getData()
 
-	path_data = shortest_path_with_min_transfers(graph, start, end)
+	path_data = shortest_path_with_min_transfers(start, end)
 
 	print(path_data)
 
+path_data = shortest_path_with_min_transfers(1, 117)

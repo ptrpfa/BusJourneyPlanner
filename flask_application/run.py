@@ -21,18 +21,19 @@ def process_data():
     destination = request.form.get("Destination")
     option = request.form.get("Option")
 
-    map_html = planner.process_data(start, destination, option)    
-    print(map_html)
+    planner.process_data(start, destination, option)    
+    #print(map_html)
     # Return the processed data as a string
-    return map_html 
+    return "good"
 
 #Updating the live map periodically
 @app.route('/update_markers')
 def update_markers():
     live_map_obj.update_markers()
-    map_fg = live_map_obj.getFeatureGroup()
+    
+    # map_fg = live_map_obj.getFeatureGroup()
 
-    return map_fg
+    return live_map_obj.getMap()
 
 if __name__ == '__main__':
     app.run(host="localhost", port=8080, debug=True)                                                                         
