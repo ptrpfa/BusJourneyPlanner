@@ -66,123 +66,75 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     return map._repr_html_()
 
 
-class Live_Map:
-
-    def __init__(self):
-        # Initialize map => Larking Terminal
-        self.m = folium.Map(location=[1.4964559999542668, 103.74374661113058], zoom_start=12)
-
-        # Define the feature group for bus markers
-        self.bus_group = folium.FeatureGroup(name='Buses', overlay=True, control=True)
-
-        # Add the feature group to the map
-        self.m.add_child(self.bus_group)
-
-        # Add a layer control to the map to enable clearing of bus markers
-        folium.LayerControl().add_to(self.m)
-
-        # Update markers initially
-        self.update_markers()
-
-
-    def update_markers(self):
-        # Clear the bus feature group of previous markers
-        self.bus_group._children.clear()
-
-        # API endpoint and key
-        api_endpoint = 'https://dataapi.paj.com.my/api/v1'
-        gmap_api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
-        headers = {'api-key': gmap_api_key}
-
-        # Make API request to get bus data
-        bus_live = requests.get(api_endpoint + '/bus-live', headers=headers, verify=True)
-        bus_data_json = bus_live.json()
-
-        if 'data' not in bus_data_json:
-            # handle missing 'data' key in the API response
-            print("Error: 'data' key is missing in API response")
-            return
-
-        print("Grabbed Data")
-
-        # Write the contents of bus_data_json to a file
-        with open(file_live_bus, 'w') as f:
-            json.dump(bus_data_json, f)
-
-        # Define the routes to display
-        routes_to_display = ["P101", "P102", "P106"]
-
-        # Create a new feature collection
-        self.feature_collection = {
+def update_markers():
+    feature_collection = {
             "type": "FeatureCollection",
             "features": []
-        }
+    }
 
-        # Add markers for buses on specified routes
-        for bus_data in bus_data_json['data']:
-            if any(route in bus_data['route'] for route in routes_to_display):
-                #Get the information
-                latitude = bus_data['latitude']
-                longitude = bus_data['longitude']
-                bus_plate = bus_data['bus']
-                speed = bus_data['speed']
-                print(bus_plate, speed)
+    # Define the routes to display
+    routes_to_display = ["P101", "P102", "P106"]
 
-                # Create marker with popup
-                popup_html = f"<b>Bus Plate:</b> {bus_plate}<br><b>Speed:</b> {speed} km/h"
-                icon = folium.Icon(icon='bus', prefix='fa', color="green")
-                marker = folium.Marker(location=[latitude, longitude], icon=icon, popup=folium.Popup(html=popup_html))
-                
-                # Create a feature for the marker and add it to the feature collection
-                feature = {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [
-                            longitude,
-                            latitude
-                        ]
-                    },
-                    "properties": {
-                        "popup": popup_html,
-                        "icon": {
-                            "iconUrl": None,
-                            "iconSize": [0, 0],
-                            "iconAnchor": [0, 0],
-                            "popupAnchor": [0, 0],
-                            "className": "fa-bus marker-icon"
-                        }
+    # API endpoint and key
+    api_endpoint = 'https://dataapi.paj.com.my/api/v1'
+    gmap_api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+    headers = {'api-key': gmap_api_key}
+
+    # Make API request to get bus data
+    bus_live = requests.get(api_endpoint + '/bus-live', headers=headers, verify=True)
+    bus_data_json = bus_live.json()
+
+    if 'data' not in bus_data_json:
+        # handle missing 'data' key in the API response
+        print("Error: 'data' key is missing in API response")
+        return
+
+    print("Grabbed Data")
+
+    # Write the contents of bus_data_json to a file
+    with open(file_live_bus, 'w') as f:
+        json.dump(bus_data_json, f)
+
+    # Add markers for buses on specified routes
+    for bus_data in bus_data_json['data']:
+        if any(route in bus_data['route'] for route in routes_to_display):
+            #Get the information
+            latitude = bus_data['latitude']
+            longitude = bus_data['longitude']
+            bus_plate = bus_data['bus']
+            speed = bus_data['speed']
+            print(bus_plate, speed)
+
+            # Create marker with popup
+            popup_html = f"<b>Bus Plate:</b> {bus_plate}<br><b>Speed:</b> {speed} km/h"
+            #icon = folium.Icon(icon='bus', prefix='fa', color="green")
+            #marker = folium.Marker(location=[latitude, longitude], icon=icon, popup=folium.Popup(html=popup_html))
+
+            # Create a feature for the marker and add it to the feature collection
+            feature = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        longitude,
+                        latitude
+                    ]
+                },
+                "properties": {
+                    "popup": popup_html,
+                    "icon": {
+                        "iconUrl": "https://use.fontawesome.com/releases/v5.15.3/svgs/solid/bus.svg",
+                        "iconSize": [30, 30],
+                        "iconAnchor": [15, 15],
+                        "popupAnchor": [0, -15],
+                        "className": "marker-icon",
+                        "icon": "bus",
+                        "prefix": "fa",
+                        "color": "green"
                     }
                 }
-                self.feature_collection['features'].append(feature)
+            }
 
-                #Add the new feature group
-                self.bus_group.add_child(marker)
+            feature_collection['features'].append(feature)
 
-                
-
-    def getFeatureGroup(self):
-
-        # convert the GeoJSON object to a JSON string
-        json_data = json.dumps(self.feature_collection)
-
-        # return the JSON string as a JSON response
-        return jsonify(json_data)
-
-    def getMap(self):
-
-
-        # js_string = '''
-        #     window.onload = function() {
-        #         var bus_group = L.featureGroup();
-        #         console.log(bus_group.getLayers());
-        #     }
-        # '''
-
-        # self.m.get_root().script.add_child(folium.Element(js_string))
-    
-
-
-        map_html = self.m._repr_html_()
-
-        return map_html
+    return feature_collection

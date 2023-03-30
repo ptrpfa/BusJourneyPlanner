@@ -2,17 +2,15 @@ from flask import Flask, render_template, request,json, jsonify
 import mapping
 import planner
 import folium
+import random
 
 app=Flask(__name__)
 
-live_map_obj = mapping.Live_Map()
 
 @app.route('/')
 def root():
-    #Get Live traffic data
-    map_html = live_map_obj.getMap()
-        
-    return render_template('index.html', map=map_html)
+
+    return render_template('index.html')
 
 @app.route("/process-data", methods=["POST"])
 def process_data():
@@ -27,13 +25,13 @@ def process_data():
     return map_html
 
 #Updating the live map periodically
-@app.route('/update_markers')
-def update_markers():
-    live_map_obj.update_markers()
-    
-    # map_fg = live_map_obj.getFeatureGroup()
+@app.route('/update_map', methods=["GET"])
+def update_map():
 
-    return live_map_obj.getMap()
+    # Generate some random data
+    data = mapping.update_markers()
+
+    return json.dumps(data)
 
 if __name__ == '__main__':
     app.run(host="localhost", port=8080, debug=True)                                                                         
@@ -57,24 +55,3 @@ if __name__ == '__main__':
 # elif option == 2: #Shortest Time
 
 
-# # filter out any markers or shapes with missing geometry
-# valid_children = []
-# for child in map_fg._children.values():
-#     print(child.location)
-#     try:
-#         if child.feature.geometry is not None:
-#             valid_children.append(child)
-#     except AttributeError:
-#         pass
-
-# # create a GeoJSON object from the valid markers and shapes
-# if valid_children:
-#     geojson = folium.features.GeoJson(valid_children).data
-# else:
-#     geojson = {"type": "FeatureCollection", "features": []}
-#     print("Empty features")
-
-# # convert the GeoJSON object to a JSON string
-# json_data = json.dumps(geojson)
-
-# return the JSON string as a JSON response
