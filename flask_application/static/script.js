@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsList = document.getElementById('results');
     var dropdownMenu = $('.dropdown-menu');
     var dropdownButton = $('.dropdown-toggle');
-
+    var value;
     showResultsBtn.addEventListener('click', () => {
         clearInterval(intervalID);
         submitForm();
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdownMenu.on('click', 'a', function() {
         // Get the selected dropdown item's text
         var selectedText = $(this).text();
+        
         // Set the dropdown button text to the selected text
         dropdownButton.text(selectedText);
     });
@@ -139,8 +140,9 @@ function submitForm() {
     const start = document.getElementById("start-location").value;
     const resultsList = document.getElementById('results');
     var dropdownText = $('.dropdown-toggle').text();
-    var dropdownValue = $('.dropdown-item.active').attr('value');
-
+    var dropdownValue = $('.dropdown-item').attr('value');
+    var dropdownButton = $('.dropdown-toggle').attr('value');
+    console.log(dropdownValue);
     // Send the data to the Flask server using AJAX
     $.ajax({
         url: "/process-data",

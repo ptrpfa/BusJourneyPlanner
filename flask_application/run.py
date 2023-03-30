@@ -20,7 +20,7 @@ def process_data():
     start = request.form.get("Start")
     destination = request.form.get("Destination")
     option = request.form.get("Option")
-
+    print(option)
     planner.process_data(start, destination, option)    
     #print(map_html)
     # Return the processed data as a string

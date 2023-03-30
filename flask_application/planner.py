@@ -31,7 +31,7 @@ def process_data(start, destination, option):
         busName, pathID = None, None
         if option == '1':  #Sortest-Distance
             path_data = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
-            print(path_data)
+
         elif option == '2': #Shortest-Time
             #Maintenance
             #busName,pathID = aStarAlgo.get_path(start_bus_stop['StopID'],end_bus_stop['StopID'])
