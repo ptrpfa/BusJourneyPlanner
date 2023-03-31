@@ -101,10 +101,11 @@ def update_markers():
             longitude = bus_data['longitude']
             bus_plate = bus_data['bus']
             speed = bus_data['speed']
-            print(bus_plate, speed)
+            bus_service = bus_data['route'][0]
+            print(bus_service, bus_plate, speed)
 
             # Create marker with popup
-            popup_html = f"<b>Bus Plate:</b> {bus_plate}<br><b>Speed:</b> {speed} km/h"
+            popup_html = f"<b>Bus Service:</b> {bus_service}<br><b>Bus Plate:</b> {bus_plate}<br><b>Speed:</b> {speed} km/h"
             #icon = folium.Icon(icon='bus', prefix='fa', color="green")
             #marker = folium.Marker(location=[latitude, longitude], icon=icon, popup=folium.Popup(html=popup_html))
 
