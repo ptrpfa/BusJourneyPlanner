@@ -3,7 +3,7 @@
 // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 // }).addTo(map);
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     /* Refreshes and Creates Live Map*/
     var map = L.map('map').setView([1.4964559999542668, 103.74374661113058], 12);
@@ -17,12 +17,12 @@ $(document).ready(function() {
         $.ajax({
             url: '/update_map',
             type: 'GET',
-            success: function(data) {
+            success: function (data) {
                 var geoJsonData = JSON.parse(data);
-                
+
                 featureGroup.clearLayers();
                 var newMarkers = L.geoJson(geoJsonData, {
-                    pointToLayer: function(feature, latlng) {
+                    pointToLayer: function (feature, latlng) {
                         var markerIcon = L.icon({
                             icon: feature.properties.icon.icon,
                             prefix: feature.properties.icon.prefix,
@@ -36,7 +36,7 @@ $(document).ready(function() {
                         var marker = L.marker(latlng, {
                             icon: markerIcon
                         });
-                        marker.bindPopup(function(layer) {
+                        marker.bindPopup(function (layer) {
                             return feature.properties.popup;
                         });
                         return marker;
@@ -44,7 +44,7 @@ $(document).ready(function() {
                 });
                 featureGroup.addLayer(newMarkers);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log('Error updating markers: ' + error);
             }
         });
@@ -67,7 +67,7 @@ $(document).ready(function() {
         submitForm(value);
     });
 
-    dropdownMenu.on('click', 'a', function() {
+    dropdownMenu.on('click', 'a', function () {
         // Get the selected dropdown item's text
         var selectedText = $(this).text();
         var selectedValue = $(this).attr('value');
@@ -76,18 +76,18 @@ $(document).ready(function() {
     });
 
     // Set value of button based on algorithm selected
-    $('#distanceOption').on('click', function(){
+    $('#distanceOption').on('click', function () {
         // Set value
         var algo_select = document.getElementById('dropdownMenuButton');
-        algo_select.setAttribute('value','1');
+        algo_select.setAttribute('value', '1');
     });
-    $('#timeOption').on('click', function(){
+    $('#timeOption').on('click', function () {
         // Set value
         var algo_select = document.getElementById('dropdownMenuButton');
-        algo_select.setAttribute('value','2');
+        algo_select.setAttribute('value', '2');
     });
 
-    $(".toggle-menu").click(function() {
+    $(".toggle-menu").click(function () {
         //result => left:-100%
         $("#results").toggleClass("show");
 
@@ -123,33 +123,46 @@ function submitForm(value) {
     $.ajax({
         url: "/process-data",
         type: "POST",
-        data: { Start: start, Destination: destination, Option: algo_select},
+        data: { Start: start, Destination: destination, Option: algo_select },
         success: function (data) {
+            var map_html = data.map_html;
+            var routes = data.routes;
+            console.log(routes)
 
             // Check for invalid inputs
-            if(data.includes("ERROR")) {
-                console.log(data);
-                alert(data);
+            if (data.hasOwnProperty("error")) {
+                console.log(data.error);
+                alert(data.error);
             }
-            else{
+
+            else {
                 // Update the target div with the processed data
-                $("#map").html(data);
+                $("#map").html(map_html);
+                routes.forEach(names => {
+                    var newElement = document.createElement('li');
+                    newElement.innerHTML = '<div class="route"><h3>' + 
+                                            names + '</h3></div><p>' + 
+                                            "time" + ' | ' + "369bus" + 
+                                            '</p>';
+                    $('#results').append(newElement);
+                });
+
                 //result => left:0
                 $('#results').toggleClass("show");
                 if ($('.toggle-menu').hasClass("show")) {
                     //menu => left:-100%
                     $('.toggle-menu').removeClass("hide");
                     //menu => left:30%
-                     $('.toggle-menu').toggleClass("show");
+                    $('.toggle-menu').toggleClass("show");
                 } else {
                     //menu => left:-100%
                     $('.toggle-menu').removeClass("hide");
                     //menu => left:30%
                     $('.toggle-menu').toggleClass("show");
-    
+
                 }
             }
-   
+
         },
         error: function (error) {
             console.log(error);
