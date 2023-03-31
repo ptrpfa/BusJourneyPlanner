@@ -93,9 +93,17 @@ function submitForm(value) {
         type: "POST",
         data: { Start: start, Destination: destination, Option: dropdownValue},
         success: function (data) {
-            // Update the target div with the processed data
-            $("#map").html(data);
-            resultsList.classList.toggle('show');
+
+            // Check for invalid inputs
+            if(data.includes("ERROR")) {
+                console.log(data);
+                alert(data);
+            }
+            else{
+                // Update the target div with the processed data
+                $("#map").html(data);
+                resultsList.classList.toggle('show');
+            }
 
         },
         error: function (error) {

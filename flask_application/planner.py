@@ -3,18 +3,59 @@ from utils import *
 from algorithms import aStarAlgo
 from algorithms import dijkstra_Algo
 
+# Function to get the coordinates of a given coordinate/address input
+def process_inputs(address):
+    # Initialise return variables
+    coordinates = None
+    error_msg = None
+
+    # Check if input received are coordinates
+    if(re.match('(\d+\.\d+)\s*,\s*(\d+\.\d+)', address)):
+        # Get coordinates
+        coordinates = [float(i.strip()) for i in address.split(",")]
+        # Check if coordinates are wrong
+        if(not validate_coordinates(*coordinates)):
+            # Try swapping coordinates around to see if they are in the wrong order
+            coordinates[0], coordinates[1] = coordinates[1], coordinates[0]
+            # Check coordinates again
+            if(not validate_coordinates(*coordinates)):
+                coordinates = None
+                error_msg = "Coordinates received are wrong."
+    # Check for empty inputs
+    elif(address == ""):
+        error_msg = "Empty inputs! Please enter a valid input."
+    else:
+        # Get coordinates of address
+        coordinates = get_coordinates(address)
+        # Check if address received is valid
+        if(coordinates is None):
+            error_msg = "Please re-enter a valid address! Address received is invalid."
+
+    # Return coordinates and error message, if any
+    return coordinates, error_msg
+                
 def process_data(start, destination, option):
+
+    # Fixed string for errors
+    error_header = "ERROR: "
+    invalid_input = None
 
     """ Journey Planning """
     # Step 1: Get starting coordinates of user
-    start_coordinates = get_coordinates(start)
+    start_coordinates, invalid_input = process_inputs(start)
+    # Check for invalid inputs
+    if(invalid_input):
+        return error_header + invalid_input
 
     # Step 2: Get nearest bus stop to starting coordinates
     start_bus_stop = get_nearest_bus_stop(start_coordinates[0], start_coordinates[1])
     print("Starting Bus Stop: ", start_bus_stop['StopID'], start_bus_stop['Name'])
 
     # Step 3: Get ending coordinates of user 
-    end_coordinates = get_coordinates(destination)
+    end_coordinates, invalid_input = process_inputs(destination)
+    # Check for invalid inputs
+    if(invalid_input):
+        return error_header + invalid_input
 
     # Step 4: Get nearest bus stop to ending coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
@@ -23,7 +64,7 @@ def process_data(start, destination, option):
 
     # Check if start and end locations are the same
     if(start_coordinates == end_coordinates): 
-        print("Both starting and ending locations are the same! No bus journey planning will be provided.")
+        return error_header + "Both starting and ending locations are the same! No bus journey planning will be provided."
     else:
         #Step 5 Guide user to nearest bus stop => Error in Google AP
         
