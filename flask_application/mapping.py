@@ -61,7 +61,7 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
 
     #print(len(waypoints_list))   for troubleshooting
 
-    # Split the waypoints into batches of 25 or fewer
+    # Check for waypoint length if it exceed the google map api limit
     if len(waypoints_list) < 25:
         url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&mode=driving&key={gmap_api_key}'
         response = requests.get(url)
@@ -74,22 +74,48 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
         folium.PolyLine(locations=decoded_route, color='blue').add_to(map)
 
     else:
-        # Create a list of coordinates from the stops list
-        decoded_routes = []
-        for stop in stops:
-            if stop is not None:
-                decoded_routes.append((stop[0], stop[1]))
+        # Generate the OSRM API request for the route between stops
+        stops = [location[1:] for location in path_names_coordinates if location[1:] is not None]
+        coordinates = ';'.join([f'{stop[1]},{stop[0]}' for stop in stops])
+        url = f'http://router.project-osrm.org/route/v1/driving/{coordinates}'
+        response = requests.get(url)
+        route = response.json()['routes'][0]['geometry']
+        decoded_route = polyline.decode(route) # One whole bus route in driving mode
 
-        # Add polyline to map
-        folium.PolyLine(locations=decoded_routes, color='blue').add_to(map)
+        # Add markers for each stop in stops list
+        for i, stop in enumerate(stops):   
+            folium.Marker(stop, popup=f'Stop {i+1}', icon=folium.Icon(color='blue')).add_to(map)
 
+        add_markers(path_names_coordinates, map)
 
+        # Add a polyline for the bus path
+        folium.PolyLine(decoded_route, color='blue').add_to(map)
+        
+#         # Straight line for way point 25 >
+#         decoded_routes = []
+#         for stop in stops:
+#             if stop is not None:
+#                 decoded_routes.append((stop[0], stop[1]))
+
+#         # Add polyline to map
+#         folium.PolyLine(locations=decoded_routes, color='blue').add_to(map)
 
     # Save map to HTML file
     map.save(file_map_html)
     #map.save('C:/Users/jeffr/Documents/GitHub/CSC1108-JourneyPlanner/flask_application/map.html')   for troubleshooting
 
     return map._repr_html_()
+
+def add_markers(path_names_coordinates, map):
+    counter = 1
+    for location in path_names_coordinates:
+        name = location[0]
+        coordinates = location[1:]
+        if coordinates is not None:
+            popup_name = f"Stop {counter}: {name}"
+            folium.Marker(coordinates, popup=popup_name).add_to(map)
+            counter += 1
+
 
 
 def update_markers():
