@@ -12,12 +12,15 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     folium.Marker(start_coordinates, popup='Starting Location').add_to(map)
     folium.Marker(end_coordinates, popup='Ending Location').add_to(map)
 
-    # Add markers for all bus stop on the path and pop with name
+    # Add markers for all bus stop on the path and pop with number and name
+    counter = 1
     for location in path_names_coordinates:
         name = location[0]
         coordinates = location[1:]
         if coordinates is not None:
-            folium.Marker(coordinates, popup=name).add_to(map)
+            popup_name = str(counter) + ". " + name
+            folium.Marker(coordinates, popup=f"Stop {counter}: {name}").add_to(map)
+            counter += 1
 
     # Generate the Google Maps API request for the walking path from the starting location to the first stop
     origin = f'{start_coordinates[0]},{start_coordinates[1]}'
