@@ -1,7 +1,9 @@
 from mapping import *
 from utils import *
-from algorithms import aStarAlgo
 from algorithms import dijkstra_Algo
+from algorithms import *
+
+
 
 # Function to get the coordinates of a given coordinate/address input
 def process_inputs(address):
@@ -69,16 +71,14 @@ def process_data(start, destination, option):
         #Step 5 Guide user to nearest bus stop => Error in Google AP
         
         #Step 6 Find Shortest Path for bus to travel to end bus stop
-        busName, pathID = None, None
+
         if option == '1':  #Shortest-Distance
             pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             getBusRouteDuration(total_distance)
             busName = convertBusIDListToNameList(busName)
             
         elif option == '2': #Shortest-Time
-            #Maintenance
-            #busName,pathID = aStarAlgo.get_path(start_bus_stop['StopID'],end_bus_stop['StopID'])
-            pass
+            busName, pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
         else:
             print("Error in Options")
 
