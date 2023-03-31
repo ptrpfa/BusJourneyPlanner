@@ -9,8 +9,8 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     map = folium.Map(location=start_coordinates, zoom_start=13)
 
     # Add markers for starting and ending locations
-    folium.Marker(start_coordinates, popup='Starting Location').add_to(map)
-    folium.Marker(end_coordinates, popup='Ending Location').add_to(map)
+    folium.Marker(start_coordinates, popup='Starting Location', icon=folium.Icon(color='red')).add_to(map)
+    folium.Marker(end_coordinates, popup='Ending Location', icon=folium.Icon(color='red')).add_to(map)
 
     # Add markers for all bus stop on the path and pop with number and name
     counter = 1
