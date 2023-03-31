@@ -73,11 +73,12 @@ def process_data(start, destination, option):
         #Step 6 Find Shortest Path for bus to travel to end bus stop
 
         if option == '1':  #Shortest-Distance
+            print("Dijsktra!")
             pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             getBusRouteDuration(total_distance)
             busName = convertBusIDListToNameList(busName)
-            
         elif option == '2': #Shortest-Time
+            print("A STAR!")
             busName, pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
         else:
             print("Error in Options")

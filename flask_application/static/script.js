@@ -75,6 +75,18 @@ $(document).ready(function() {
         dropdownButton.text(selectedText);
     });
 
+    // Set value of button based on algorithm selected
+    $('#distanceOption').on('click', function(){
+        // Set value
+        var algo_select = document.getElementById('dropdownMenuButton');
+        algo_select.setAttribute('value','1');
+    });
+    $('#timeOption').on('click', function(){
+        // Set value
+        var algo_select = document.getElementById('dropdownMenuButton');
+        algo_select.setAttribute('value','2');
+    });
+
     $(".toggle-menu").click(function() {
         //result => left:-100%
         $("#results").toggleClass("show");
@@ -105,13 +117,13 @@ function submitForm(value) {
     var dropdownText = $('.dropdown-toggle').text();
     var dropdownValue = $('.dropdown-item').attr('value');
     var dropdownButton = $('.dropdown-toggle').attr('value');
-
+    var algo_select = document.getElementById('dropdownMenuButton').value;
 
     // Send the data to the Flask server using AJAX
     $.ajax({
         url: "/process-data",
         type: "POST",
-        data: { Start: start, Destination: destination, Option: dropdownValue},
+        data: { Start: start, Destination: destination, Option: algo_select},
         success: function (data) {
 
             // Check for invalid inputs
