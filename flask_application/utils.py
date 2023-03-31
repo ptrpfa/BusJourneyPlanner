@@ -1,6 +1,5 @@
 from cloud_config import *
 from setup import *
-
 # from algorithms import *
 
 from bs4 import BeautifulSoup as bs_4
@@ -383,6 +382,10 @@ def send_email(incoming_email, subject, message):
         server.quit ()
         return email_sent
     
+def test_function():
+    for start_bus_stop_id in range(1, 168):
+        print("Bus Stop: %s (%s)" % (start_bus_stop_id, len(get_fastest_bus_stop(start_bus_stop_id))))
+
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def getData():
@@ -734,7 +737,6 @@ def getBusRouteDuration(total_distance):
 
     # Print the total duration in the desired format
     print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
-
 
 def convertBusIDListToNameList(busIDList):
     busNameList = []
