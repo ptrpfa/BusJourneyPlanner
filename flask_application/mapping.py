@@ -89,8 +89,6 @@ def update_markers():
         print("Error: 'data' key is missing in API response")
         return
 
-    print("Grabbed Data")
-
     # Write the contents of bus_data_json to a file
     with open(file_live_bus, 'w') as f:
         json.dump(bus_data_json, f)

@@ -3,41 +3,9 @@
 // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 // }).addTo(map);
 
-document.addEventListener('DOMContentLoaded', () => {
-    const current_map = document.getElementById('map');
-    const showResultsBtn = document.getElementById('show-results-btn');
-    const resultsList = document.getElementById('results');
-    var dropdownMenu = $('.dropdown-menu');
-    var dropdownButton = $('.dropdown-toggle');
-    var value;
-    showResultsBtn.addEventListener('click', () => {
-        clearInterval(intervalID);
-        submitForm();
-    });
-
-    dropdownMenu.on('click', 'a', function() {
-        // Get the selected dropdown item's text
-        var selectedText = $(this).text();
-        var selectedValue = $(this).attr('value');
-        // Set the dropdown button text to the selected text
-        dropdownButton.text(selectedText);
-        console.log(selectedValue)
-    });
-
-    document.addEventListener('click', (event) => {
-
-    if (event.target !== current_map && !current_map.contains(event.target) && event.target.id !== 'show-results-btn') {
-      // Clicked outside of map
-      resultsList.classList.remove('show');
-    }
-    });
-
-
-});
-
-/* Refreshes Live Map*/
-
 $(document).ready(function() {
+
+    /* Refreshes and Creates Live Map*/
     var map = L.map('map').setView([1.4964559999542668, 103.74374661113058], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -83,11 +51,34 @@ $(document).ready(function() {
     }
 
     // Call updateMarkers every 15 seconds
-    setInterval(updateMarkers, 15000);
+    var intervalID = setInterval(updateMarkers, 15000);
+
+    //JS for UI
+    const current_map = document.getElementById('map');
+    const showResultsBtn = document.getElementById('show-results-btn');
+    const resultsList = document.getElementById('results');
+    var dropdownMenu = $('.dropdown-menu');
+    var dropdownButton = $('.dropdown-toggle');
+    var value;
+
+
+    showResultsBtn.addEventListener('click', () => {
+        clearInterval(intervalID);
+        submitForm(value);
+    });
+
+    dropdownMenu.on('click', 'a', function() {
+        // Get the selected dropdown item's text
+        var selectedText = $(this).text();
+        var selectedValue = $(this).attr('value');
+        // Set the dropdown button text to the selected text
+        dropdownButton.text(selectedText);
+    });
+
 });
 
 
-function submitForm() {
+function submitForm(value) {
     // Get the input data from the form
     const destination = document.getElementById("destination").value;
     const start = document.getElementById("start-location").value;
@@ -95,7 +86,7 @@ function submitForm() {
     var dropdownText = $('.dropdown-toggle').text();
     var dropdownValue = $('.dropdown-item').attr('value');
     var dropdownButton = $('.dropdown-toggle').attr('value');
-    console.log(dropdownValue);
+
     // Send the data to the Flask server using AJAX
     $.ajax({
         url: "/process-data",
@@ -106,8 +97,6 @@ function submitForm() {
             $("#map").html(data);
             resultsList.classList.toggle('show');
 
-            //Change the dropdownButton text to the current in the menu
-            $('.dropdown-toggle').text($('.dropdown-item.active').text());
         },
         error: function (error) {
             console.log(error);
