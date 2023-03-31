@@ -113,23 +113,31 @@ function submitForm(value) {
         type: "POST",
         data: { Start: start, Destination: destination, Option: dropdownValue},
         success: function (data) {
-            // Update the target div with the processed data
-            $("#map").html(data);
-            //result => left:0
-            $('#results').toggleClass("show");
 
-            if ($('.toggle-menu').hasClass("show")) {
-                //menu => left:-100%
-                $('.toggle-menu').removeClass("hide");
-                //menu => left:30%
-                 $('.toggle-menu').toggleClass("show");
-            } else {
-                //menu => left:-100%
-                $('.toggle-menu').removeClass("hide");
-                //menu => left:30%
-                $('.toggle-menu').toggleClass("show");
-
+            // Check for invalid inputs
+            if(data.includes("ERROR")) {
+                console.log(data);
+                alert(data);
             }
+            else{
+                // Update the target div with the processed data
+                $("#map").html(data);
+                //result => left:0
+                $('#results').toggleClass("show");
+                if ($('.toggle-menu').hasClass("show")) {
+                    //menu => left:-100%
+                    $('.toggle-menu').removeClass("hide");
+                    //menu => left:30%
+                     $('.toggle-menu').toggleClass("show");
+                } else {
+                    //menu => left:-100%
+                    $('.toggle-menu').removeClass("hide");
+                    //menu => left:30%
+                    $('.toggle-menu').toggleClass("show");
+    
+                }
+            }
+   
         },
         error: function (error) {
             console.log(error);
