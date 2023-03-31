@@ -40,6 +40,10 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     destination = f'{end_coordinates[0]},{end_coordinates[1]}'
     url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=walking&key={gmap_api_key}'
     response = requests.get(url)
+
+    if not response.json()['routes']:
+        raise ValueError("No routes found for given origin and destination")
+
     route = response.json()['routes'][0]['overview_polyline']['points']
 
     # Decode the polyline into a list of latitude and longitude coordinates
@@ -53,18 +57,37 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
     origin = f'{stops[0][0]},{stops[0][1]}'
     destination = f'{stops[-1][0]},{stops[-1][1]}'
     waypoints = '|'.join([f'{stop[0]},{stop[1]}' for stop in stops[1:]])
-    url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&mode=driving&key={gmap_api_key}'
-    response = requests.get(url)
-    route = response.json()['routes'][0]['overview_polyline']['points']
+    waypoints_list = waypoints.split('|')
 
-    # Decode the polyline into a list of latitude and longitude coordinates
-    decoded_route = polyline.decode(route)
+    #print(len(waypoints_list))   for troubleshooting
 
-    # Add polyline to map
-    folium.PolyLine(locations=decoded_route, color='blue').add_to(map)
+    # Split the waypoints into batches of 25 or fewer
+    if len(waypoints_list) < 25:
+        url = f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&waypoints={waypoints}&mode=driving&key={gmap_api_key}'
+        response = requests.get(url)
+        route = response.json()['routes'][0]['overview_polyline']['points']
+
+        # Decode the polyline into a list of latitude and longitude coordinates
+        decoded_route = polyline.decode(route)
+
+        # Add polyline to map
+        folium.PolyLine(locations=decoded_route, color='blue').add_to(map)
+
+    else:
+        # Create a list of coordinates from the stops list
+        decoded_routes = []
+        for stop in stops:
+            if stop is not None:
+                decoded_routes.append((stop[0], stop[1]))
+
+        # Add polyline to map
+        folium.PolyLine(locations=decoded_routes, color='blue').add_to(map)
+
+
 
     # Save map to HTML file
     map.save(file_map_html)
+    #map.save('C:/Users/jeffr/Documents/GitHub/CSC1108-JourneyPlanner/flask_application/map.html')   for troubleshooting
 
     return map._repr_html_()
 
