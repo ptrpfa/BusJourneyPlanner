@@ -59,7 +59,7 @@ $(document).ready(function() {
     const resultsList = document.getElementById('results');
     var dropdownMenu = $('.dropdown-menu');
     var dropdownButton = $('.dropdown-toggle');
-    var value;
+    var value = 1;
 
 
     showResultsBtn.addEventListener('click', () => {
@@ -75,6 +75,25 @@ $(document).ready(function() {
         dropdownButton.text(selectedText);
     });
 
+    $(".toggle-menu").click(function() {
+        //result => left:-100%
+        $("#results").toggleClass("show");
+
+        if ($(this).hasClass("show")) {
+            //menu => left:-100%
+            $(this).toggleClass("show");
+            //menu => left:0
+            $(this).toggleClass("hide");
+        } else {
+            //menu => left:-100%
+            $(this).toggleClass("hide");
+            //menu => left:30%
+            $(this).toggleClass("show");
+
+        }
+    });
+
+
 });
 
 
@@ -82,10 +101,11 @@ function submitForm(value) {
     // Get the input data from the form
     const destination = document.getElementById("destination").value;
     const start = document.getElementById("start-location").value;
-    const resultsList = document.getElementById('results');
+    //const resultsList = document.getElementById('results');
     var dropdownText = $('.dropdown-toggle').text();
     var dropdownValue = $('.dropdown-item').attr('value');
     var dropdownButton = $('.dropdown-toggle').attr('value');
+
 
     // Send the data to the Flask server using AJAX
     $.ajax({
@@ -95,8 +115,21 @@ function submitForm(value) {
         success: function (data) {
             // Update the target div with the processed data
             $("#map").html(data);
-            resultsList.classList.toggle('show');
+            //result => left:0
+            $('#results').toggleClass("show");
 
+            if ($('.toggle-menu').hasClass("show")) {
+                //menu => left:-100%
+                $('.toggle-menu').removeClass("hide");
+                //menu => left:30%
+                 $('.toggle-menu').toggleClass("show");
+            } else {
+                //menu => left:-100%
+                $('.toggle-menu').removeClass("hide");
+                //menu => left:30%
+                $('.toggle-menu').toggleClass("show");
+
+            }
         },
         error: function (error) {
             console.log(error);
