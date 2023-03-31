@@ -6,6 +6,10 @@ import random
 
 app=Flask(__name__)
 
+def processRoutes():
+    processRoutes = planner.process_routes()
+    data_str = ', '.join([str(item) for item in processRoutes])
+    return data_str
 
 @app.route('/')
 def root():
@@ -19,10 +23,15 @@ def process_data():
     destination = request.form.get("Destination")
     option = request.form.get("Option")
 
+    
+
     map_html = planner.process_data(start, destination, option)    
     
+    processRoutes = planner.process_routes(start, destination, option)
+
     # Return the processed data as a string
-    return map_html
+    # return map_html
+    return render_template('index.html', data_str=processRoutes)
 
 #Updating the live map periodically
 @app.route('/update_map', methods=["GET"])

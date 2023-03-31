@@ -79,6 +79,7 @@ def process_data(start, destination, option):
             
         elif option == '2': #Shortest-Time
             busName, pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            
         else:
             print("Error in Options")
 
@@ -86,13 +87,15 @@ def process_data(start, destination, option):
         #Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
 
-
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
         id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
         # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
         path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
 
+        #this is the list for the routes
+        print(path_names_coordinates)
+        process_routes()
         #Extract the coordinates from the list of names and coordinates
         path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
@@ -115,8 +118,23 @@ def process_data(start, destination, option):
 
             return map_html
 
+    def process_routes():
+        ID_Name = getBusStopNamesFromID()
 
+        # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
+        id_to_name = {id_: (name) for id_, name in ID_Name}
 
+        # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
+        path_names = [id_to_name[id_] for id_ in pathID]
+        path_string = ""
+        for item in path_names:
+            path_string += str(item[0]) + ";"
+            #remove last semicolon from string
+            path_string = path_string[:-1]
+            
+        return path_string
+
+    
 
         # Check for email notification
         # user_input = input("\nDo you want a copy of these directions sent to your email? (Yes or No): ")
