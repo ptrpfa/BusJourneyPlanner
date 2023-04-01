@@ -128,6 +128,7 @@ function submitForm(value) {
             var map_html = data.map_html;
             var routes = data.routes;
             var duration = data.duration;
+            var bus = data.bus;
             console.log(routes)
 
             // Check for invalid inputs
@@ -148,7 +149,7 @@ function submitForm(value) {
                     var newElement = document.createElement('li');
                     newElement.innerHTML = '<div class="route"><h3>' + 
                                             names + '</h3></div>' +
-                                            "<p>" + "Bus Number: insert bus here" + 
+                                            "<p>" + "Bus Number: " + bus + 
                                             '</p>';
                     $('#results').append(newElement);
                 });
