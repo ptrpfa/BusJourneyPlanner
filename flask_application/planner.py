@@ -49,6 +49,7 @@ def process_data(start, destination, option):
     # Check for invalid inputs
     if(invalid_input):
         my_dict['error'] = error_header + invalid_input
+        return jsonify(my_dict)
 
     # Step 2: Get nearest bus stop to starting coordinates
     start_bus_stop = get_nearest_bus_stop(start_coordinates[0], start_coordinates[1])
@@ -59,6 +60,7 @@ def process_data(start, destination, option):
     # Check for invalid inputs
     if(invalid_input):
         my_dict['error'] = error_header + invalid_input
+        return jsonify(my_dict)
 
     # Step 4: Get nearest bus stop to ending coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
