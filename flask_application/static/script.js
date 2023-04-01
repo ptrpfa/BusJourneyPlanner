@@ -148,7 +148,7 @@ function submitForm(value) {
                     var newElement = document.createElement('li');
                     newElement.innerHTML = '<div class="route"><h3>' + 
                                             names + '</h3></div>' +
-                                            "<p>" + "Bus Number: " + 
+                                            "<p>" + "Bus Number: insert bus here" + 
                                             '</p>';
                     $('#results').append(newElement);
                 });
