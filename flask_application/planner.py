@@ -47,6 +47,7 @@ def process_data(start, destination, option):
     
     # Check for invalid inputs
     if(invalid_input):
+        # Erroneous input
         my_dict['error'] = error_header + invalid_input
         return jsonify(my_dict)
     
@@ -59,16 +60,17 @@ def process_data(start, destination, option):
 
     # Check for invalid inputs
     if(invalid_input):
+        # Erroneous input
         my_dict['error'] = error_header + invalid_input
         return jsonify(my_dict)
     
     # Step 4: Get nearest bus stop to ending coordinates
-    #start_bus_stop = {StopID, Name, Coordinate}
     end_bus_stop = get_nearest_bus_stop(end_coordinates[0], end_coordinates[1])
     print("Ending Bus Stop: ", end_bus_stop['StopID'], end_bus_stop['Name'])
 
     # Check if start and end locations are the same
     if(start_coordinates == end_coordinates): 
+        # Erroneous input
         my_dict['error'] = error_header + "Both starting and ending locations are the same! No bus journey planning will be provided."
         return jsonify(my_dict)
     
@@ -76,22 +78,22 @@ def process_data(start, destination, option):
         # Step 5 Guide user to nearest bus stop => Error in Google AP
         
         # Step 6 Find Shortest Path for bus to travel to end bus stop
-
-        if option == '1':  #Shortest-Distance
+        # Check algorithm requested
+        if option == '1':  # Shortest-Distance
             print("Dijsktra!")
-            pathID,total_distance,busName = shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            pathID, total_distance, busName = shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             busName = convertBusIDListToNameList(busName)
             path_time = getBusRouteDuration(total_distance)
-
+            # USE TOTAL DISTANCE
         elif option == '2': #Shortest-Time
             print("A STAR!")
-            busName, pathID, totalTime = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
-            path_time = totalTime
-
+            busName, pathID, path_time = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
         else:
-            print("Error in Options")
+            # Erroneous input
+            my_dict['error'] = error_header + "Wrong option selected!"
+            return jsonify(my_dict)
 
-
+        """ Parse Data """
         # Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
 
@@ -103,30 +105,29 @@ def process_data(start, destination, option):
         path_names = [name for name, lat, long in path_names_coordinates]
 
         # Extract the coordinates from the list of names and coordinates
-        path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
+        # path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
         # Print out Bus stop names and coordinates 
         for name, bus in zip(path_names_coordinates, busName):
-            print(name[0], ",", bus)
-            print()
+            # print(name[0], ",", bus, end="\n\n")
+            pass
+        
+        # Initialise instructions
+        path_start_instructions = ""
+        path_end_instructions = ""
 
         if path_names_coordinates:
-            
             map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop, start, destination)
             
-            # if(start_bus_stop['Distance'] > 0 ):
-            #     path_start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
-            #     path_start_instructions = path_start_instructions.replace("\n","<br>")
-            #     print(path_start_instructions)
+            # Get walking directions to starting bus stop
+            if(start_bus_stop['Distance'] > 0 ):
+                path_start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
+                path_start_instructions = path_start_instructions.replace("\n","<br>")
 
-            # Guide user to destination from end bus stop
+            # Get walking directions from last bus stop to destination
             if(end_bus_stop['Distance'] > 0):
                 footer = "\nDirections to %s\n" % destination
                 end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
-                # Print guiding instructions
-                print(footer) 
-                print(end_instructions)
-
                 path_end_instructions = end_instructions.replace("\n","<br>")
                 
             # Returns error, maphtml and routes
@@ -134,7 +135,7 @@ def process_data(start, destination, option):
             my_dict['routes'] = path_names
             my_dict['duration'] = path_time
             my_dict['bus'] = bus
-            # my_dict['path_start_instructions'] = path_start_instructions
+            my_dict['path_start_instructions'] = path_start_instructions
             my_dict['path_end_instructions'] = path_end_instructions
             return jsonify(my_dict)
 

@@ -129,9 +129,8 @@ function submitForm(value) {
             var routes = data.routes;
             var duration = data.duration;
             var bus = data.bus;
-            // var path_start_instructions = data.path_start_instructions;
+            var path_start_instructions = data.path_start_instructions;
             var path_end_instructions = data.path_end_instructions;
-            console.log(routes)
 
             // Check for invalid inputs
             if (data.hasOwnProperty("error")) {
@@ -148,22 +147,33 @@ function submitForm(value) {
                 newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</h4></div>'
                 $('#results').append(newDuration);
 
+                var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p>"+ path_start_instructions +"</p><\/div>"
+                var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p>"+ path_end_instructions +"</p><\/div>"
+
                 // Show start walking route
-                // var newStartInstructions = document.createElement('div')
-                // newStartInstructions = '<div class="start_instructions"><h3>On foot:</h3><p>' + path_start_instructions + '</p></div>'
-                // $('.results').append(newStartInstructions);
+                if(path_start_instructions.length > 0) {
+                    var startingDirections = document.createElement('div');
+                    startingDirections.innerHTML = '<div class="start_instructions" style="margin-left:10px;" >'+ parsedStartInstructions + '</div>' 
+                    $('#results').append(startingDirections)
+                }
+
+                // Add collapsible button for route
+                var routeButton = "<button data-toggle=\"collapse\" style=\"margin:10px;\" data-target=\"#routeInfo\" class=\"btn btn-primary\">🚍 Bus Routes<\/button>"
+                $('#results').append(routeButton)
                 
                 // Show Bus route
                 routes.forEach(names => {
-                    var newElement = document.createElement('li');
-                    newElement.innerHTML = '<div class="route"><h3>' + 
-                                            names + '</h3></div>' +
-                                            "<p>" + "Bus Number: " + bus + 
-                                            '</p>';
+                    var newElement = document.createElement('div');
+                    newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + names + "</h3><p>" + "Bus Number: " + bus + '</p></div>';
                     $('#results').append(newElement);
                 });
                 
                 // Show end walking route
+                if(path_end_instructions.length > 0) {
+                    var endDirections = document.createElement('div');
+                    endDirections.innerHTML = '<div class="end_instructions" style="margin-left:10px;">'+ parsedEndInstructions + '</div>' 
+                    $('#results').append(endDirections)
+                }
                 // var newEndInstructions = document.createElement('div')
                 // newEndInstructions = '<div class="end_instructions"><h3>On foot:</h3><p>' + path_end_instructions + '</p></div>'
                 // $('#results').append(newEndInstructions);
