@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_b5cc13bdfe683eaec5f6c921fdcf83d3 {
+                #map_613796972c88c146275f6ec4b7cb613a {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,16 +39,25 @@
 <body>
     
     
+<<<<<<< HEAD
             <div class="folium-map" id="map_b5cc13bdfe683eaec5f6c921fdcf83d3" ></div>
+=======
+            <div class="folium-map" id="map_613796972c88c146275f6ec4b7cb613a" ></div>
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         
 </body>
 <script>
     
     
+<<<<<<< HEAD
             var map_b5cc13bdfe683eaec5f6c921fdcf83d3 = L.map(
                 "map_b5cc13bdfe683eaec5f6c921fdcf83d3",
+=======
+            var map_613796972c88c146275f6ec4b7cb613a = L.map(
+                "map_613796972c88c146275f6ec4b7cb613a",
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
                 {
-                    center: [1.4915057, 103.7347091],
+                    center: [1.6612672, 103.6040433],
                     crs: L.CRS.EPSG3857,
                     zoom: 13,
                     zoomControl: true,
@@ -60,6 +69,7 @@
 
         
     
+<<<<<<< HEAD
             var tile_layer_4153d0cb4a5ae3cf6867a4c56b6b8fb3 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
@@ -88,11 +98,42 @@
         
 
         marker_5ef59f92d775e6bda5b5e4a3501ff994.bindPopup(popup_6f4c8cefd3646bd209901f89ded24972)
+=======
+            var tile_layer_bc15df8bbcea4ca53d8a7ed5e2d1ab6e = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var marker_185744fbf426414e1bcd5c08549d89dc = L.marker(
+                [1.6612672, 103.6040433],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_7fdb0234d0c5a7199315212271af0d5d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_185744fbf426414e1bcd5c08549d89dc.setIcon(icon_7fdb0234d0c5a7199315212271af0d5d);
+        
+    
+        var popup_d4ad52d04e9cc4bcff5ca5ab7b2b43f2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7fbc13936b3825a6ee53d524a60de7f4 = $(`<div id="html_7fbc13936b3825a6ee53d524a60de7f4" style="width: 100.0%; height: 100.0%;">Starting Location: Arked Kulai,Jalan Besar, Taman Mewah, Kulai, Johor, Malaysia</div>`)[0];
+                popup_d4ad52d04e9cc4bcff5ca5ab7b2b43f2.setContent(html_7fbc13936b3825a6ee53d524a60de7f4);
+            
+        
+
+        marker_185744fbf426414e1bcd5c08549d89dc.bindPopup(popup_d4ad52d04e9cc4bcff5ca5ab7b2b43f2)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_bdbd4968cd8fa20c26f02ea061a173df = L.marker(
                 [1.9343998, 103.3587288],
                 {}
@@ -115,11 +156,36 @@
         
 
         marker_bdbd4968cd8fa20c26f02ea061a173df.bindPopup(popup_05f4c23121f7a785b5baa75b4f41f209)
+=======
+            var marker_6d06052d7dd33ebc7a1e75b88bf3cde4 = L.marker(
+                [1.4962217, 103.7425538],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_ddc52c950003099a27adb961a8927dff = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_6d06052d7dd33ebc7a1e75b88bf3cde4.setIcon(icon_ddc52c950003099a27adb961a8927dff);
+        
+    
+        var popup_cfb3e851d0a5d98347e414e62eb4b66b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1805b65c93fe21d4b38f1d8a937e020f = $(`<div id="html_1805b65c93fe21d4b38f1d8a937e020f" style="width: 100.0%; height: 100.0%;">Destination Location: Terminal Bas Larkin, Larkin, Johor Bahru, Johor, Malaysia</div>`)[0];
+                popup_cfb3e851d0a5d98347e414e62eb4b66b.setContent(html_1805b65c93fe21d4b38f1d8a937e020f);
+            
+        
+
+        marker_6d06052d7dd33ebc7a1e75b88bf3cde4.bindPopup(popup_cfb3e851d0a5d98347e414e62eb4b66b)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_3dc81fe696f105a7a03c898cd47c0896 = L.marker(
                 [1.491850778809332, 103.74087255093272],
                 {}
@@ -136,11 +202,30 @@
         
 
         marker_3dc81fe696f105a7a03c898cd47c0896.bindPopup(popup_51c19d6020b51e3b7c55640ff3374169)
+=======
+            var marker_97abd052d3dc6f420cee7dbde8e70196 = L.marker(
+                [1.6613642865126417, 103.60372737912934],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_4e81abfdde782c0ec36330d89cbb9d70 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c58c414fc380c0914e5bcf718914cfe3 = $(`<div id="html_c58c414fc380c0914e5bcf718914cfe3" style="width: 100.0%; height: 100.0%;">Stop 1: Kulai Centre Point</div>`)[0];
+                popup_4e81abfdde782c0ec36330d89cbb9d70.setContent(html_c58c414fc380c0914e5bcf718914cfe3);
+            
+        
+
+        marker_97abd052d3dc6f420cee7dbde8e70196.bindPopup(popup_4e81abfdde782c0ec36330d89cbb9d70)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_6281a43f8615b5ec9f917ab4fd1b2fb2 = L.marker(
                 [1.4884998356693775, 103.72760379017922],
                 {}
@@ -157,11 +242,30 @@
         
 
         marker_6281a43f8615b5ec9f917ab4fd1b2fb2.bindPopup(popup_4c67605a1fde3a8fb259274ccab42642)
+=======
+            var marker_432569709aba79374ae34764b636717a = L.marker(
+                [1.6541744853842373, 103.60971038276091],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_0d2a82bc284d438d9fa2fd81192379f8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e4d1624b92108469d246a86342120cd8 = $(`<div id="html_e4d1624b92108469d246a86342120cd8" style="width: 100.0%; height: 100.0%;">Stop 2: Opp SBS Enterprises (M) Sdn Bhd</div>`)[0];
+                popup_0d2a82bc284d438d9fa2fd81192379f8.setContent(html_e4d1624b92108469d246a86342120cd8);
+            
+        
+
+        marker_432569709aba79374ae34764b636717a.bindPopup(popup_0d2a82bc284d438d9fa2fd81192379f8)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_e53cd8e36d613fcc85b91bc3eee98a2d = L.marker(
                 [1.4867890112545767, 103.72429767112283],
                 {}
@@ -178,11 +282,30 @@
         
 
         marker_e53cd8e36d613fcc85b91bc3eee98a2d.bindPopup(popup_c9007cece2978ab44ff1b56ec039cabe)
+=======
+            var marker_6fb9e7255f2b8b9f0692409e9e93e004 = L.marker(
+                [1.6509304328430152, 103.61148553732649],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_6c8d8f47d7356b5365a47aae5dc03f29 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ab2ff4b3882da150de0a7e6fcd3515a9 = $(`<div id="html_ab2ff4b3882da150de0a7e6fcd3515a9" style="width: 100.0%; height: 100.0%;">Stop 3: Opp Public Bank @ Jalan Susur Kulai 2</div>`)[0];
+                popup_6c8d8f47d7356b5365a47aae5dc03f29.setContent(html_ab2ff4b3882da150de0a7e6fcd3515a9);
+            
+        
+
+        marker_6fb9e7255f2b8b9f0692409e9e93e004.bindPopup(popup_6c8d8f47d7356b5365a47aae5dc03f29)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_50742822e568fdc5d2d5c71932d715c0 = L.marker(
                 [1.4888638795941063, 103.71242062086549],
                 {}
@@ -199,11 +322,30 @@
         
 
         marker_50742822e568fdc5d2d5c71932d715c0.bindPopup(popup_ba1c58f681883657cd81423a8f2eeb0e)
+=======
+            var marker_0d6629849e9cc97eac60840355adae11 = L.marker(
+                [1.6452580216482706, 103.61649637358444],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_50eae9c49d219b880712d61edafc72d5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0e3c8dbaded49bcaf44fce72b0a099d2 = $(`<div id="html_0e3c8dbaded49bcaf44fce72b0a099d2" style="width: 100.0%; height: 100.0%;">Stop 4: Opp Pertubuhan Peladang Kawasan Kulai</div>`)[0];
+                popup_50eae9c49d219b880712d61edafc72d5.setContent(html_0e3c8dbaded49bcaf44fce72b0a099d2);
+            
+        
+
+        marker_0d6629849e9cc97eac60840355adae11.bindPopup(popup_50eae9c49d219b880712d61edafc72d5)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_09a150a42e928f3afce93e506595d120 = L.marker(
                 [1.4925296181173713, 103.70708612019975],
                 {}
@@ -220,11 +362,30 @@
         
 
         marker_09a150a42e928f3afce93e506595d120.bindPopup(popup_d15e1998be650a0f83730275add33293)
+=======
+            var marker_c139d72ed8b1f3a7f59c7edaf33539a0 = L.marker(
+                [1.6398209133282802, 103.62466463309562],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_ba09a79807a51a60576b83531e60bed4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_57199488834364b57a5ee3d69c0d9c12 = $(`<div id="html_57199488834364b57a5ee3d69c0d9c12" style="width: 100.0%; height: 100.0%;">Stop 5: Opp Hospital Temenggong Seri Maharaja Tun Ibrahim Kulaijaya</div>`)[0];
+                popup_ba09a79807a51a60576b83531e60bed4.setContent(html_57199488834364b57a5ee3d69c0d9c12);
+            
+        
+
+        marker_c139d72ed8b1f3a7f59c7edaf33539a0.bindPopup(popup_ba09a79807a51a60576b83531e60bed4)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_7c974e03350d111b44a8ec7e284655e3 = L.marker(
                 [1.4925322994125712, 103.70707002694427],
                 {}
@@ -241,11 +402,30 @@
         
 
         marker_7c974e03350d111b44a8ec7e284655e3.bindPopup(popup_86bf335fd46e15cb0bbc54014ee3fa7e)
+=======
+            var marker_6273457c3363d0b2e7805c2abe4f2e1f = L.marker(
+                [1.6359493158863123, 103.62993165279192],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_3b9320da076e72c735d7b10905ebfd9a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e1abc852f9d002b7baf2719bcc7e8c79 = $(`<div id="html_e1abc852f9d002b7baf2719bcc7e8c79" style="width: 100.0%; height: 100.0%;">Stop 6: Opp Jalan Cermai</div>`)[0];
+                popup_3b9320da076e72c735d7b10905ebfd9a.setContent(html_e1abc852f9d002b7baf2719bcc7e8c79);
+            
+        
+
+        marker_6273457c3363d0b2e7805c2abe4f2e1f.bindPopup(popup_3b9320da076e72c735d7b10905ebfd9a)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_111babe785150b9204e4a5ebe85027c8 = L.marker(
                 [1.4989947483511965, 103.6980312919993],
                 {}
@@ -577,11 +757,30 @@
         
 
         marker_0987e7a71b485e1071de0f344832cb8c.bindPopup(popup_8aac50f913ddfa77d06e5fedce0192f9)
+=======
+            var marker_21f961bafc609ae9970961524b3aa31e = L.marker(
+                [1.633014316152999, 103.63349819512037],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_75e0bd4d1cc9eebe1f0222b3e1f91010 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fcb58737e865434dc19e18d441e239c8 = $(`<div id="html_fcb58737e865434dc19e18d441e239c8" style="width: 100.0%; height: 100.0%;">Stop 7: Opp Stor JKR (D) Kulaijaya</div>`)[0];
+                popup_75e0bd4d1cc9eebe1f0222b3e1f91010.setContent(html_fcb58737e865434dc19e18d441e239c8);
+            
+        
+
+        marker_21f961bafc609ae9970961524b3aa31e.bindPopup(popup_75e0bd4d1cc9eebe1f0222b3e1f91010)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_7e934eae17776d5afdbe0968bd3a9776 = L.marker(
                 [1.6359493158863123, 103.62993165279192],
                 {}
@@ -598,11 +797,30 @@
         
 
         marker_7e934eae17776d5afdbe0968bd3a9776.bindPopup(popup_15d5a2df5cffb9d2bddb95a650f326ce)
+=======
+            var marker_97054bf7eef9b4fb4dc623e674f4e2fd = L.marker(
+                [1.628655062754551, 103.63807709630609],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_25d7e39c4e30af37fe31ed6ab4a8a0e8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1b18d3f06a1c2d637ffaee4bdad2771e = $(`<div id="html_1b18d3f06a1c2d637ffaee4bdad2771e" style="width: 100.0%; height: 100.0%;">Stop 8: Opp Wang Loo Motor Sdn Bhd</div>`)[0];
+                popup_25d7e39c4e30af37fe31ed6ab4a8a0e8.setContent(html_1b18d3f06a1c2d637ffaee4bdad2771e);
+            
+        
+
+        marker_97054bf7eef9b4fb4dc623e674f4e2fd.bindPopup(popup_25d7e39c4e30af37fe31ed6ab4a8a0e8)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_4e4863822c92a1bfbd8bbc299380b946 = L.marker(
                 [1.6398209133282802, 103.62466463309562],
                 {}
@@ -619,11 +837,30 @@
         
 
         marker_4e4863822c92a1bfbd8bbc299380b946.bindPopup(popup_44e995f62d8b655b2eeaa45c5e49de4b)
+=======
+            var marker_661c2e62a0dd54a0497731a86bb24657 = L.marker(
+                [1.6203723172849367, 103.64614936801505],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_53f3f2ed647e7f0ba72b7eb2ec0078b0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_28b54e17d027391c5e372cfd6377c644 = $(`<div id="html_28b54e17d027391c5e372cfd6377c644" style="width: 100.0%; height: 100.0%;">Stop 9: Opp Pejabat Lembaga Lebuhraya Malaysia</div>`)[0];
+                popup_53f3f2ed647e7f0ba72b7eb2ec0078b0.setContent(html_28b54e17d027391c5e372cfd6377c644);
+            
+        
+
+        marker_661c2e62a0dd54a0497731a86bb24657.bindPopup(popup_53f3f2ed647e7f0ba72b7eb2ec0078b0)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_355018b8e2dca5c487c13f40a41dfb9c = L.marker(
                 [1.6452580216482706, 103.61649637358444],
                 {}
@@ -640,11 +877,30 @@
         
 
         marker_355018b8e2dca5c487c13f40a41dfb9c.bindPopup(popup_b8573e5db7cd0af229f582e4ef3a5691)
+=======
+            var marker_6c4c8163559cb2f91d45c916ce3d2cec = L.marker(
+                [1.6013846087875712, 103.64515677546767],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_26776a49fa4c1c631e0a7ac9bcfe9d4e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2c188a50b5d632c0de4b1b3473739776 = $(`<div id="html_2c188a50b5d632c0de4b1b3473739776" style="width: 100.0%; height: 100.0%;">Stop 10: Medan Selera Senai</div>`)[0];
+                popup_26776a49fa4c1c631e0a7ac9bcfe9d4e.setContent(html_2c188a50b5d632c0de4b1b3473739776);
+            
+        
+
+        marker_6c4c8163559cb2f91d45c916ce3d2cec.bindPopup(popup_26776a49fa4c1c631e0a7ac9bcfe9d4e)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_8f5617cce14d7a3a66f371f13fdc9de9 = L.marker(
                 [1.6509304328430152, 103.61148553732649],
                 {}
@@ -661,11 +917,30 @@
         
 
         marker_8f5617cce14d7a3a66f371f13fdc9de9.bindPopup(popup_e596614024ba15706ba0c226751d6e72)
+=======
+            var marker_090a0765aefea092d7c4e55b8975b23c = L.marker(
+                [1.596764420712483, 103.64559102580564],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_0aef2883200a89bbfff055ee28f1824a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5f7c3c8006150bb92959def4c198d58f = $(`<div id="html_5f7c3c8006150bb92959def4c198d58f" style="width: 100.0%; height: 100.0%;">Stop 11: Opp Sekolah Kebangsaan Senai</div>`)[0];
+                popup_0aef2883200a89bbfff055ee28f1824a.setContent(html_5f7c3c8006150bb92959def4c198d58f);
+            
+        
+
+        marker_090a0765aefea092d7c4e55b8975b23c.bindPopup(popup_0aef2883200a89bbfff055ee28f1824a)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_ae29e9536ace28e4ef4e2b27d1ea4026 = L.marker(
                 [1.6541744853842373, 103.60971038276091],
                 {}
@@ -682,11 +957,30 @@
         
 
         marker_ae29e9536ace28e4ef4e2b27d1ea4026.bindPopup(popup_b541b2f53911e29136c71fb5c77a64c3)
+=======
+            var marker_102ede031f01711bd5b8489f229c2e84 = L.marker(
+                [1.5910215647537664, 103.64796686012346],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_99e046683832b290dca891337d6fc2aa = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d66c9aff9f1d51775312e1ada905b1a8 = $(`<div id="html_d66c9aff9f1d51775312e1ada905b1a8" style="width: 100.0%; height: 100.0%;">Stop 12: Opp BHPetrol Kiosk @ Taman Aman</div>`)[0];
+                popup_99e046683832b290dca891337d6fc2aa.setContent(html_d66c9aff9f1d51775312e1ada905b1a8);
+            
+        
+
+        marker_102ede031f01711bd5b8489f229c2e84.bindPopup(popup_99e046683832b290dca891337d6fc2aa)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_ca6a7e0492a1094c33bb8564650fb67b = L.marker(
                 [1.6613642865126417, 103.60372737912934],
                 {}
@@ -703,11 +997,30 @@
         
 
         marker_ca6a7e0492a1094c33bb8564650fb67b.bindPopup(popup_c7b431546728f7e9d3927a1b0a68c967)
+=======
+            var marker_17358ebec677d3c7761e3bcf49caa45e = L.marker(
+                [1.5710682887829601, 103.66094006994001],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_aedc96905fad884057913bc3e43b1d91 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5958cca2f5376082fb48d37a81f660e6 = $(`<div id="html_5958cca2f5376082fb48d37a81f660e6" style="width: 100.0%; height: 100.0%;">Stop 13: aft Lebuhraya Utara-Selatan</div>`)[0];
+                popup_aedc96905fad884057913bc3e43b1d91.setContent(html_5958cca2f5376082fb48d37a81f660e6);
+            
+        
+
+        marker_17358ebec677d3c7761e3bcf49caa45e.bindPopup(popup_aedc96905fad884057913bc3e43b1d91)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_40f9bd7017193ff61e7ec34984bd7cd0 = L.marker(
                 [1.6626828053288385, 103.59889110796522],
                 {}
@@ -724,11 +1037,30 @@
         
 
         marker_40f9bd7017193ff61e7ec34984bd7cd0.bindPopup(popup_dc3161c6385fd99d2cc559663812d86c)
+=======
+            var marker_c4cc42344e5c56b6a46176ffa3581bdd = L.marker(
+                [1.5446071130881212, 103.65778209077513],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_30fb63e7430b4773d5bd0b1ff253b393 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_83918c90f594ef3b0457ad0dd41ade61 = $(`<div id="html_83918c90f594ef3b0457ad0dd41ade61" style="width: 100.0%; height: 100.0%;">Stop 14: Opp Shell Kiosk @ Taman Sri Putri</div>`)[0];
+                popup_30fb63e7430b4773d5bd0b1ff253b393.setContent(html_83918c90f594ef3b0457ad0dd41ade61);
+            
+        
+
+        marker_c4cc42344e5c56b6a46176ffa3581bdd.bindPopup(popup_30fb63e7430b4773d5bd0b1ff253b393)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var poly_line_5c301ebc29095e858488ac253c5aeef5 = L.polyline(
                 [[1.49143, 103.73472], [1.49156, 103.73573], [1.49099, 103.73577], [1.49099, 103.73642], [1.491, 103.73673], [1.49098, 103.73719], [1.49093, 103.73746], [1.49087, 103.73761], [1.49079, 103.73772], [1.49051, 103.73805], [1.48989, 103.73855], [1.48978, 103.73872], [1.48976, 103.73885], [1.48979, 103.73905], [1.48981, 103.73913], [1.4899, 103.73932], [1.49009, 103.73949], [1.49025, 103.73962], [1.49041, 103.7399], [1.49061, 103.74036], [1.49077, 103.74052], [1.49094, 103.74065], [1.49117, 103.74079], [1.49157, 103.74074], [1.49246, 103.74048], [1.49277, 103.7404], [1.49281, 103.74041], [1.49291, 103.7404], [1.49321, 103.74033], [1.49324, 103.74033], [1.49321, 103.74037], [1.49222, 103.74065], [1.49182, 103.74078]],
                 {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
@@ -1492,11 +1824,342 @@
         
 
         marker_14e3642fb130f30ea69e3ea2c3ff18e6.bindPopup(popup_189acc8096de16798bae6b49be0411a4)
+=======
+            var marker_8ea4ce83285e3b1b37242a39a62b24c1 = L.marker(
+                [1.541540224027169, 103.65954500502208],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_14504f2861d5dc04551697b85b25710c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d06c4909f6b83a5cd36f336bff868770 = $(`<div id="html_d06c4909f6b83a5cd36f336bff868770" style="width: 100.0%; height: 100.0%;">Stop 15: Skudai Parade</div>`)[0];
+                popup_14504f2861d5dc04551697b85b25710c.setContent(html_d06c4909f6b83a5cd36f336bff868770);
+            
+        
+
+        marker_8ea4ce83285e3b1b37242a39a62b24c1.bindPopup(popup_14504f2861d5dc04551697b85b25710c)
         ;
 
         
     
     
+            var marker_f200166ef357f332856adf081a2f54e0 = L.marker(
+                [1.528201281584724, 103.67097274711804],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_d51c8ac222aea8ec30af426b6b5a32fa = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5cbe19d7649f8847f6edee306ac82f80 = $(`<div id="html_5cbe19d7649f8847f6edee306ac82f80" style="width: 100.0%; height: 100.0%;">Stop 16: Opp SJK (C) Kuo Kuang</div>`)[0];
+                popup_d51c8ac222aea8ec30af426b6b5a32fa.setContent(html_5cbe19d7649f8847f6edee306ac82f80);
+            
+        
+
+        marker_f200166ef357f332856adf081a2f54e0.bindPopup(popup_d51c8ac222aea8ec30af426b6b5a32fa)
+        ;
+
+        
+    
+    
+            var marker_9f9ffc848e7943535507f3a852f48c67 = L.marker(
+                [1.51926239182888, 103.68206611709597],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_265be9c6f662a4c4bf98dc5571f55e2b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b8c3e2834dcd67d2ad9dbe8a57ac0c14 = $(`<div id="html_b8c3e2834dcd67d2ad9dbe8a57ac0c14" style="width: 100.0%; height: 100.0%;">Stop 17: bef Paradigm Mall</div>`)[0];
+                popup_265be9c6f662a4c4bf98dc5571f55e2b.setContent(html_b8c3e2834dcd67d2ad9dbe8a57ac0c14);
+            
+        
+
+        marker_9f9ffc848e7943535507f3a852f48c67.bindPopup(popup_265be9c6f662a4c4bf98dc5571f55e2b)
+        ;
+
+        
+    
+    
+            var marker_271752956fa14231167c6a9a1e180322 = L.marker(
+                [1.514813892563429, 103.6852375606564],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_86ca752b065d19c2c22136e25d7a0e64 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a373436b7c79ce88ddcbcc4e1c55e4e4 = $(`<div id="html_a373436b7c79ce88ddcbcc4e1c55e4e4" style="width: 100.0%; height: 100.0%;">Stop 18: Paradigm Mall</div>`)[0];
+                popup_86ca752b065d19c2c22136e25d7a0e64.setContent(html_a373436b7c79ce88ddcbcc4e1c55e4e4);
+            
+        
+
+        marker_271752956fa14231167c6a9a1e180322.bindPopup(popup_86ca752b065d19c2c22136e25d7a0e64)
+        ;
+
+        
+    
+    
+            var marker_387c2f365e5864ab02f8f6da1b96a045 = L.marker(
+                [1.5121383386574008, 103.68706591589486],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_b7c338c2a4cec94ab7f0861a59afd6f1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_04457e1f483b7609cab3e5dbdbaec0df = $(`<div id="html_04457e1f483b7609cab3e5dbdbaec0df" style="width: 100.0%; height: 100.0%;">Stop 19: Opp Saksama Otomobil</div>`)[0];
+                popup_b7c338c2a4cec94ab7f0861a59afd6f1.setContent(html_04457e1f483b7609cab3e5dbdbaec0df);
+            
+        
+
+        marker_387c2f365e5864ab02f8f6da1b96a045.bindPopup(popup_b7c338c2a4cec94ab7f0861a59afd6f1)
+        ;
+
+        
+    
+    
+            var marker_d1fce958a3b9700133f953a3755a2621 = L.marker(
+                [1.5088584686178155, 103.68928902381539],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_92851cc8ace021f515ae190c3457a942 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c481cddbbcde81c13048041129ed94f3 = $(`<div id="html_c481cddbbcde81c13048041129ed94f3" style="width: 100.0%; height: 100.0%;">Stop 20: Opp Petron Kiosk @ Taman Tampoi Indah</div>`)[0];
+                popup_92851cc8ace021f515ae190c3457a942.setContent(html_c481cddbbcde81c13048041129ed94f3);
+            
+        
+
+        marker_d1fce958a3b9700133f953a3755a2621.bindPopup(popup_92851cc8ace021f515ae190c3457a942)
+        ;
+
+        
+    
+    
+            var marker_e9c2d3e2905fb731e63f26db31789f35 = L.marker(
+                [1.5008855908671468, 103.69599314953071],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_d38a2588e203598ecca93f7f1ea09cb5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cb28acab946a7c38c4f30df4bc52e6b2 = $(`<div id="html_cb28acab946a7c38c4f30df4bc52e6b2" style="width: 100.0%; height: 100.0%;">Stop 21: Kompleks Pekan Rabu Johor Bahru</div>`)[0];
+                popup_d38a2588e203598ecca93f7f1ea09cb5.setContent(html_cb28acab946a7c38c4f30df4bc52e6b2);
+            
+        
+
+        marker_e9c2d3e2905fb731e63f26db31789f35.bindPopup(popup_d38a2588e203598ecca93f7f1ea09cb5)
+        ;
+
+        
+    
+    
+            var marker_a76359be7eb6c56c14c47b0f2b4911e5 = L.marker(
+                [1.498877450327011, 103.69886295948693],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_a4e4ef1fcbee2bd2a1f009b5e767cfa4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9ec13d2eb20659a5493a68ff8c1c3648 = $(`<div id="html_9ec13d2eb20659a5493a68ff8c1c3648" style="width: 100.0%; height: 100.0%;">Stop 22: Giant Tampoi</div>`)[0];
+                popup_a4e4ef1fcbee2bd2a1f009b5e767cfa4.setContent(html_9ec13d2eb20659a5493a68ff8c1c3648);
+            
+        
+
+        marker_a76359be7eb6c56c14c47b0f2b4911e5.bindPopup(popup_a4e4ef1fcbee2bd2a1f009b5e767cfa4)
+        ;
+
+        
+    
+    
+            var marker_8f9a027e7ddde8f045b061dcae134b2e = L.marker(
+                [1.4969289341746932, 103.70179963586516],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_500416e110a5ab036fa371b09793b3f4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c0324e1f5875600e0adc1a96f18ff9aa = $(`<div id="html_c0324e1f5875600e0adc1a96f18ff9aa" style="width: 100.0%; height: 100.0%;">Stop 23: aft Lorong Betik</div>`)[0];
+                popup_500416e110a5ab036fa371b09793b3f4.setContent(html_c0324e1f5875600e0adc1a96f18ff9aa);
+            
+        
+
+        marker_8f9a027e7ddde8f045b061dcae134b2e.bindPopup(popup_500416e110a5ab036fa371b09793b3f4)
+        ;
+
+        
+    
+    
+            var marker_530738fc8199ee133e140f090da5c308 = L.marker(
+                [1.4957308782478185, 103.70353570332152],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_40109eba96de18794a3bfa305a791f4c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8755b922982adfb1e8efceeb252773bf = $(`<div id="html_8755b922982adfb1e8efceeb252773bf" style="width: 100.0%; height: 100.0%;">Stop 24: Batu 5 Johor Street Market</div>`)[0];
+                popup_40109eba96de18794a3bfa305a791f4c.setContent(html_8755b922982adfb1e8efceeb252773bf);
+            
+        
+
+        marker_530738fc8199ee133e140f090da5c308.bindPopup(popup_40109eba96de18794a3bfa305a791f4c)
+        ;
+
+        
+    
+    
+            var marker_3a4024f1149b4f61ff8121f07a3ef469 = L.marker(
+                [1.494173589831715, 103.70574439346098],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_0b58b5e67a414461fdda7a712204ee46 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_073ff82596155f7284447944a341f4d7 = $(`<div id="html_073ff82596155f7284447944a341f4d7" style="width: 100.0%; height: 100.0%;">Stop 25: Plaza Angsana</div>`)[0];
+                popup_0b58b5e67a414461fdda7a712204ee46.setContent(html_073ff82596155f7284447944a341f4d7);
+            
+        
+
+        marker_3a4024f1149b4f61ff8121f07a3ef469.bindPopup(popup_0b58b5e67a414461fdda7a712204ee46)
+        ;
+
+        
+    
+    
+            var marker_9919366fe21d9ae8e3f60520191133b2 = L.marker(
+                [1.489587186962772, 103.71219076437811],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_fa9a54c16edefdc24e7c267160e3dba9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_bc2acc0a83633417e7a171ac1b4e66b0 = $(`<div id="html_bc2acc0a83633417e7a171ac1b4e66b0" style="width: 100.0%; height: 100.0%;">Stop 26: Klinik Utama @ Jalan Padi 1</div>`)[0];
+                popup_fa9a54c16edefdc24e7c267160e3dba9.setContent(html_bc2acc0a83633417e7a171ac1b4e66b0);
+            
+        
+
+        marker_9919366fe21d9ae8e3f60520191133b2.bindPopup(popup_fa9a54c16edefdc24e7c267160e3dba9)
+        ;
+
+        
+    
+    
+            var marker_c74cdfc5687586350579fee435d3fdab = L.marker(
+                [1.4871255056128097, 103.72438547599789],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_b2f5551d08089f5ebf92e4d4cdbbd8ec = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6377a83c9f669a0f2e4b65965419fcc7 = $(`<div id="html_6377a83c9f669a0f2e4b65965419fcc7" style="width: 100.0%; height: 100.0%;">Stop 27: Opp Amitabha Centre</div>`)[0];
+                popup_b2f5551d08089f5ebf92e4d4cdbbd8ec.setContent(html_6377a83c9f669a0f2e4b65965419fcc7);
+            
+        
+
+        marker_c74cdfc5687586350579fee435d3fdab.bindPopup(popup_b2f5551d08089f5ebf92e4d4cdbbd8ec)
+        ;
+
+        
+    
+    
+            var marker_4cf856c795f01b6cfed4c6af266b4b7b = L.marker(
+                [1.4887834830210198, 103.72764307910049],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_888e8777d97cde64144e8cbabd1ab8e3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d846ce91fce9b13bad06e3fe7eed7321 = $(`<div id="html_d846ce91fce9b13bad06e3fe7eed7321" style="width: 100.0%; height: 100.0%;">Stop 28: Opp Shell Kiosk @ Jalan Tun Abdul Razak</div>`)[0];
+                popup_888e8777d97cde64144e8cbabd1ab8e3.setContent(html_d846ce91fce9b13bad06e3fe7eed7321);
+            
+        
+
+        marker_4cf856c795f01b6cfed4c6af266b4b7b.bindPopup(popup_888e8777d97cde64144e8cbabd1ab8e3)
+        ;
+
+        
+    
+    
+            var poly_line_358d1cab5bb9bcd7a5c0969a46df1c6d = L.polyline(
+                [[1.66117, 103.604], [1.66127, 103.60371]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var poly_line_8a85298a42388ddd876fceaac502ba0c = L.polyline(
+                [[1.4965, 103.74397], [1.49675, 103.74392], [1.49687, 103.74381], [1.49694, 103.74375], [1.49702, 103.7436], [1.49701, 103.74315], [1.49692, 103.7431], [1.49686, 103.74308], [1.49672, 103.74309], [1.49652, 103.74313], [1.49643, 103.74264], [1.49628, 103.74266], [1.49626, 103.74255]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var marker_29251b3a2a9e8c5cb614f6397dbf9d4a = L.marker(
+                [1.6613642865126417, 103.60372737912934],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_522fd091b05e956ecec5e8d2545c3836 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_29251b3a2a9e8c5cb614f6397dbf9d4a.setIcon(icon_522fd091b05e956ecec5e8d2545c3836);
+        
+    
+        var popup_23b56c2207579ce9beeb4b912b3ec2de = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_83426dad29e3b49b4d344ccd0494fb2f = $(`<div id="html_83426dad29e3b49b4d344ccd0494fb2f" style="width: 100.0%; height: 100.0%;">Stop 1</div>`)[0];
+                popup_23b56c2207579ce9beeb4b912b3ec2de.setContent(html_83426dad29e3b49b4d344ccd0494fb2f);
+            
+        
+
+        marker_29251b3a2a9e8c5cb614f6397dbf9d4a.bindPopup(popup_23b56c2207579ce9beeb4b912b3ec2de)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
+        ;
+
+        
+    
+    
+<<<<<<< HEAD
             var marker_5e0a9c1673c0b58277076c94deae566e = L.marker(
                 [1.6626828053288385, 103.59889110796522],
                 {}
@@ -2086,11 +2749,36 @@
         
 
         marker_35b26b8b12941052446a31d39f7e9651.bindPopup(popup_f8f507856ac30149879fa7fd4a7e8286)
+=======
+            var marker_daf243c0bb856e1225e2edb32a99e0d2 = L.marker(
+                [1.6541744853842373, 103.60971038276091],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_6ea62408ea896d7682f4a678df382d15 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_daf243c0bb856e1225e2edb32a99e0d2.setIcon(icon_6ea62408ea896d7682f4a678df382d15);
+        
+    
+        var popup_7ac814987061172117c267b62de17ec1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_758b3f809eccb24d737a38c952fa4ed2 = $(`<div id="html_758b3f809eccb24d737a38c952fa4ed2" style="width: 100.0%; height: 100.0%;">Stop 2</div>`)[0];
+                popup_7ac814987061172117c267b62de17ec1.setContent(html_758b3f809eccb24d737a38c952fa4ed2);
+            
+        
+
+        marker_daf243c0bb856e1225e2edb32a99e0d2.bindPopup(popup_7ac814987061172117c267b62de17ec1)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var marker_3d8f7c8c71edd467637cdb3308a5d532 = L.marker(
                 [1.6613642865126417, 103.60372737912934],
                 {}
@@ -2107,11 +2795,732 @@
         
 
         marker_3d8f7c8c71edd467637cdb3308a5d532.bindPopup(popup_1f983dddbabc2761291a7b1cd5ddeec2)
+=======
+            var marker_248338b83752cd196984ea31565b810e = L.marker(
+                [1.6509304328430152, 103.61148553732649],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_d04c5c503337628aa7e4481a6b63880e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_248338b83752cd196984ea31565b810e.setIcon(icon_d04c5c503337628aa7e4481a6b63880e);
+        
+    
+        var popup_11d5be862c91130243843f0b51c13283 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_264a676d169b98a60380cd6496e68be4 = $(`<div id="html_264a676d169b98a60380cd6496e68be4" style="width: 100.0%; height: 100.0%;">Stop 3</div>`)[0];
+                popup_11d5be862c91130243843f0b51c13283.setContent(html_264a676d169b98a60380cd6496e68be4);
+            
+        
+
+        marker_248338b83752cd196984ea31565b810e.bindPopup(popup_11d5be862c91130243843f0b51c13283)
         ;
 
         
     
     
+            var marker_6845bf22a815e4df361589795ebb5835 = L.marker(
+                [1.6452580216482706, 103.61649637358444],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_e0eba3537e53d3271b3c6ab0a265cc3e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6845bf22a815e4df361589795ebb5835.setIcon(icon_e0eba3537e53d3271b3c6ab0a265cc3e);
+        
+    
+        var popup_a942c38d9aa1922c09c6cefe1f005185 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1a6f12955ae927cc34d17baf5625b80e = $(`<div id="html_1a6f12955ae927cc34d17baf5625b80e" style="width: 100.0%; height: 100.0%;">Stop 4</div>`)[0];
+                popup_a942c38d9aa1922c09c6cefe1f005185.setContent(html_1a6f12955ae927cc34d17baf5625b80e);
+            
+        
+
+        marker_6845bf22a815e4df361589795ebb5835.bindPopup(popup_a942c38d9aa1922c09c6cefe1f005185)
+        ;
+
+        
+    
+    
+            var marker_eb2dca5941faad82b71892245d7b9dec = L.marker(
+                [1.6398209133282802, 103.62466463309562],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_15c32cfc5c98a2465149747560b3a88c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_eb2dca5941faad82b71892245d7b9dec.setIcon(icon_15c32cfc5c98a2465149747560b3a88c);
+        
+    
+        var popup_89899e2202ae4c15a4892664b6496b3e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_615433b112b4d8d48607d20fc52f8f92 = $(`<div id="html_615433b112b4d8d48607d20fc52f8f92" style="width: 100.0%; height: 100.0%;">Stop 5</div>`)[0];
+                popup_89899e2202ae4c15a4892664b6496b3e.setContent(html_615433b112b4d8d48607d20fc52f8f92);
+            
+        
+
+        marker_eb2dca5941faad82b71892245d7b9dec.bindPopup(popup_89899e2202ae4c15a4892664b6496b3e)
+        ;
+
+        
+    
+    
+            var marker_ef6bfe212d00a08ed343c6a687783728 = L.marker(
+                [1.6359493158863123, 103.62993165279192],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_470e759dcedea65c01da60428e688d24 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_ef6bfe212d00a08ed343c6a687783728.setIcon(icon_470e759dcedea65c01da60428e688d24);
+        
+    
+        var popup_ffdfc2179fe975432b31495ec3e8271e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1283bd981911e36a7d9de2f2e5223834 = $(`<div id="html_1283bd981911e36a7d9de2f2e5223834" style="width: 100.0%; height: 100.0%;">Stop 6</div>`)[0];
+                popup_ffdfc2179fe975432b31495ec3e8271e.setContent(html_1283bd981911e36a7d9de2f2e5223834);
+            
+        
+
+        marker_ef6bfe212d00a08ed343c6a687783728.bindPopup(popup_ffdfc2179fe975432b31495ec3e8271e)
+        ;
+
+        
+    
+    
+            var marker_d3908396be8b339c14c511c325ea49a9 = L.marker(
+                [1.633014316152999, 103.63349819512037],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_af6395dcc1fe93153cd96b6ef6211f6c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_d3908396be8b339c14c511c325ea49a9.setIcon(icon_af6395dcc1fe93153cd96b6ef6211f6c);
+        
+    
+        var popup_f73752d734789c9e6413961c358047d5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_525a71c1133c2e4b6545bd226a0557e9 = $(`<div id="html_525a71c1133c2e4b6545bd226a0557e9" style="width: 100.0%; height: 100.0%;">Stop 7</div>`)[0];
+                popup_f73752d734789c9e6413961c358047d5.setContent(html_525a71c1133c2e4b6545bd226a0557e9);
+            
+        
+
+        marker_d3908396be8b339c14c511c325ea49a9.bindPopup(popup_f73752d734789c9e6413961c358047d5)
+        ;
+
+        
+    
+    
+            var marker_0e1e22387b1272d4ab36121f4b1edf38 = L.marker(
+                [1.628655062754551, 103.63807709630609],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_9ed63dca4c836c2661e88b9a6b86042d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_0e1e22387b1272d4ab36121f4b1edf38.setIcon(icon_9ed63dca4c836c2661e88b9a6b86042d);
+        
+    
+        var popup_7995e22a92213efb8c8f57ea58a2664e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_06030e96744ab513bfaabe1ea59477b7 = $(`<div id="html_06030e96744ab513bfaabe1ea59477b7" style="width: 100.0%; height: 100.0%;">Stop 8</div>`)[0];
+                popup_7995e22a92213efb8c8f57ea58a2664e.setContent(html_06030e96744ab513bfaabe1ea59477b7);
+            
+        
+
+        marker_0e1e22387b1272d4ab36121f4b1edf38.bindPopup(popup_7995e22a92213efb8c8f57ea58a2664e)
+        ;
+
+        
+    
+    
+            var marker_a9f4feceb4f0061909d1db844b80326d = L.marker(
+                [1.6203723172849367, 103.64614936801505],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_11f8135426f7b441e1429830020f95ee = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_a9f4feceb4f0061909d1db844b80326d.setIcon(icon_11f8135426f7b441e1429830020f95ee);
+        
+    
+        var popup_a2aeabd3064714797b805b5ab5aca4c9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b0e9c30a82f2911b47548aa0f306463a = $(`<div id="html_b0e9c30a82f2911b47548aa0f306463a" style="width: 100.0%; height: 100.0%;">Stop 9</div>`)[0];
+                popup_a2aeabd3064714797b805b5ab5aca4c9.setContent(html_b0e9c30a82f2911b47548aa0f306463a);
+            
+        
+
+        marker_a9f4feceb4f0061909d1db844b80326d.bindPopup(popup_a2aeabd3064714797b805b5ab5aca4c9)
+        ;
+
+        
+    
+    
+            var marker_b6ed272d0c82fad734472ebace990a35 = L.marker(
+                [1.6013846087875712, 103.64515677546767],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_b6991a8b226da9709b58c231659838c6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_b6ed272d0c82fad734472ebace990a35.setIcon(icon_b6991a8b226da9709b58c231659838c6);
+        
+    
+        var popup_8b61888a28848d7914eb500d3bc515a5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2ddff859e0d4711a4a6d53b5dec73a2c = $(`<div id="html_2ddff859e0d4711a4a6d53b5dec73a2c" style="width: 100.0%; height: 100.0%;">Stop 10</div>`)[0];
+                popup_8b61888a28848d7914eb500d3bc515a5.setContent(html_2ddff859e0d4711a4a6d53b5dec73a2c);
+            
+        
+
+        marker_b6ed272d0c82fad734472ebace990a35.bindPopup(popup_8b61888a28848d7914eb500d3bc515a5)
+        ;
+
+        
+    
+    
+            var marker_50363b386dcae3dcbde3b4bf55103176 = L.marker(
+                [1.596764420712483, 103.64559102580564],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_9ccc1c1662e41c5a1f9f4b0874cae2a5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_50363b386dcae3dcbde3b4bf55103176.setIcon(icon_9ccc1c1662e41c5a1f9f4b0874cae2a5);
+        
+    
+        var popup_016ff78e584327b57dd741d821e898be = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5374430a45d57e5ce6451217957684d9 = $(`<div id="html_5374430a45d57e5ce6451217957684d9" style="width: 100.0%; height: 100.0%;">Stop 11</div>`)[0];
+                popup_016ff78e584327b57dd741d821e898be.setContent(html_5374430a45d57e5ce6451217957684d9);
+            
+        
+
+        marker_50363b386dcae3dcbde3b4bf55103176.bindPopup(popup_016ff78e584327b57dd741d821e898be)
+        ;
+
+        
+    
+    
+            var marker_d82fd01e28bcc6b46c7da2feb4aea771 = L.marker(
+                [1.5910215647537664, 103.64796686012346],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_e5c19361fcb452d4b685806a812ea039 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_d82fd01e28bcc6b46c7da2feb4aea771.setIcon(icon_e5c19361fcb452d4b685806a812ea039);
+        
+    
+        var popup_f1efd24fad7035cc6f335928e30f21d9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1d86b81f413ea671d4f6256355176269 = $(`<div id="html_1d86b81f413ea671d4f6256355176269" style="width: 100.0%; height: 100.0%;">Stop 12</div>`)[0];
+                popup_f1efd24fad7035cc6f335928e30f21d9.setContent(html_1d86b81f413ea671d4f6256355176269);
+            
+        
+
+        marker_d82fd01e28bcc6b46c7da2feb4aea771.bindPopup(popup_f1efd24fad7035cc6f335928e30f21d9)
+        ;
+
+        
+    
+    
+            var marker_50b96104c4a208a2ad447cee149426bb = L.marker(
+                [1.5710682887829601, 103.66094006994001],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_773299646882e45b6512fc44e890e712 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_50b96104c4a208a2ad447cee149426bb.setIcon(icon_773299646882e45b6512fc44e890e712);
+        
+    
+        var popup_d818e936c9a1e5bc530774cba6dba8c1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a57126460c212573f543c2154cfd7c2a = $(`<div id="html_a57126460c212573f543c2154cfd7c2a" style="width: 100.0%; height: 100.0%;">Stop 13</div>`)[0];
+                popup_d818e936c9a1e5bc530774cba6dba8c1.setContent(html_a57126460c212573f543c2154cfd7c2a);
+            
+        
+
+        marker_50b96104c4a208a2ad447cee149426bb.bindPopup(popup_d818e936c9a1e5bc530774cba6dba8c1)
+        ;
+
+        
+    
+    
+            var marker_8e9002c9f66b2e5e5e7d498b0bcdd320 = L.marker(
+                [1.5446071130881212, 103.65778209077513],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_3eb2a39964cde3e13480d646f8a4a573 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_8e9002c9f66b2e5e5e7d498b0bcdd320.setIcon(icon_3eb2a39964cde3e13480d646f8a4a573);
+        
+    
+        var popup_c146da8a065a20464e0ae7d16f109909 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3100f16833ab4bc085135a52a906d791 = $(`<div id="html_3100f16833ab4bc085135a52a906d791" style="width: 100.0%; height: 100.0%;">Stop 14</div>`)[0];
+                popup_c146da8a065a20464e0ae7d16f109909.setContent(html_3100f16833ab4bc085135a52a906d791);
+            
+        
+
+        marker_8e9002c9f66b2e5e5e7d498b0bcdd320.bindPopup(popup_c146da8a065a20464e0ae7d16f109909)
+        ;
+
+        
+    
+    
+            var marker_d160bb585d3e1079f18676ceeed6ba32 = L.marker(
+                [1.541540224027169, 103.65954500502208],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_787f1b21d7959a6803e6b7dfc1d6ee6e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_d160bb585d3e1079f18676ceeed6ba32.setIcon(icon_787f1b21d7959a6803e6b7dfc1d6ee6e);
+        
+    
+        var popup_198d89e2eb041fb6d15ec122f55804e0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_93c02748bd2e58bae5ade078b4927be9 = $(`<div id="html_93c02748bd2e58bae5ade078b4927be9" style="width: 100.0%; height: 100.0%;">Stop 15</div>`)[0];
+                popup_198d89e2eb041fb6d15ec122f55804e0.setContent(html_93c02748bd2e58bae5ade078b4927be9);
+            
+        
+
+        marker_d160bb585d3e1079f18676ceeed6ba32.bindPopup(popup_198d89e2eb041fb6d15ec122f55804e0)
+        ;
+
+        
+    
+    
+            var marker_2347af6a077834102654ba5cc73c84c4 = L.marker(
+                [1.528201281584724, 103.67097274711804],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_7ed5ad2b19c8d8c1c4357399cc4beb78 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_2347af6a077834102654ba5cc73c84c4.setIcon(icon_7ed5ad2b19c8d8c1c4357399cc4beb78);
+        
+    
+        var popup_f7991241f42ad082580a790e2e0bd9d6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f7728def6a5c2e75c7694d4e4d9da65d = $(`<div id="html_f7728def6a5c2e75c7694d4e4d9da65d" style="width: 100.0%; height: 100.0%;">Stop 16</div>`)[0];
+                popup_f7991241f42ad082580a790e2e0bd9d6.setContent(html_f7728def6a5c2e75c7694d4e4d9da65d);
+            
+        
+
+        marker_2347af6a077834102654ba5cc73c84c4.bindPopup(popup_f7991241f42ad082580a790e2e0bd9d6)
+        ;
+
+        
+    
+    
+            var marker_42214419d1e54b09bc59e9b20b0e5ec0 = L.marker(
+                [1.51926239182888, 103.68206611709597],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_61dcc7ce22016a5cba225c0202c01a11 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_42214419d1e54b09bc59e9b20b0e5ec0.setIcon(icon_61dcc7ce22016a5cba225c0202c01a11);
+        
+    
+        var popup_371b60f6ebd843299666fc36ac89c572 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2bbbb0fbced3e9fcc5201a624e02cdbe = $(`<div id="html_2bbbb0fbced3e9fcc5201a624e02cdbe" style="width: 100.0%; height: 100.0%;">Stop 17</div>`)[0];
+                popup_371b60f6ebd843299666fc36ac89c572.setContent(html_2bbbb0fbced3e9fcc5201a624e02cdbe);
+            
+        
+
+        marker_42214419d1e54b09bc59e9b20b0e5ec0.bindPopup(popup_371b60f6ebd843299666fc36ac89c572)
+        ;
+
+        
+    
+    
+            var marker_23a7f931273f157a707325d80423aad2 = L.marker(
+                [1.514813892563429, 103.6852375606564],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_205bfe84fb0f363250f97e6a7a606e55 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_23a7f931273f157a707325d80423aad2.setIcon(icon_205bfe84fb0f363250f97e6a7a606e55);
+        
+    
+        var popup_93a39a48ee7ee7dabc4d8cbc3cb564c0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4e26c04fe05e4f428863036c16e213ea = $(`<div id="html_4e26c04fe05e4f428863036c16e213ea" style="width: 100.0%; height: 100.0%;">Stop 18</div>`)[0];
+                popup_93a39a48ee7ee7dabc4d8cbc3cb564c0.setContent(html_4e26c04fe05e4f428863036c16e213ea);
+            
+        
+
+        marker_23a7f931273f157a707325d80423aad2.bindPopup(popup_93a39a48ee7ee7dabc4d8cbc3cb564c0)
+        ;
+
+        
+    
+    
+            var marker_e5ba2779764a1f09b271f1f4e83522bb = L.marker(
+                [1.5121383386574008, 103.68706591589486],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_e1cee7c562055c7d1a36af0df43ed591 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_e5ba2779764a1f09b271f1f4e83522bb.setIcon(icon_e1cee7c562055c7d1a36af0df43ed591);
+        
+    
+        var popup_590a456f89abda02c41ec55fb5a1d005 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_693a0dd85ea4be1fd5f3e6a1f19ce599 = $(`<div id="html_693a0dd85ea4be1fd5f3e6a1f19ce599" style="width: 100.0%; height: 100.0%;">Stop 19</div>`)[0];
+                popup_590a456f89abda02c41ec55fb5a1d005.setContent(html_693a0dd85ea4be1fd5f3e6a1f19ce599);
+            
+        
+
+        marker_e5ba2779764a1f09b271f1f4e83522bb.bindPopup(popup_590a456f89abda02c41ec55fb5a1d005)
+        ;
+
+        
+    
+    
+            var marker_35493c15a07b36f408b814f6c0fb3d05 = L.marker(
+                [1.5088584686178155, 103.68928902381539],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_bf3d46b16288c7e633ee12637ecc088b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_35493c15a07b36f408b814f6c0fb3d05.setIcon(icon_bf3d46b16288c7e633ee12637ecc088b);
+        
+    
+        var popup_a256d98cd865a1eaffc164611d444f9e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_43893b9fad4dba51a9e488cf36542f37 = $(`<div id="html_43893b9fad4dba51a9e488cf36542f37" style="width: 100.0%; height: 100.0%;">Stop 20</div>`)[0];
+                popup_a256d98cd865a1eaffc164611d444f9e.setContent(html_43893b9fad4dba51a9e488cf36542f37);
+            
+        
+
+        marker_35493c15a07b36f408b814f6c0fb3d05.bindPopup(popup_a256d98cd865a1eaffc164611d444f9e)
+        ;
+
+        
+    
+    
+            var marker_bad75c8c43a09c292ccba66eb5558508 = L.marker(
+                [1.5008855908671468, 103.69599314953071],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_af43107983b67f88b76b4d2e2de6d830 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_bad75c8c43a09c292ccba66eb5558508.setIcon(icon_af43107983b67f88b76b4d2e2de6d830);
+        
+    
+        var popup_da26f9d37eb932f5dd3a605aca784027 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9ee677ce32b041d54bceac056702c1c0 = $(`<div id="html_9ee677ce32b041d54bceac056702c1c0" style="width: 100.0%; height: 100.0%;">Stop 21</div>`)[0];
+                popup_da26f9d37eb932f5dd3a605aca784027.setContent(html_9ee677ce32b041d54bceac056702c1c0);
+            
+        
+
+        marker_bad75c8c43a09c292ccba66eb5558508.bindPopup(popup_da26f9d37eb932f5dd3a605aca784027)
+        ;
+
+        
+    
+    
+            var marker_b511efb0d8cc7348f59250d06ce26087 = L.marker(
+                [1.498877450327011, 103.69886295948693],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_d596ce9ea2256d40de50e481affac249 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_b511efb0d8cc7348f59250d06ce26087.setIcon(icon_d596ce9ea2256d40de50e481affac249);
+        
+    
+        var popup_72f2c5106e899c59c54ea03ba7fef3f0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4f1d100310e7a971be92fb42d67a8ff9 = $(`<div id="html_4f1d100310e7a971be92fb42d67a8ff9" style="width: 100.0%; height: 100.0%;">Stop 22</div>`)[0];
+                popup_72f2c5106e899c59c54ea03ba7fef3f0.setContent(html_4f1d100310e7a971be92fb42d67a8ff9);
+            
+        
+
+        marker_b511efb0d8cc7348f59250d06ce26087.bindPopup(popup_72f2c5106e899c59c54ea03ba7fef3f0)
+        ;
+
+        
+    
+    
+            var marker_9c41924b933225e9c431c9bf1f9919ac = L.marker(
+                [1.4969289341746932, 103.70179963586516],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_2b3949e5fcfbdd4578f94f9672add2ed = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_9c41924b933225e9c431c9bf1f9919ac.setIcon(icon_2b3949e5fcfbdd4578f94f9672add2ed);
+        
+    
+        var popup_941197b4147c4f4d6a611374c2f82b9d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c5f61d5212c44c667110e5167f681fad = $(`<div id="html_c5f61d5212c44c667110e5167f681fad" style="width: 100.0%; height: 100.0%;">Stop 23</div>`)[0];
+                popup_941197b4147c4f4d6a611374c2f82b9d.setContent(html_c5f61d5212c44c667110e5167f681fad);
+            
+        
+
+        marker_9c41924b933225e9c431c9bf1f9919ac.bindPopup(popup_941197b4147c4f4d6a611374c2f82b9d)
+        ;
+
+        
+    
+    
+            var marker_6b3354ee424815726a0e410c4b6e3480 = L.marker(
+                [1.4957308782478185, 103.70353570332152],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_388d13e609a4c93689c5c1ec8620875b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6b3354ee424815726a0e410c4b6e3480.setIcon(icon_388d13e609a4c93689c5c1ec8620875b);
+        
+    
+        var popup_29f21a01ea56fd244304285d30d96836 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8c777447cb43c16786382993268fb465 = $(`<div id="html_8c777447cb43c16786382993268fb465" style="width: 100.0%; height: 100.0%;">Stop 24</div>`)[0];
+                popup_29f21a01ea56fd244304285d30d96836.setContent(html_8c777447cb43c16786382993268fb465);
+            
+        
+
+        marker_6b3354ee424815726a0e410c4b6e3480.bindPopup(popup_29f21a01ea56fd244304285d30d96836)
+        ;
+
+        
+    
+    
+            var marker_3edab38e883f0a21e4f8ab0bb2b8e79d = L.marker(
+                [1.494173589831715, 103.70574439346098],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_60c00f2cce6875e9ae1757a606d52630 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_3edab38e883f0a21e4f8ab0bb2b8e79d.setIcon(icon_60c00f2cce6875e9ae1757a606d52630);
+        
+    
+        var popup_b7b63f92be466bfc44b756a420435ce6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e6fd12e29db60df9b0ee24e7ac7527e9 = $(`<div id="html_e6fd12e29db60df9b0ee24e7ac7527e9" style="width: 100.0%; height: 100.0%;">Stop 25</div>`)[0];
+                popup_b7b63f92be466bfc44b756a420435ce6.setContent(html_e6fd12e29db60df9b0ee24e7ac7527e9);
+            
+        
+
+        marker_3edab38e883f0a21e4f8ab0bb2b8e79d.bindPopup(popup_b7b63f92be466bfc44b756a420435ce6)
+        ;
+
+        
+    
+    
+            var marker_8159d83c2ccd729fd48a5465fd89f4de = L.marker(
+                [1.489587186962772, 103.71219076437811],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_4a69f467549e4029e2c5ba35b4ec3048 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_8159d83c2ccd729fd48a5465fd89f4de.setIcon(icon_4a69f467549e4029e2c5ba35b4ec3048);
+        
+    
+        var popup_a0e870b7209841874d97f33ea90e45a4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d9f42dd172d5b03d4fcdc74d960ced21 = $(`<div id="html_d9f42dd172d5b03d4fcdc74d960ced21" style="width: 100.0%; height: 100.0%;">Stop 26</div>`)[0];
+                popup_a0e870b7209841874d97f33ea90e45a4.setContent(html_d9f42dd172d5b03d4fcdc74d960ced21);
+            
+        
+
+        marker_8159d83c2ccd729fd48a5465fd89f4de.bindPopup(popup_a0e870b7209841874d97f33ea90e45a4)
+        ;
+
+        
+    
+    
+            var marker_54834a8ec5a83d5c696a9f9377a21f08 = L.marker(
+                [1.4871255056128097, 103.72438547599789],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_c023ac5cf314cdb895874b3588b934e3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_54834a8ec5a83d5c696a9f9377a21f08.setIcon(icon_c023ac5cf314cdb895874b3588b934e3);
+        
+    
+        var popup_eec0b249bae51b558ac06389ad015b7f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_88d7742ae5932a59e2bcddc8ce7b3503 = $(`<div id="html_88d7742ae5932a59e2bcddc8ce7b3503" style="width: 100.0%; height: 100.0%;">Stop 27</div>`)[0];
+                popup_eec0b249bae51b558ac06389ad015b7f.setContent(html_88d7742ae5932a59e2bcddc8ce7b3503);
+            
+        
+
+        marker_54834a8ec5a83d5c696a9f9377a21f08.bindPopup(popup_eec0b249bae51b558ac06389ad015b7f)
+        ;
+
+        
+    
+    
+            var marker_1ef4ee5a4130a9957fa06f671c89638c = L.marker(
+                [1.4887834830210198, 103.72764307910049],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+            var icon_3ff669b2ec8932aaab35afe97b64ac4b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_1ef4ee5a4130a9957fa06f671c89638c.setIcon(icon_3ff669b2ec8932aaab35afe97b64ac4b);
+        
+    
+        var popup_872d170204a28b5619559cb7c0e4b31e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e088166da313dee3b148ec19620af7c4 = $(`<div id="html_e088166da313dee3b148ec19620af7c4" style="width: 100.0%; height: 100.0%;">Stop 28</div>`)[0];
+                popup_872d170204a28b5619559cb7c0e4b31e.setContent(html_e088166da313dee3b148ec19620af7c4);
+            
+        
+
+        marker_1ef4ee5a4130a9957fa06f671c89638c.bindPopup(popup_872d170204a28b5619559cb7c0e4b31e)
+        ;
+
+        
+    
+    
+            var marker_312206b6fa5f783b6b2d1d49501a9ee6 = L.marker(
+                [1.6613642865126417, 103.60372737912934],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_ed6fb892bd2a2733f614488eea0e361a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8b3e179bc89eeb0138363b992b063d3c = $(`<div id="html_8b3e179bc89eeb0138363b992b063d3c" style="width: 100.0%; height: 100.0%;">Stop 1: Kulai Centre Point</div>`)[0];
+                popup_ed6fb892bd2a2733f614488eea0e361a.setContent(html_8b3e179bc89eeb0138363b992b063d3c);
+            
+        
+
+        marker_312206b6fa5f783b6b2d1d49501a9ee6.bindPopup(popup_ed6fb892bd2a2733f614488eea0e361a)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
+        ;
+
+        
+    
+    
+<<<<<<< HEAD
             var marker_eea47418a264676d8f4f57972eb00531 = L.marker(
                 [1.6626828053288385, 103.59889110796522],
                 {}
@@ -2128,15 +3537,586 @@
         
 
         marker_eea47418a264676d8f4f57972eb00531.bindPopup(popup_158e600729d3075ce7a222c34311fc51)
+=======
+            var marker_90e9e8bf0c177db4d44f1ef1b7511656 = L.marker(
+                [1.6541744853842373, 103.60971038276091],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_0a8f2410baf3e35cf638487742f89756 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6bf80b3a414d7213c4db36f28c221ca4 = $(`<div id="html_6bf80b3a414d7213c4db36f28c221ca4" style="width: 100.0%; height: 100.0%;">Stop 2: Opp SBS Enterprises (M) Sdn Bhd</div>`)[0];
+                popup_0a8f2410baf3e35cf638487742f89756.setContent(html_6bf80b3a414d7213c4db36f28c221ca4);
+            
+        
+
+        marker_90e9e8bf0c177db4d44f1ef1b7511656.bindPopup(popup_0a8f2410baf3e35cf638487742f89756)
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         ;
 
         
     
     
+<<<<<<< HEAD
             var poly_line_f3e002d237975c30b2e372828597b0c8 = L.polyline(
                 [[1.49187, 103.74091], [1.48766, 103.74083], [1.48871, 103.74105], [1.49026, 103.73591], [1.48858, 103.72758], [1.48682, 103.72429], [1.48598, 103.7171], [1.48172, 103.7119], [1.48577, 103.71659], [1.48887, 103.71243], [1.49255, 103.7071], [1.49256, 103.70709], [1.49902, 103.69805], [1.50097, 103.69535], [1.50272, 103.69131], [1.50826, 103.68922], [1.5164, 103.68373], [1.52312, 103.679], [1.52804, 103.67046], [1.5351, 103.66481], [1.54511, 103.65731], [1.55899, 103.659], [1.54656, 103.6572], [1.5415, 103.6595], [1.53863, 103.66187], [1.53978, 103.66272], [1.54332, 103.6586], [1.54638, 103.65824], [1.54465, 103.6579], [1.53159, 103.66722], [1.54511, 103.65731], [1.5705, 103.66069], [1.5796, 103.65631], [1.58291, 103.65189], [1.57983, 103.65631], [1.57116, 103.66092], [1.57361, 103.65993], [1.56825, 103.6609], [1.55928, 103.65903], [1.56522, 103.66052], [1.57196, 103.66033], [1.5796, 103.65631], [1.5856, 103.64911], [1.59599, 103.6454], [1.60065, 103.64471], [1.60578, 103.64785], [1.60032, 103.64476], [1.59098, 103.64781], [1.59031, 103.64921], [1.59676, 103.64563], [1.59604, 103.64623], [1.59894, 103.64841], [1.60145, 103.6477], [1.60231, 103.64553], [1.60143, 103.64505], [1.58739, 103.64846], [1.58297, 103.65168], [1.58678, 103.64856], [1.6001, 103.64468], [1.60579, 103.64769], [1.62032, 103.646], [1.6061, 103.64801], [1.60701, 103.654], [1.61052, 103.65763], [1.60757, 103.65511], [1.60596, 103.64786], [1.62083, 103.64556], [1.63179, 103.6344], [1.62862, 103.63804], [1.62126, 103.64535], [1.6351, 103.63067], [1.63285, 103.63335], [1.63185, 103.63446], [1.64224, 103.62094], [1.63578, 103.6298], [1.63502, 103.63061], [1.64224, 103.62094], [1.63991, 103.62475], [1.63819, 103.62516], [1.64593, 103.61494], [1.65246, 103.61014], [1.6452, 103.61647], [1.64268, 103.62143], [1.64593, 103.61494], [1.65246, 103.61014], [1.65095, 103.61151], [1.64951, 103.61224], [1.65944, 103.60634], [1.65416, 103.60966], [1.65246, 103.61014], [1.6581, 103.60761], [1.66251, 103.60005], [1.6613, 103.6037], [1.65999, 103.60568], [1.66269, 103.59893]],
                 {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
             ).addTo(map_b5cc13bdfe683eaec5f6c921fdcf83d3);
+=======
+            var marker_e1357a817d5d0a43c1605fd8fecd8cdd = L.marker(
+                [1.6509304328430152, 103.61148553732649],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_6c879c739aae57ab0b74b198b1b0548e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fa03997ce392f0712304183219ceab3f = $(`<div id="html_fa03997ce392f0712304183219ceab3f" style="width: 100.0%; height: 100.0%;">Stop 3: Opp Public Bank @ Jalan Susur Kulai 2</div>`)[0];
+                popup_6c879c739aae57ab0b74b198b1b0548e.setContent(html_fa03997ce392f0712304183219ceab3f);
+            
+        
+
+        marker_e1357a817d5d0a43c1605fd8fecd8cdd.bindPopup(popup_6c879c739aae57ab0b74b198b1b0548e)
+        ;
+
+        
+    
+    
+            var marker_50b56b34cf42c6f244586d60cb77c4bc = L.marker(
+                [1.6452580216482706, 103.61649637358444],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_96cac40111f7da82c27cceaaf8544d32 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_35b4a2606612d34ca7f1e473a5efa82c = $(`<div id="html_35b4a2606612d34ca7f1e473a5efa82c" style="width: 100.0%; height: 100.0%;">Stop 4: Opp Pertubuhan Peladang Kawasan Kulai</div>`)[0];
+                popup_96cac40111f7da82c27cceaaf8544d32.setContent(html_35b4a2606612d34ca7f1e473a5efa82c);
+            
+        
+
+        marker_50b56b34cf42c6f244586d60cb77c4bc.bindPopup(popup_96cac40111f7da82c27cceaaf8544d32)
+        ;
+
+        
+    
+    
+            var marker_72c83d872b8987243a5e8cb8c26c1f06 = L.marker(
+                [1.6398209133282802, 103.62466463309562],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_0f74bcd9e80bb5132e0ff5a012d8a6f5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_479db4095362a5f14d16e2f98aa82185 = $(`<div id="html_479db4095362a5f14d16e2f98aa82185" style="width: 100.0%; height: 100.0%;">Stop 5: Opp Hospital Temenggong Seri Maharaja Tun Ibrahim Kulaijaya</div>`)[0];
+                popup_0f74bcd9e80bb5132e0ff5a012d8a6f5.setContent(html_479db4095362a5f14d16e2f98aa82185);
+            
+        
+
+        marker_72c83d872b8987243a5e8cb8c26c1f06.bindPopup(popup_0f74bcd9e80bb5132e0ff5a012d8a6f5)
+        ;
+
+        
+    
+    
+            var marker_2de9a28565638d35c6047d844bfb6802 = L.marker(
+                [1.6359493158863123, 103.62993165279192],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_d9e68f8cd3ccdf56c6f0363b68ea1a85 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_681c2af3607fab94e4e0dc05d2620dfb = $(`<div id="html_681c2af3607fab94e4e0dc05d2620dfb" style="width: 100.0%; height: 100.0%;">Stop 6: Opp Jalan Cermai</div>`)[0];
+                popup_d9e68f8cd3ccdf56c6f0363b68ea1a85.setContent(html_681c2af3607fab94e4e0dc05d2620dfb);
+            
+        
+
+        marker_2de9a28565638d35c6047d844bfb6802.bindPopup(popup_d9e68f8cd3ccdf56c6f0363b68ea1a85)
+        ;
+
+        
+    
+    
+            var marker_aeb6f0079431fe0c2fc12a204322946a = L.marker(
+                [1.633014316152999, 103.63349819512037],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_5291dc4e1e12b53ebec5d86673555023 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0c7a8d3eee4589907530ff4a5b1b2a81 = $(`<div id="html_0c7a8d3eee4589907530ff4a5b1b2a81" style="width: 100.0%; height: 100.0%;">Stop 7: Opp Stor JKR (D) Kulaijaya</div>`)[0];
+                popup_5291dc4e1e12b53ebec5d86673555023.setContent(html_0c7a8d3eee4589907530ff4a5b1b2a81);
+            
+        
+
+        marker_aeb6f0079431fe0c2fc12a204322946a.bindPopup(popup_5291dc4e1e12b53ebec5d86673555023)
+        ;
+
+        
+    
+    
+            var marker_6949bdaca910ae5332d94de3a6fd8bc8 = L.marker(
+                [1.628655062754551, 103.63807709630609],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_651488fca520bc726888307c62984530 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a759ace4fb0997d5d2484da79046c926 = $(`<div id="html_a759ace4fb0997d5d2484da79046c926" style="width: 100.0%; height: 100.0%;">Stop 8: Opp Wang Loo Motor Sdn Bhd</div>`)[0];
+                popup_651488fca520bc726888307c62984530.setContent(html_a759ace4fb0997d5d2484da79046c926);
+            
+        
+
+        marker_6949bdaca910ae5332d94de3a6fd8bc8.bindPopup(popup_651488fca520bc726888307c62984530)
+        ;
+
+        
+    
+    
+            var marker_0e76e36da53f4668e4cc9562e66f06da = L.marker(
+                [1.6203723172849367, 103.64614936801505],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_a1dd1161c6f6377f96fb7d47fc28ada5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_53ab61811ac9b70b39eff1db3add9392 = $(`<div id="html_53ab61811ac9b70b39eff1db3add9392" style="width: 100.0%; height: 100.0%;">Stop 9: Opp Pejabat Lembaga Lebuhraya Malaysia</div>`)[0];
+                popup_a1dd1161c6f6377f96fb7d47fc28ada5.setContent(html_53ab61811ac9b70b39eff1db3add9392);
+            
+        
+
+        marker_0e76e36da53f4668e4cc9562e66f06da.bindPopup(popup_a1dd1161c6f6377f96fb7d47fc28ada5)
+        ;
+
+        
+    
+    
+            var marker_028aa72bc2f75fccb37dacfaff82705a = L.marker(
+                [1.6013846087875712, 103.64515677546767],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_211dd8a9bd4cb85d707d8c875fa8990c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_dffaec8c74e1c3d2455818060c5e1b33 = $(`<div id="html_dffaec8c74e1c3d2455818060c5e1b33" style="width: 100.0%; height: 100.0%;">Stop 10: Medan Selera Senai</div>`)[0];
+                popup_211dd8a9bd4cb85d707d8c875fa8990c.setContent(html_dffaec8c74e1c3d2455818060c5e1b33);
+            
+        
+
+        marker_028aa72bc2f75fccb37dacfaff82705a.bindPopup(popup_211dd8a9bd4cb85d707d8c875fa8990c)
+        ;
+
+        
+    
+    
+            var marker_a1075f613c374d3b46638913fe23008b = L.marker(
+                [1.596764420712483, 103.64559102580564],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_b9dd77db3b48fa2aced6d3ee1bff0fb7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0c82729e7d2da487d899fb542209d1c5 = $(`<div id="html_0c82729e7d2da487d899fb542209d1c5" style="width: 100.0%; height: 100.0%;">Stop 11: Opp Sekolah Kebangsaan Senai</div>`)[0];
+                popup_b9dd77db3b48fa2aced6d3ee1bff0fb7.setContent(html_0c82729e7d2da487d899fb542209d1c5);
+            
+        
+
+        marker_a1075f613c374d3b46638913fe23008b.bindPopup(popup_b9dd77db3b48fa2aced6d3ee1bff0fb7)
+        ;
+
+        
+    
+    
+            var marker_5a42695cc3f1db399f13b2ea21950af3 = L.marker(
+                [1.5910215647537664, 103.64796686012346],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_234aeba13d7d0b105f958a5082239cf6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0f359fae0806c1de30b84ab443120d16 = $(`<div id="html_0f359fae0806c1de30b84ab443120d16" style="width: 100.0%; height: 100.0%;">Stop 12: Opp BHPetrol Kiosk @ Taman Aman</div>`)[0];
+                popup_234aeba13d7d0b105f958a5082239cf6.setContent(html_0f359fae0806c1de30b84ab443120d16);
+            
+        
+
+        marker_5a42695cc3f1db399f13b2ea21950af3.bindPopup(popup_234aeba13d7d0b105f958a5082239cf6)
+        ;
+
+        
+    
+    
+            var marker_ea14e13c3d38bcb0ddceac384e02a6a7 = L.marker(
+                [1.5710682887829601, 103.66094006994001],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_c85d47d1bed78c1c695f5b75fc65aada = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ae336ca1e75463e0b7df13c0f71c2310 = $(`<div id="html_ae336ca1e75463e0b7df13c0f71c2310" style="width: 100.0%; height: 100.0%;">Stop 13: aft Lebuhraya Utara-Selatan</div>`)[0];
+                popup_c85d47d1bed78c1c695f5b75fc65aada.setContent(html_ae336ca1e75463e0b7df13c0f71c2310);
+            
+        
+
+        marker_ea14e13c3d38bcb0ddceac384e02a6a7.bindPopup(popup_c85d47d1bed78c1c695f5b75fc65aada)
+        ;
+
+        
+    
+    
+            var marker_a94fb366d73e6c29bbb8b4ee9bfe8460 = L.marker(
+                [1.5446071130881212, 103.65778209077513],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_9a93153bb2e3241a7c2af7dc1e93b3b4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7e39825ab461311a692c9e853c8e022d = $(`<div id="html_7e39825ab461311a692c9e853c8e022d" style="width: 100.0%; height: 100.0%;">Stop 14: Opp Shell Kiosk @ Taman Sri Putri</div>`)[0];
+                popup_9a93153bb2e3241a7c2af7dc1e93b3b4.setContent(html_7e39825ab461311a692c9e853c8e022d);
+            
+        
+
+        marker_a94fb366d73e6c29bbb8b4ee9bfe8460.bindPopup(popup_9a93153bb2e3241a7c2af7dc1e93b3b4)
+        ;
+
+        
+    
+    
+            var marker_2fd900879838f7b8db1f02f41d7063bc = L.marker(
+                [1.541540224027169, 103.65954500502208],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_91272aac481022b4857ab5498f3d0810 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4c5afb84b764f81231682be17e358caa = $(`<div id="html_4c5afb84b764f81231682be17e358caa" style="width: 100.0%; height: 100.0%;">Stop 15: Skudai Parade</div>`)[0];
+                popup_91272aac481022b4857ab5498f3d0810.setContent(html_4c5afb84b764f81231682be17e358caa);
+            
+        
+
+        marker_2fd900879838f7b8db1f02f41d7063bc.bindPopup(popup_91272aac481022b4857ab5498f3d0810)
+        ;
+
+        
+    
+    
+            var marker_1a94abdc87a27c2114dc85d0abc050d6 = L.marker(
+                [1.528201281584724, 103.67097274711804],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_d1065d96a6519fd7eb1352c5bb8d5190 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_afe3bb7a9a9fbd8787ac16b5c010e140 = $(`<div id="html_afe3bb7a9a9fbd8787ac16b5c010e140" style="width: 100.0%; height: 100.0%;">Stop 16: Opp SJK (C) Kuo Kuang</div>`)[0];
+                popup_d1065d96a6519fd7eb1352c5bb8d5190.setContent(html_afe3bb7a9a9fbd8787ac16b5c010e140);
+            
+        
+
+        marker_1a94abdc87a27c2114dc85d0abc050d6.bindPopup(popup_d1065d96a6519fd7eb1352c5bb8d5190)
+        ;
+
+        
+    
+    
+            var marker_846618ef7c7cb87a088ab7f8032c8727 = L.marker(
+                [1.51926239182888, 103.68206611709597],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_beb7047bcdcc924093e5b3f30222fbb4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_79175ff5bd04a49bfc9cbe982e3ff9ce = $(`<div id="html_79175ff5bd04a49bfc9cbe982e3ff9ce" style="width: 100.0%; height: 100.0%;">Stop 17: bef Paradigm Mall</div>`)[0];
+                popup_beb7047bcdcc924093e5b3f30222fbb4.setContent(html_79175ff5bd04a49bfc9cbe982e3ff9ce);
+            
+        
+
+        marker_846618ef7c7cb87a088ab7f8032c8727.bindPopup(popup_beb7047bcdcc924093e5b3f30222fbb4)
+        ;
+
+        
+    
+    
+            var marker_73023a952c910e65eb88200fa40210dc = L.marker(
+                [1.514813892563429, 103.6852375606564],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_c1dd44f0310ebf4709ee7824b675c69e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_bf224f48216346a94fee9bad525a480c = $(`<div id="html_bf224f48216346a94fee9bad525a480c" style="width: 100.0%; height: 100.0%;">Stop 18: Paradigm Mall</div>`)[0];
+                popup_c1dd44f0310ebf4709ee7824b675c69e.setContent(html_bf224f48216346a94fee9bad525a480c);
+            
+        
+
+        marker_73023a952c910e65eb88200fa40210dc.bindPopup(popup_c1dd44f0310ebf4709ee7824b675c69e)
+        ;
+
+        
+    
+    
+            var marker_07fa183d98471cb4bc378353df93d4cc = L.marker(
+                [1.5121383386574008, 103.68706591589486],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_c6c4f2e7f678ce438507d2b500ee7a50 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f6554e71f3b78449c4fe631de65b91cc = $(`<div id="html_f6554e71f3b78449c4fe631de65b91cc" style="width: 100.0%; height: 100.0%;">Stop 19: Opp Saksama Otomobil</div>`)[0];
+                popup_c6c4f2e7f678ce438507d2b500ee7a50.setContent(html_f6554e71f3b78449c4fe631de65b91cc);
+            
+        
+
+        marker_07fa183d98471cb4bc378353df93d4cc.bindPopup(popup_c6c4f2e7f678ce438507d2b500ee7a50)
+        ;
+
+        
+    
+    
+            var marker_04199a03c067af67f7b24837db556575 = L.marker(
+                [1.5088584686178155, 103.68928902381539],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_a09cb070ee0b46ed11d74f4b8a7ae15b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ec6ca2efcf877c40e871c0f2677f91d8 = $(`<div id="html_ec6ca2efcf877c40e871c0f2677f91d8" style="width: 100.0%; height: 100.0%;">Stop 20: Opp Petron Kiosk @ Taman Tampoi Indah</div>`)[0];
+                popup_a09cb070ee0b46ed11d74f4b8a7ae15b.setContent(html_ec6ca2efcf877c40e871c0f2677f91d8);
+            
+        
+
+        marker_04199a03c067af67f7b24837db556575.bindPopup(popup_a09cb070ee0b46ed11d74f4b8a7ae15b)
+        ;
+
+        
+    
+    
+            var marker_433a2d97e80912ab4397f7ee4f96cd31 = L.marker(
+                [1.5008855908671468, 103.69599314953071],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_690f6e70414b56f5a9078049f6d06d84 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_204acb5f24c1de768be579a9d78cb09b = $(`<div id="html_204acb5f24c1de768be579a9d78cb09b" style="width: 100.0%; height: 100.0%;">Stop 21: Kompleks Pekan Rabu Johor Bahru</div>`)[0];
+                popup_690f6e70414b56f5a9078049f6d06d84.setContent(html_204acb5f24c1de768be579a9d78cb09b);
+            
+        
+
+        marker_433a2d97e80912ab4397f7ee4f96cd31.bindPopup(popup_690f6e70414b56f5a9078049f6d06d84)
+        ;
+
+        
+    
+    
+            var marker_6d50b9619d6c29c3bbd5d3e62ca96036 = L.marker(
+                [1.498877450327011, 103.69886295948693],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_f1ac81a96b8ba80328e927f88a640f3d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_569a6dc7943319e6fe61ab173261d625 = $(`<div id="html_569a6dc7943319e6fe61ab173261d625" style="width: 100.0%; height: 100.0%;">Stop 22: Giant Tampoi</div>`)[0];
+                popup_f1ac81a96b8ba80328e927f88a640f3d.setContent(html_569a6dc7943319e6fe61ab173261d625);
+            
+        
+
+        marker_6d50b9619d6c29c3bbd5d3e62ca96036.bindPopup(popup_f1ac81a96b8ba80328e927f88a640f3d)
+        ;
+
+        
+    
+    
+            var marker_d3f12141288f1810802505ab09868795 = L.marker(
+                [1.4969289341746932, 103.70179963586516],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_efb2866fb0db8d5d7cf1feeda826c15b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c4f6b68f2efeff5e3ee7725fad42eab1 = $(`<div id="html_c4f6b68f2efeff5e3ee7725fad42eab1" style="width: 100.0%; height: 100.0%;">Stop 23: aft Lorong Betik</div>`)[0];
+                popup_efb2866fb0db8d5d7cf1feeda826c15b.setContent(html_c4f6b68f2efeff5e3ee7725fad42eab1);
+            
+        
+
+        marker_d3f12141288f1810802505ab09868795.bindPopup(popup_efb2866fb0db8d5d7cf1feeda826c15b)
+        ;
+
+        
+    
+    
+            var marker_ac20d37487e0fd6abb3a6fbae6869ff1 = L.marker(
+                [1.4957308782478185, 103.70353570332152],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_e23156861756069eee2724e64ebcdef8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8066e54b1da6154c705dfd14a7ccc7d1 = $(`<div id="html_8066e54b1da6154c705dfd14a7ccc7d1" style="width: 100.0%; height: 100.0%;">Stop 24: Batu 5 Johor Street Market</div>`)[0];
+                popup_e23156861756069eee2724e64ebcdef8.setContent(html_8066e54b1da6154c705dfd14a7ccc7d1);
+            
+        
+
+        marker_ac20d37487e0fd6abb3a6fbae6869ff1.bindPopup(popup_e23156861756069eee2724e64ebcdef8)
+        ;
+
+        
+    
+    
+            var marker_5b325a718289c00158a271341c251c1f = L.marker(
+                [1.494173589831715, 103.70574439346098],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_c511d841790d5b337834527d0d8b3d8f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_94c00f31ab368e38811b3f048d1ae52a = $(`<div id="html_94c00f31ab368e38811b3f048d1ae52a" style="width: 100.0%; height: 100.0%;">Stop 25: Plaza Angsana</div>`)[0];
+                popup_c511d841790d5b337834527d0d8b3d8f.setContent(html_94c00f31ab368e38811b3f048d1ae52a);
+            
+        
+
+        marker_5b325a718289c00158a271341c251c1f.bindPopup(popup_c511d841790d5b337834527d0d8b3d8f)
+        ;
+
+        
+    
+    
+            var marker_fa10dbf28e9720ebd28a10c53151de9f = L.marker(
+                [1.489587186962772, 103.71219076437811],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_30867717313f6b6d7c5d986723383998 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cfbf1851e84d9c6f5c5a2a1281c2bece = $(`<div id="html_cfbf1851e84d9c6f5c5a2a1281c2bece" style="width: 100.0%; height: 100.0%;">Stop 26: Klinik Utama @ Jalan Padi 1</div>`)[0];
+                popup_30867717313f6b6d7c5d986723383998.setContent(html_cfbf1851e84d9c6f5c5a2a1281c2bece);
+            
+        
+
+        marker_fa10dbf28e9720ebd28a10c53151de9f.bindPopup(popup_30867717313f6b6d7c5d986723383998)
+        ;
+
+        
+    
+    
+            var marker_24b6a2e003db03763fe152c00660ec3e = L.marker(
+                [1.4871255056128097, 103.72438547599789],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_3d68689c16aacd0a2fc354f94b688749 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_24d1661a7ef7a50ecbf37a1286d93d02 = $(`<div id="html_24d1661a7ef7a50ecbf37a1286d93d02" style="width: 100.0%; height: 100.0%;">Stop 27: Opp Amitabha Centre</div>`)[0];
+                popup_3d68689c16aacd0a2fc354f94b688749.setContent(html_24d1661a7ef7a50ecbf37a1286d93d02);
+            
+        
+
+        marker_24b6a2e003db03763fe152c00660ec3e.bindPopup(popup_3d68689c16aacd0a2fc354f94b688749)
+        ;
+
+        
+    
+    
+            var marker_c1b9bb7e8cab5698af9dbe0b2dfd38a6 = L.marker(
+                [1.4887834830210198, 103.72764307910049],
+                {}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+        
+    
+        var popup_a67da6feae6182369e38754ffb1ac58a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2385f0e78cc634bcfc943e7e721898aa = $(`<div id="html_2385f0e78cc634bcfc943e7e721898aa" style="width: 100.0%; height: 100.0%;">Stop 28: Opp Shell Kiosk @ Jalan Tun Abdul Razak</div>`)[0];
+                popup_a67da6feae6182369e38754ffb1ac58a.setContent(html_2385f0e78cc634bcfc943e7e721898aa);
+            
+        
+
+        marker_c1b9bb7e8cab5698af9dbe0b2dfd38a6.bindPopup(popup_a67da6feae6182369e38754ffb1ac58a)
+        ;
+
+        
+    
+    
+            var poly_line_d74b7afdd2d3f7b503c30cb36c58661a = L.polyline(
+                [[1.6613, 103.6037], [1.65816, 103.60769], [1.65416, 103.60966], [1.65095, 103.61151], [1.6452, 103.61647], [1.63991, 103.62475], [1.63578, 103.6298], [1.63285, 103.63335], [1.62862, 103.63804], [1.62032, 103.646], [1.60581, 103.64787], [1.60143, 103.64505], [1.59676, 103.64563], [1.59098, 103.64781], [1.58527, 103.64944], [1.57983, 103.65631], [1.57116, 103.66092], [1.57361, 103.65993], [1.56825, 103.6609], [1.54852, 103.65724], [1.54349, 103.65818], [1.54465, 103.6579], [1.54563, 103.65785], [1.5415, 103.6595], [1.52809, 103.6709], [1.52539, 103.67695], [1.51916, 103.68192], [1.5148, 103.68521], [1.5121, 103.68701], [1.50881, 103.68922], [1.50265, 103.69357], [1.49891, 103.69849], [1.50177, 103.7006], [1.50366, 103.69648], [1.50166, 103.69497], [1.50091, 103.69601], [1.49891, 103.69849], [1.50045, 103.69955], [1.49897, 103.69895], [1.49699, 103.70184], [1.4957, 103.70352], [1.49417, 103.70574], [1.48891, 103.71284], [1.4895, 103.71354], [1.49107, 103.71124], [1.48959, 103.71219], [1.49105, 103.71119], [1.48741, 103.71493], [1.48773, 103.71876], [1.48643, 103.72057], [1.48976, 103.73011], [1.48721, 103.72435], [1.488, 103.72208], [1.49256, 103.72307], [1.49595, 103.71847], [1.48881, 103.71314], [1.48643, 103.72057], [1.48871, 103.72767]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_613796972c88c146275f6ec4b7cb613a);
+>>>>>>> bc2fbc133d78f518fe2968adbf10370b0a1a5863
         
 </script>
 </html>
