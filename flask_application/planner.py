@@ -111,7 +111,7 @@ def process_data(start, destination, option):
 
         if path_names_coordinates:
             
-            map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop)
+            map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop,start,destination)
 
             # Guide user to destination from end bus stop
             if(end_bus_stop['Distance'] > 0):
