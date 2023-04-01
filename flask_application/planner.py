@@ -1,7 +1,9 @@
 from mapping import *
 from utils import *
-from algorithms import aStarAlgo
 from algorithms import dijkstra_Algo
+from algorithms import *
+
+
 
 # Function to get the coordinates of a given coordinate/address input
 def process_inputs(address):
@@ -35,6 +37,7 @@ def process_inputs(address):
     return coordinates, error_msg
                 
 def process_data(start, destination, option):
+    my_dict = {}
 
     # Fixed string for errors
     error_header = "ERROR: "
@@ -45,7 +48,7 @@ def process_data(start, destination, option):
     start_coordinates, invalid_input = process_inputs(start)
     # Check for invalid inputs
     if(invalid_input):
-        return error_header + invalid_input
+        my_dict['error'] = error_header + invalid_input
 
     # Step 2: Get nearest bus stop to starting coordinates
     start_bus_stop = get_nearest_bus_stop(start_coordinates[0], start_coordinates[1])
@@ -55,7 +58,7 @@ def process_data(start, destination, option):
     end_coordinates, invalid_input = process_inputs(destination)
     # Check for invalid inputs
     if(invalid_input):
-        return error_header + invalid_input
+        my_dict['error'] = error_header + invalid_input
 
     # Step 4: Get nearest bus stop to ending coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
@@ -64,21 +67,21 @@ def process_data(start, destination, option):
 
     # Check if start and end locations are the same
     if(start_coordinates == end_coordinates): 
-        return error_header + "Both starting and ending locations are the same! No bus journey planning will be provided."
+        my_dict['error'] = error_header + "Both starting and ending locations are the same! No bus journey planning will be provided."
     else:
         #Step 5 Guide user to nearest bus stop => Error in Google AP
         
         #Step 6 Find Shortest Path for bus to travel to end bus stop
-        busName, pathID = None, None
+
         if option == '1':  #Shortest-Distance
+            print("Dijsktra!")
             pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             getBusRouteDuration(total_distance)
             busName = convertBusIDListToNameList(busName)
-            
         elif option == '2': #Shortest-Time
-            #Maintenance
-            #busName,pathID = aStarAlgo.get_path(start_bus_stop['StopID'],end_bus_stop['StopID'])
-            pass
+            print("A STAR!")
+            busName, pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+
         else:
             print("Error in Options")
 
@@ -86,12 +89,12 @@ def process_data(start, destination, option):
         #Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
 
-
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
         id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
         # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
         path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
+        path_names = [name for name, lat, long in path_names_coordinates]
 
         #Extract the coordinates from the list of names and coordinates
         path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
@@ -112,11 +115,13 @@ def process_data(start, destination, option):
                 # Print guiding instructions
                 print(footer) 
                 print(end_instructions)
+            
+            # Returns error, maphtml and routes
+            my_dict['map_html'] = map_html
+            my_dict['routes'] = path_names
+            return jsonify(my_dict)
 
-            return map_html
-
-
-
+            # return map_html, path_names_coordinates
 
         # Check for email notification
         # user_input = input("\nDo you want a copy of these directions sent to your email? (Yes or No): ")

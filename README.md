@@ -235,8 +235,8 @@ Follow the instructions below to setup an empty database, and populate it with c
     ```
 ### Program Execution
 1. Run the Flask application using the following command on a terminal:
-    <br>**Ensure that you are in the same working directory as the program files*
+    <br>**Ensure that you are in the `/flask_application` directory*
     ```
-    python3 flask_application/run.py 
+    python3 run.py 
     ```
 2. Navigate to [`localhost:8080`](http://localhost:8080) on your browser, and start journey planning!

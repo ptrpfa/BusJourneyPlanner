@@ -10,7 +10,7 @@ INTEGRATE_LIVE_BUS = False  # Boolean to configure the integration of live bus d
 TELEGRAM_KEY = '6231504474:AAHLpZcrJBEGGW0N6I0LbSxaJzjRnl69i3M'
 
 # Google Map API
-gmap_api_key = 'AIzaSyBV9jbLm29r5xYKHjJrv0UtZk5qMe-KPt4'
+gmap_api_key = 'AIzaSyBMvvKkWWJ3Nw-sIpBraBIwAGiXG_WYV9Y'
 
 # PAJ API
 paj_api_endpoint = 'https://dataapi.paj.com.my/api/v1'
