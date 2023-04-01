@@ -62,7 +62,7 @@ def route_planner(start_coordinates, end_coordinates):
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
         id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
-        # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
+        # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary [(name, lat, lng), (name, lat, lng)]
         path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
 
         #Extract the coordinates from the list of names and coordinates
@@ -71,10 +71,11 @@ def route_planner(start_coordinates, end_coordinates):
         if path_names_coordinates: #For Checking 
             #Step 8: Guide user to destination from end bus stop
             if(end_bus_stop['Distance'] > 0):
-                footer = "\nDirections to %s\n" % destination
                 end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
 
                 return end_instructions
+        else: 
+            return ERROR_HEADER + "Well directions not found..."
 
 def start_command(update, context):
     update.message.reply_text('Tell me where you are?')
