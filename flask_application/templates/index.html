@@ -66,12 +66,12 @@
 					    <div class="form-group" style="display: flex; justify-content: space-between;">
 						    <button id="show-results-btn" type="button" class="btn btn-primary">Show Results</button>
 							<div class="dropdown">
-							  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="1">
 							    Options
 							  </button>
 							  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-							  	<a class="dropdown-item" value="1">Shortest Distance</a>
-							    <a class="dropdown-item" value="2">Shortest Time</a>
+							  	<a class="dropdown-item" id="distanceOption" value="1">Shortest Distance</a>
+							    <a class="dropdown-item" id="timeOption" value="2">Shortest Time</a>
 							  </div>
 							</div>
 						</div>
@@ -83,35 +83,13 @@
             <div class="row">
                 <div class="col">
                 	<div class = "display">
-                    	
-                    <ul id=results>
-						<li>
-							<div class="route">
-								<h3>Route 1</h3>
-							</div>
-							<p>10 min | Bus Number</p>
-						</li>
-						<li>
-							<div class="route">
-								<h3>Route 2</h3>
-							</div>
-							<p>15 min | Bus Number</p>
-
-						</li>
-						<li>
-							<div class="route">
-								<h3>Route 3</h3>
-							</div>
-							<p>17 min | Bus Number</p>
-						</li>
-						<li>
-							<div class="route">
-								<h3>Route 4</h3>
-							</div>
-							<p>40 min | Alex Binder Bus</p>
-
-						</li>
-					</ul>
+	                    <ul id=results>
+							<!-- <button id="moveBtn">Move Left</button> -->
+						</ul>
+						<button class="toggle-menu">
+						  <span class="open-menu">&#187;</span>
+						  <span class="close-menu">&#171;</span>
+						</button>
 					<div id="map" style="height: 600px;">
                     		
                     </div>

@@ -6,11 +6,8 @@ LOCAL_DB = False            # Boolean to configure the use of a local database
 LOAD_BUS_FROM_DB = False    # Boolean to configure the loading of bus schedule from the database (otherwise, will load using pickled file)
 INTEGRATE_LIVE_BUS = False  # Boolean to configure the integration of live bus data into the calculations of the fastest path
 
-# Telegram Bot API Key
-TELEGRAM_KEY = '6231504474:AAHLpZcrJBEGGW0N6I0LbSxaJzjRnl69i3M'
-
 # Google Map API
-gmap_api_key = 'AIzaSyBMvvKkWWJ3Nw-sIpBraBIwAGiXG_WYV9Y'
+gmap_api_key = 'AIzaSyBV9jbLm29r5xYKHjJrv0UtZk5qMe-KPt4'
 
 # PAJ API
 paj_api_endpoint = 'https://dataapi.paj.com.my/api/v1'

@@ -1,5 +1,6 @@
 from cloud_config import *
 from setup import *
+
 # from algorithms import *
 
 from bs4 import BeautifulSoup as bs_4
@@ -264,34 +265,16 @@ def get_fastest_bus_stop(start_bus_stop_id): # Weight: Duration (time)
 
     # Get list of nearest bus stops, in ascending order (fastest one in lower index)
     bus_stops = []
-
     # Check if there are any scheduled buses for the day
     check_sql = "SELECT IF(CURRENT_TIME() <= (SELECT MAX(Time) FROM Schedule), \"Today\", \"Tomorrow\");"
     db_cursor.execute(check_sql)
     bus_day = db_cursor.fetchall()[0][0]
-
-    # Boolean to check bus day
-    today = None
-
     # Get bus stops
     if(bus_day == "Today"):
-        # Get buses for the day
-        today = True
         sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), Time) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID  JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID  WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 AND Time >= CURRENT_TIME() ORDER BY Total_Time ASC;" % start_bus_stop_id
     else:
-        # Get buses for the next day
-        today = False
         sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), CONCAT(DATE(NOW() + INTERVAL 1 DAY), \' \', Time)) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), CONCAT(DATE(NOW() + INTERVAL 1 DAY), \' \', Time)) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 ORDER BY Total_Time ASC;" % start_bus_stop_id
     db_cursor.execute(sql)
-
-    # Check for edge cases whereby the bus stop only has few buses (ie only one bus service), and there is no more scheduled buses for the day
-    if(today and db_cursor.rowcount == 0):
-        # Get buses for the next day instead in this case
-        today = False
-        sql = "SELECT Edge.*, Bus.BusID, Bus.Name, Schedule.Time AS Time, Weight.Weight As Duration, TIMESTAMPDIFF(SECOND, CURRENT_TIME(), CONCAT(DATE(NOW() + INTERVAL 1 DAY), \' \', Time)) / 60 AS Waiting_Time, (Weight.Weight + (TIMESTAMPDIFF(SECOND, CURRENT_TIME(), CONCAT(DATE(NOW() + INTERVAL 1 DAY), \' \', Time)) / 60)) AS Total_Time FROM Edge JOIN BusRoute ON Edge.RouteID = BusRoute.RouteID  JOIN Bus ON BusRoute.BusID = Bus.BusID JOIN Weight ON Edge.EdgeID = Weight.EdgeID JOIN Schedule ON BusRoute.RouteID = Schedule.RouteID WHERE Edge.FromBusStopID = %s AND Weight.Type = 2 ORDER BY Total_Time ASC;" % start_bus_stop_id
-        db_cursor.execute(sql)
-
-    # Loop through buses obtained
     for i in db_cursor:
         # Parse each row
         schedule_time = datetime.datetime.min + i[6]
@@ -382,10 +365,6 @@ def send_email(incoming_email, subject, message):
         server.quit ()
         return email_sent
     
-def test_function():
-    for start_bus_stop_id in range(1, 168):
-        print("Bus Stop: %s (%s)" % (start_bus_stop_id, len(get_fastest_bus_stop(start_bus_stop_id))))
-
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def getData():
@@ -737,6 +716,7 @@ def getBusRouteDuration(total_distance):
 
     # Print the total duration in the desired format
     print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
+
 
 def convertBusIDListToNameList(busIDList):
     busNameList = []

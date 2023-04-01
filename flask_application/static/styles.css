@@ -165,18 +165,62 @@ h1 {
     color: #333;
     text-decoration: none;
 }
+.toggle-menu{
+    top: 93%;
+    left:-100%;
+    z-index: 100000;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;    
+    border: none;
+    width: 40px;
+    height: 40px;
+}
+.toggle-menu .open-menu,
+.toggle-menu .close-menu {
+    font-size: 24px;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+    padding: 6px 10px;
+    background-color: #1abc9c;
+}
 
+.toggle-menu .open-menu {
+    display: block;
+}
+
+.toggle-menu .close-menu {
+    display: none;
+}
+
+.toggle-menu.show .open-menu {
+    display: none;
+}
+
+.toggle-menu.show .close-menu {
+    display: block;
+}
+
+.toggle-menu.show{
+    left: 30%;
+    transition: left 0.5s ease; 
+}
+.toggle-menu.hide{
+    left:0;
+    transition: left 0.5s ease; 
+}
 
 #results {
     position: absolute;
-    background-color: wheat;
-    top: 0;
-    left: -100%;
+    background-color: #f9f9f9;
+    left:-100%;
     width: 30%;
-    z-index: 1;
+    z-index: 100000;
     list-style: none;
     padding: 10px;
-    text-align: center;
+    text-align: left;
     height: 100%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -190,6 +234,7 @@ h1 {
 
 #results.show {
   left: 0;
+  transition: left 0.5s ease; /* animate left property change */
 }
 
 #results li {
@@ -204,11 +249,15 @@ h1 {
 
 #results h3 {
     margin: 0;
+    font-size: medium;
+    color: #395583;
+
 }
 
 #results p {
     margin: 5px 0 0 0;
-    color: #888;
+    font-size: small;
+    color: #8eafe6;
 }
 
 #map {
@@ -221,8 +270,8 @@ h1 {
 }
 
 .route {
-  background-color: #f2f2f2;
-  padding: 10px;
+  /* background-color: #f2f2f2; */
+  padding: -20px;
   border-radius: 5px;
   margin-bottom: 5px;
 }
