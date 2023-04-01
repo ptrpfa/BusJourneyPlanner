@@ -736,7 +736,6 @@ def getBusRouteDuration(total_distance):
     seconds = int(total_duration % 60)
 
     duration = str(hours) + " hr " + str(minutes) + " min"
-    print(duration)
     # Print the total duration in the desired format
     print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
     return duration
