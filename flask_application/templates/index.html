@@ -5,6 +5,7 @@
         <title>Johor Bus Journey Planner</title>
         <meta name="veiwport" consent="initial-scale=1.0">
         <meta charset="utf-8">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <!--Leaflet CSS -->
 		 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 		     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
@@ -65,6 +66,9 @@
 					    <!-- <button id="show-results-btn" type="button" class="btn btn-primary">Show Results</button> -->
 					    <div class="form-group" style="display: flex; justify-content: space-between;">
 						    <button id="show-results-btn" type="button" class="btn btn-primary">Show Results</button>
+						    <div id="loading-spinner" style="display: none;">
+							  <i class="fa fa-spinner fa-spin"></i> Loading...
+							</div>
 							<div class="dropdown">
 							  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value="1">
 							    Options

@@ -1,7 +1,3 @@
-// var map = L.map('map').fitWorld();
-// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-// attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// }).addTo(map);
 
 $(document).ready(function () {
 
@@ -61,7 +57,6 @@ $(document).ready(function () {
     var dropdownButton = $('.dropdown-toggle');
     var value = 1;
 
-
     showResultsBtn.addEventListener('click', () => {
         clearInterval(intervalID);
         submitForm(value);
@@ -70,22 +65,11 @@ $(document).ready(function () {
     dropdownMenu.on('click', 'a', function () {
         // Get the selected dropdown item's text
         var selectedText = $(this).text();
-        var selectedValue = $(this).attr('value');
+        value = $(this).attr('value');
         // Set the dropdown button text to the selected text
         dropdownButton.text(selectedText);
     });
 
-    // Set value of button based on algorithm selected
-    $('#distanceOption').on('click', function () {
-        // Set value
-        var algo_select = document.getElementById('dropdownMenuButton');
-        algo_select.setAttribute('value', '1');
-    });
-    $('#timeOption').on('click', function () {
-        // Set value
-        var algo_select = document.getElementById('dropdownMenuButton');
-        algo_select.setAttribute('value', '2');
-    });
 
     $(".toggle-menu").click(function () {
         //result => left:-100%
@@ -107,6 +91,7 @@ $(document).ready(function () {
 
     // Email global variable
     var overall_directions = "";
+
 
 });
 
@@ -136,21 +121,20 @@ function email() {
 }
 
 function submitForm(value) {
+
     // Get the input data from the form
     const destination = document.getElementById("destination").value;
     const start = document.getElementById("start-location").value;
-    //const resultsList = document.getElementById('results');
-    var dropdownText = $('.dropdown-toggle').text();
-    var dropdownValue = $('.dropdown-item').attr('value');
-    var dropdownButton = $('.dropdown-toggle').attr('value');
-    var algo_select = document.getElementById('dropdownMenuButton').value;
+    const spinner = document.getElementById("loading-spinner");
 
+    spinner.style.display = 'inline-block';
     // Send the data to the Flask server using AJAX
     $.ajax({
         url: "/process-data",
         type: "POST",
-        data: { Start: start, Destination: destination, Option: algo_select },
+        data: { Start: start, Destination: destination, Option: value },
         success: function (data) {
+            spinner.style.display = 'none';
             var map_html = data.map_html;
             var routes = data.routes;
             var duration = data.duration;
@@ -178,8 +162,8 @@ function submitForm(value) {
                 $('#results').append(newDuration);
                 overall_directions += newDuration.innerHTML;
 
-                var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p>"+ path_start_instructions +"</p><\/div>"
-                var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p>"+ path_end_instructions +"</p><\/div>"
+                var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary instruction\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p>"+ path_start_instructions +"</p><\/div>"
+                var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary instruction\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p>"+ path_end_instructions +"</p><\/div>"
 
                 // Show start walking route
                 if(path_start_instructions.length > 0) {
@@ -190,7 +174,7 @@ function submitForm(value) {
                 }
 
                 // Add collapsible button for route
-                var routeButton = "<button data-toggle=\"collapse\" style=\"margin:10px;\" data-target=\"#routeInfo\" class=\"btn btn-primary\">🚍 Bus Routes<\/button>"
+                var routeButton = "<button data-toggle=\"collapse\" style=\"margin:10px;\" data-target=\"#routeInfo\" class=\"btn btn-primary instruction\">🚍 Bus Routes<\/button>"
                 $('#results').append(routeButton)
                 
                 // Show Bus route
