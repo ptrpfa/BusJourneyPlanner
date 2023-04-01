@@ -1,17 +1,47 @@
 from cloud_config import *
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler    
 from telegram import ChatAction
 from time import sleep
 
 from utils import *
 from algorithms import aStarAlgo
 from algorithms import dijkstra_Algo
-import planner
 
 print("Bot started...")
 START, END = range(2)
 # Fixed string for errors
 ERROR_HEADER = "ERROR: "
+
+
+def process_inputs(address):
+    # Initialise return variables
+    coordinates = None
+    error_msg = None
+
+    # Check if input received are coordinates
+    if(re.match('(\d+\.\d+)\s*,\s*(\d+\.\d+)', address)):
+        # Get coordinates
+        coordinates = [float(i.strip()) for i in address.split(",")]
+        # Check if coordinates are wrong
+        if(not validate_coordinates(*coordinates)):
+            # Try swapping coordinates around to see if they are in the wrong order
+            coordinates[0], coordinates[1] = coordinates[1], coordinates[0]
+            # Check coordinates again
+            if(not validate_coordinates(*coordinates)):
+                coordinates = None
+                error_msg = "Coordinates received are wrong."
+    # Check for empty inputs
+    elif(address == ""):
+        error_msg = "Empty inputs! Please enter a valid input."
+    else:
+        # Get coordinates of address
+        coordinates = get_coordinates(address)
+        # Check if address received is valid
+        if(coordinates is None):
+            error_msg = "Please re-enter a valid address! Address received is invalid."
+
+    # Return coordinates and error message, if any
+    return coordinates, error_msg
 
 def sample_responses(input_text):
     user_message = str(input_text).lower()
@@ -27,9 +57,9 @@ def handle_message(update, context):
 
     update.message.reply_text(response)
 
-def route_planner(start_coordinates, end_coordinates):
+def route_planner(start_coordinates, end_coordinates, option):
     """ Journey Planning """
-    option = '1'
+   
     # Check if start and end locations are the same
     if(start_coordinates == end_coordinates): 
         return ERROR_HEADER + "Both starting and ending locations are the same! No bus journey planning will be provided."
@@ -47,11 +77,11 @@ def route_planner(start_coordinates, end_coordinates):
         
         #Step 6 Find Shortest Path for bus to travel to end bus stop
         busName, pathID = None, None
-        if option == '1':  #Shortest-Distance
+        if option == "1":  #Shortest-Distance
             pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             getBusRouteDuration(total_distance)
             busName = convertBusIDListToNameList(busName)
-        elif option == '2': #Fastest-time
+        elif option == "2": #Fastest-time
             #Mainenance
             pass
 
@@ -88,7 +118,7 @@ def start_location(update, context):
     sleep(1)
 
     # Step 1: Get starting coordinates of user
-    start_coordinates, invalid_input = planner.process_inputs(start)
+    start_coordinates, invalid_input = process_inputs(start)
     # Check for invalid inputs
     if(invalid_input):
         str_error = ERROR_HEADER + invalid_input
@@ -111,7 +141,7 @@ def end_location(update, context):
     sleep(1)
 
     # Step 2: Get ending coordinates of user 
-    end_coordinates, invalid_input = planner.process_inputs(destination)
+    end_coordinates, invalid_input = process_inputs(destination)
     # Check for invalid inputs
     if(invalid_input):
         str_error = ERROR_HEADER + invalid_input
@@ -124,11 +154,44 @@ def end_location(update, context):
     context.user_data['destination'] = destination
     context.user_data['end_coordinates'] = end_coordinates
 
+    reply, keyboard = Options_Keyboard()
+
+    update.message.reply_text(reply, reply_markup=keyboard)
+
+    return END
+
+def Options_Keyboard():
+
+    reply = "Select your prefered choice: "
+    keyBoard = {
+        "inline_keyboard": [
+            [{
+                "text": "Shortest Distance",
+                "callback_data": "1",
+                "one_time_keyboard": True
+            },
+            {
+                "text": "Fastest Time",
+                "callback_data": "2",
+                "one_time_keyboard": True
+            }
+            ]
+        ]
+    }
+
+    return reply, keyBoard
+
+def callback_options(update, context):
+    
+    query = update.callback_query
+    # Get the VehNum
+    option = query.data
+
     #Get the start location
     start = context.user_data['start']
     start_coordinates = context.user_data['start_coordinates']
 
-    end_instructions = route_planner(start_coordinates, end_coordinates)
+    end_instructions = route_planner(start_coordinates, end_coordinates, option)
 
     if end_instructions.startswith("ERROR:"):
         update.message.reply_text(end_instructions)
@@ -139,7 +202,7 @@ def end_location(update, context):
 
     return ConversationHandler.END
 
-def cancel(update, context):
+def cancel(update, context):    
     update.message.reply_text("Thank you for using Johor Planner")
     return ConversationHandler.END
 
@@ -160,14 +223,14 @@ def main():
         entry_points=[CommandHandler('start', start_command)],
         states={
             START: [MessageHandler(Filters.text & (~ Filters.command), start_location)],
-            END: [MessageHandler(Filters.text & (~ Filters.command), end_location)],
+            END: [MessageHandler(Filters.text & (~ Filters.command), end_location), CallbackQueryHandler(callback_options)],
         },
         fallbacks=[CommandHandler('cancel', cancel), CommandHandler('restart', restart)]
     )
 
     dp.add_handler(conv_handler)
     #dp.add_handler(MessageHandler(Filters.text, handle_message))
-   
+    dp.add_handler(CallbackQueryHandler(callback_options), per_message=True)
     dp.add_error_handler(error)
 
     updater.start_polling()
