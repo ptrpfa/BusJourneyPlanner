@@ -105,9 +105,35 @@ $(document).ready(function () {
         }
     });
 
+    // Email global variable
+    var overall_directions = "";
 
 });
 
+function email() {
+    var emailInput = document.getElementById("email-input").value;
+    var destination = document.getElementById("destination").value;
+    var start = document.getElementById("start-location").value;
+    var subject = "Directions from " + start + " to " + destination;
+    if(emailInput.length > 0) {
+        // Send the data to the Flask server using AJAX
+        $.ajax({
+            url: "/email",
+            type: "POST",
+            data: { Email: emailInput, Subject: subject, Message: overall_directions},
+            success: function() {
+                alert("Email sent to " + emailInput + "!");
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        }
+    else {
+        alert("ERROR: No email entered!");
+    }
+    
+}
 
 function submitForm(value) {
     // Get the input data from the form
@@ -142,10 +168,15 @@ function submitForm(value) {
                 // Update the target div with the processed data
                 $("#map").html(map_html);
 
+                // Clear results from any previous contents
+                overall_directions = "";
+                $("#results").html("");
+
                 // Show Duration
                 var newDuration = document.createElement('p')
                 newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</h4></div>'
                 $('#results').append(newDuration);
+                overall_directions += newDuration.innerHTML;
 
                 var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p>"+ path_start_instructions +"</p><\/div>"
                 var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p>"+ path_end_instructions +"</p><\/div>"
@@ -155,6 +186,7 @@ function submitForm(value) {
                     var startingDirections = document.createElement('div');
                     startingDirections.innerHTML = '<div class="start_instructions" style="margin-left:10px;" >'+ parsedStartInstructions + '</div>' 
                     $('#results').append(startingDirections)
+                    overall_directions += startingDirections.innerHTML;
                 }
 
                 // Add collapsible button for route
@@ -166,6 +198,7 @@ function submitForm(value) {
                     var newElement = document.createElement('div');
                     newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + names + "</h3><p>" + "Bus Number: " + bus + '</p></div>';
                     $('#results').append(newElement);
+                    overall_directions += newElement.innerHTML;
                 });
                 
                 // Show end walking route
@@ -173,10 +206,11 @@ function submitForm(value) {
                     var endDirections = document.createElement('div');
                     endDirections.innerHTML = '<div class="end_instructions" style="margin-left:10px;">'+ parsedEndInstructions + '</div>' 
                     $('#results').append(endDirections)
+                    overall_directions += endDirections.innerHTML;
                 }
-                // var newEndInstructions = document.createElement('div')
-                // newEndInstructions = '<div class="end_instructions"><h3>On foot:</h3><p>' + path_end_instructions + '</p></div>'
-                // $('#results').append(newEndInstructions);
+
+                // Add email button
+                $('#results').append("<div class=\"form-group\" style=\"margin-top:20px; margin-left:10px;\"><label for=\"email-input\"><p style=\"color: green\">Save Planned Journey?</p><\/label><input class=\"form-control\" id=\"email-input\" type=\"text\" placeholder=\"Enter your email address\"\/><button type=\"button\" class=\"btn btn-secondary btn-sm\" style=\"margin-top:10px;\" onclick=\"email()\">📧 Send me a copy!</button><\/div>")
 
                 //result => left:0
                 $('#results').toggleClass("show");

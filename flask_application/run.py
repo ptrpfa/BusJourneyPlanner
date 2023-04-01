@@ -3,6 +3,7 @@ import mapping
 import planner
 import folium
 import random
+from utils import send_email
 
 app=Flask(__name__)
 
@@ -28,6 +29,18 @@ def process_data():
     return data 
 
     # return render_template('index.html', path_names_coordinates=planner.path_names_coordinates)
+
+@app.route("/email", methods=["POST"])
+def email_user():
+    # Get the input data from the request
+    email = request.form.get("Email")
+    subject = request.form.get("Subject")
+    message = request.form.get("Message")
+    if(send_email(email, subject, message)):
+        return "Success"
+    else:
+        return "Failed"
+
 
 #Updating the live map periodically
 @app.route('/update_map', methods=["GET"])
