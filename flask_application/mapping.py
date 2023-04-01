@@ -5,12 +5,12 @@ import polyline
 import requests 
 from flask import json, jsonify
 
-def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop):
+def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop,start,destination):
     map = folium.Map(location=start_coordinates, zoom_start=13)
 
     # Add markers for starting and ending locations
-    folium.Marker(start_coordinates, popup='Starting Location', icon=folium.Icon(color='red')).add_to(map)
-    folium.Marker(end_coordinates, popup='Ending Location', icon=folium.Icon(color='red')).add_to(map)
+    folium.Marker(location=start_coordinates, popup='Starting Location: {}'.format(start), icon=folium.Icon(color='red')).add_to(map)
+    folium.Marker(location=end_coordinates, popup='Destination Location: {}'.format(destination), icon=folium.Icon(color='red')).add_to(map)
 
     # Add markers for all bus stop on the path and pop with number and name
     counter = 1
