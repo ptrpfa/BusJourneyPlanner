@@ -161,7 +161,7 @@ def shortest_path_with_min_transfers(start, end):
 	# return None to indicate that there is no path between the nodes
 	return None
 
-def validaeWithLib():
+def validateWithLib():
 	graph = getData()
 
 	#This the Python networtx lib to find shortest path

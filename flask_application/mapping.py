@@ -116,8 +116,6 @@ def add_markers(path_names_coordinates, map):
             folium.Marker(coordinates, popup=popup_name).add_to(map)
             counter += 1
 
-
-
 def update_markers():
     feature_collection = {
             "type": "FeatureCollection",

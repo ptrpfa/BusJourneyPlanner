@@ -6,7 +6,7 @@ Journey Planning application designed to enable commuters to plan their journey 
 - Adrian Pang Zi Jian​ (2200692)​​
 - Muhammad Nur Dinie Bin Aziz (2200936)​​
 - Ryan Lai Wei Shao (2201159)​​
-- Jeffrey Yap Wan Lin​ (2200692)​
+- Jeffrey Yap Wan Lin​ (2201018)​
 
 
 ## List of Contents

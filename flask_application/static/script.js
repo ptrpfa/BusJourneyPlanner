@@ -105,9 +105,35 @@ $(document).ready(function () {
         }
     });
 
+    // Email global variable
+    var overall_directions = "";
 
 });
 
+function email() {
+    var emailInput = document.getElementById("email-input").value;
+    var destination = document.getElementById("destination").value;
+    var start = document.getElementById("start-location").value;
+    var subject = "Directions from " + start + " to " + destination;
+    if(emailInput.length > 0) {
+        // Send the data to the Flask server using AJAX
+        $.ajax({
+            url: "/email",
+            type: "POST",
+            data: { Email: emailInput, Subject: subject, Message: overall_directions},
+            success: function() {
+                alert("Email sent to " + emailInput + "!");
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        }
+    else {
+        alert("ERROR: No email entered!");
+    }
+    
+}
 
 function submitForm(value) {
     // Get the input data from the form
@@ -128,7 +154,9 @@ function submitForm(value) {
             var map_html = data.map_html;
             var routes = data.routes;
             var duration = data.duration;
-            console.log(routes)
+            var bus = data.bus;
+            var path_start_instructions = data.path_start_instructions;
+            var path_end_instructions = data.path_end_instructions;
 
             // Check for invalid inputs
             if (data.hasOwnProperty("error")) {
@@ -140,19 +168,49 @@ function submitForm(value) {
                 // Update the target div with the processed data
                 $("#map").html(map_html);
 
+                // Clear results from any previous contents
+                overall_directions = "";
+                $("#results").html("");
+
+                // Show Duration
                 var newDuration = document.createElement('p')
                 newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</h4></div>'
                 $('#results').append(newDuration);
+                overall_directions += newDuration.innerHTML;
+
+                var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p>"+ path_start_instructions +"</p><\/div>"
+                var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p>"+ path_end_instructions +"</p><\/div>"
+
+                // Show start walking route
+                if(path_start_instructions.length > 0) {
+                    var startingDirections = document.createElement('div');
+                    startingDirections.innerHTML = '<div class="start_instructions" style="margin-left:10px;" >'+ parsedStartInstructions + '</div>' 
+                    $('#results').append(startingDirections)
+                    overall_directions += startingDirections.innerHTML;
+                }
+
+                // Add collapsible button for route
+                var routeButton = "<button data-toggle=\"collapse\" style=\"margin:10px;\" data-target=\"#routeInfo\" class=\"btn btn-primary\">🚍 Bus Routes<\/button>"
+                $('#results').append(routeButton)
                 
+                // Show Bus route
                 routes.forEach(names => {
-                    var newElement = document.createElement('li');
-                    newElement.innerHTML = '<div class="route"><h3>' + 
-                                            names + '</h3></div>' +
-                                            "<p>" + "Bus Number: insert bus here" + 
-                                            '</p>';
+                    var newElement = document.createElement('div');
+                    newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + names + "</h3><p>" + "Bus Number: " + bus + '</p></div>';
                     $('#results').append(newElement);
+                    overall_directions += newElement.innerHTML;
                 });
                 
+                // Show end walking route
+                if(path_end_instructions.length > 0) {
+                    var endDirections = document.createElement('div');
+                    endDirections.innerHTML = '<div class="end_instructions" style="margin-left:10px;">'+ parsedEndInstructions + '</div>' 
+                    $('#results').append(endDirections)
+                    overall_directions += endDirections.innerHTML;
+                }
+
+                // Add email button
+                $('#results').append("<div class=\"form-group\" style=\"margin-top:20px; margin-left:10px;\"><label for=\"email-input\"><p style=\"color: green\">Save Planned Journey?</p><\/label><input class=\"form-control\" id=\"email-input\" type=\"text\" placeholder=\"Enter your email address\"\/><button type=\"button\" class=\"btn btn-secondary btn-sm\" style=\"margin-top:10px;\" onclick=\"email()\">📧 Send me a copy!</button><\/div>")
 
                 //result => left:0
                 $('#results').toggleClass("show");
