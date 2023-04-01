@@ -127,6 +127,7 @@ function submitForm(value) {
         success: function (data) {
             var map_html = data.map_html;
             var routes = data.routes;
+            var duration = data.duration;
             console.log(routes)
 
             // Check for invalid inputs
@@ -138,14 +139,20 @@ function submitForm(value) {
             else {
                 // Update the target div with the processed data
                 $("#map").html(map_html);
+
+                var newDuration = document.createElement('p')
+                newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</h4></div>'
+                $('#results').append(newDuration);
+                
                 routes.forEach(names => {
                     var newElement = document.createElement('li');
                     newElement.innerHTML = '<div class="route"><h3>' + 
-                                            names + '</h3></div><p>' + 
-                                            "time" + ' | ' + "369bus" + 
+                                            names + '</h3></div>' +
+                                            "<p>" + "Bus Number: " + 
                                             '</p>';
                     $('#results').append(newElement);
                 });
+                
 
                 //result => left:0
                 $('#results').toggleClass("show");

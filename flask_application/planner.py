@@ -89,6 +89,9 @@ def process_data(start, destination, option):
         #Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
 
+        #Get time 
+        path_time = getBusRouteDuration(total_distance)
+
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
         id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
@@ -119,6 +122,7 @@ def process_data(start, destination, option):
             # Returns error, maphtml and routes
             my_dict['map_html'] = map_html
             my_dict['routes'] = path_names
+            my_dict['duration'] = path_time
             return jsonify(my_dict)
 
             # return map_html, path_names_coordinates
