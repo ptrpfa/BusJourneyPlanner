@@ -523,6 +523,19 @@ def shortest_path_with_min_transfers(start, end):
 	# return None to indicate that there is no path between the nodes
 	return None
 
+def getBusRouteDuration(total_distance):
+    total_duration = total_distance / 70 * 60 * 60  # in seconds
+    
+    # Convert the total duration to hours, minutes, and seconds
+    hours = int(total_duration // 3600)
+    minutes = int((total_duration % 3600) // 60)
+    seconds = int(total_duration % 60)
+
+    duration = str(hours) + " hr " + str(minutes) + " min"
+    # Print the total duration in the desired format
+    print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
+    return duration
+
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # A-Star algoritm which is Djikstra but with heuristic function
@@ -573,21 +586,23 @@ def aStarAlgo(startNode, endNode):
                 neighbour = previousNode
 
             # Reverse dictionary and print sequential steps
-            reversedDict = {}
             stopList.reverse()
+            # reversedDict = {}
             #print("No | Stops      Bus")
             #print("------------------------")
             
-            # Count stops and busIDs for bus changes
-            for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
-                reversedDict[key] = str(value)
+            # # Count stops and busIDs for bus changes
+            # for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
+            #     reversedDict[key] = str(value)
 
-                # Print format to left align with 3 and 11 width counts
-                #print(f"{count: <3}| {key: <11}{reversedDict[key]}")
+            #     # Print format to left align with 3 and 11 width counts
+            #     print(f"{count: <3}| {key: <11}{reversedDict[key]}")
 
             # Prints total duration of journey
             print("\nJourney time is estimated to be about {} hours {} minutes {} seconds".format(totalTime[0], totalTime[1], totalTime[2]))
-            return busList, stopList
+            duration = str(totalTime[0]) + " hr " + str(totalTime[1]) + " min"
+
+            return busList, stopList, duration
 
         # Add neighbour to visited because edges will be inspected
         visited.add(neighbour)
@@ -726,19 +741,6 @@ def getBusStopNamesFromID():
 
     # Return coordinates in list form [Latitude][Longitude]
     return result_set
-
-def getBusRouteDuration(total_distance):
-    total_duration = total_distance / 70 * 60 * 60  # in seconds
-    
-    # Convert the total duration to hours, minutes, and seconds
-    hours = int(total_duration // 3600)
-    minutes = int((total_duration % 3600) // 60)
-    seconds = int(total_duration % 60)
-
-    duration = str(hours) + " hr " + str(minutes) + " min"
-    # Print the total duration in the desired format
-    print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
-    return duration
 
 def convertBusIDListToNameList(busIDList):
     busNameList = []

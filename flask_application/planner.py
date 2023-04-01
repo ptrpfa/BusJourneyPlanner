@@ -77,11 +77,15 @@ def process_data(start, destination, option):
         if option == '1':  #Shortest-Distance
             print("Dijsktra!")
             pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
-            getBusRouteDuration(total_distance)
             busName = convertBusIDListToNameList(busName)
+
+            #Get time 
+            path_time = getBusRouteDuration(total_distance)
+
         elif option == '2': #Shortest-Time
             print("A STAR!")
-            busName, pathID = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            busName, pathID, totalTime = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            path_time = totalTime
 
         else:
             print("Error in Options")
@@ -89,9 +93,6 @@ def process_data(start, destination, option):
 
         #Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
-
-        #Get time 
-        path_time = getBusRouteDuration(total_distance)
 
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
         id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
