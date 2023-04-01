@@ -232,6 +232,8 @@ h1 {
     transition: left 0.5s ease; /* animate left property change */
 }
 
+
+
 #results.show {
   left: 0;
   transition: left 0.5s ease; /* animate left property change */

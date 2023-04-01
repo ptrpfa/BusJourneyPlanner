@@ -111,10 +111,10 @@ def process_data(start, destination, option):
             
             map_html = generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,start_bus_stop,end_bus_stop, start, destination)
             
-            if(start_bus_stop['Distance'] > 0 ):
-                path_start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
-                path_start_instructions = path_start_instructions.replace("\n","<br>")
-                print(path_start_instructions)
+            # if(start_bus_stop['Distance'] > 0 ):
+            #     path_start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
+            #     path_start_instructions = path_start_instructions.replace("\n","<br>")
+            #     print(path_start_instructions)
 
             # Guide user to destination from end bus stop
             if(end_bus_stop['Distance'] > 0):
@@ -133,7 +133,7 @@ def process_data(start, destination, option):
             my_dict['routes'] = path_names
             my_dict['duration'] = path_time
             my_dict['bus'] = bus
-            my_dict['path_start_instructions'] = path_start_instructions
+            # my_dict['path_start_instructions'] = path_start_instructions
             my_dict['path_end_instructions'] = path_end_instructions
             return jsonify(my_dict)
 
