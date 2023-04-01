@@ -129,6 +129,8 @@ function submitForm(value) {
             var routes = data.routes;
             var duration = data.duration;
             var bus = data.bus;
+            var path_start_instructions = data.path_start_instructions;
+            var path_end_instructions = data.path_end_instructions;
             console.log(routes)
 
             // Check for invalid inputs
@@ -140,6 +142,11 @@ function submitForm(value) {
             else {
                 // Update the target div with the processed data
                 $("#map").html(map_html);
+
+            
+                var newStartInstructions = document.createElement('div')
+                newStartInstructions = '<div class="start_instructions"><h3>On foot:</h3><p>' + path_start_instructions + '</p></div>'
+                $('#results').append(newStartInstructions);
 
                 var newDuration = document.createElement('p')
                 newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</h4></div>'
@@ -154,6 +161,9 @@ function submitForm(value) {
                     $('#results').append(newElement);
                 });
                 
+                var newEndInstructions = document.createElement('div')
+                newEndInstructions = '<div class="end_instructions"><h3>On foot:</h3><p>' + path_end_instructions + '</p></div>'
+                $('#results').append(newEndInstructions);
 
                 //result => left:0
                 $('#results').toggleClass("show");

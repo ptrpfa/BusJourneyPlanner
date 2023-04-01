@@ -342,7 +342,7 @@ def get_directions(origin_coordinates, destination_coordinates):
     for i in range(len(directions)):
         # Header
         if('maneuver' in directions[i].keys()):
-            str_directions += "\n\nStep %s:\nInstruction: %s\nGuide: %s" % (i + 1, directions[i]['maneuver'].title().replace("-", " "), bs_4(directions[i]['html_instructions'], 'html.parser').get_text())
+            str_directions += "\n\nStep %s:\nInstruction: %s\nGuide: %s " % (i + 1, directions[i]['maneuver'].title().replace("-", " "), bs_4(directions[i]['html_instructions'], 'html.parser').get_text())
         else:
             str_directions += "\n\nStep %s:\nInstruction: %s" % (i + 1, bs_4(directions[i]['html_instructions'], 'html.parser').get_text())
         # Body
