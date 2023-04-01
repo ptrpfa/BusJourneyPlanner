@@ -46,20 +46,24 @@ def process_data(start, destination, option):
     """ Journey Planning """
     # Step 1: Get starting coordinates of user
     start_coordinates, invalid_input = process_inputs(start)
+    
     # Check for invalid inputs
     if(invalid_input):
         my_dict['error'] = error_header + invalid_input
         return jsonify(my_dict)
+    
     # Step 2: Get nearest bus stop to starting coordinates
     start_bus_stop = get_nearest_bus_stop(start_coordinates[0], start_coordinates[1])
     print("Starting Bus Stop: ", start_bus_stop['StopID'], start_bus_stop['Name'])
 
     # Step 3: Get ending coordinates of user 
     end_coordinates, invalid_input = process_inputs(destination)
+
     # Check for invalid inputs
     if(invalid_input):
         my_dict['error'] = error_header + invalid_input
         return jsonify(my_dict)
+    
     # Step 4: Get nearest bus stop to ending coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
     end_bus_stop = get_nearest_bus_stop(end_coordinates[0], end_coordinates[1])
@@ -69,17 +73,16 @@ def process_data(start, destination, option):
     if(start_coordinates == end_coordinates): 
         my_dict['error'] = error_header + "Both starting and ending locations are the same! No bus journey planning will be provided."
         return jsonify(my_dict)
+    
     else:
-        #Step 5 Guide user to nearest bus stop => Error in Google AP
+        # Step 5 Guide user to nearest bus stop => Error in Google AP
         
-        #Step 6 Find Shortest Path for bus to travel to end bus stop
+        # Step 6 Find Shortest Path for bus to travel to end bus stop
 
         if option == '1':  #Shortest-Distance
             print("Dijsktra!")
             pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             busName = convertBusIDListToNameList(busName)
-
-            #Get time 
             path_time = getBusRouteDuration(total_distance)
 
         elif option == '2': #Shortest-Time
@@ -91,7 +94,7 @@ def process_data(start, destination, option):
             print("Error in Options")
 
 
-        #Get the list of [busStopID , names, lat , long] 
+        # Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
 
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
@@ -101,7 +104,7 @@ def process_data(start, destination, option):
         path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
         path_names = [name for name, lat, long in path_names_coordinates]
 
-        #Extract the coordinates from the list of names and coordinates
+        # Extract the coordinates from the list of names and coordinates
         path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
 
         # Print out Bus stop names and coordinates 
@@ -128,8 +131,6 @@ def process_data(start, destination, option):
 
                 path_end_instructions = end_instructions.replace("\n","<br>")
                 
-            
-
             # Returns error, maphtml and routes
             my_dict['map_html'] = map_html
             my_dict['routes'] = path_names
