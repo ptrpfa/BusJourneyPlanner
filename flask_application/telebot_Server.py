@@ -4,8 +4,8 @@ from telegram import ChatAction
 from time import sleep
 
 from utils import *
-from algorithms import aStarAlgo
-from algorithms import dijkstraAlgo
+from algorithms.aStarAlgo import *
+from algorithms.dijkstraAlgo import *
 import planner
 
 print("Bot started...")
@@ -49,11 +49,11 @@ def route_planner(start_coordinates, end_coordinates, option):
         #Step 6 Find Shortest Path for bus to travel to end bus stop
   
         if option == "1":  #Shortest-Distance
-            pathID, total_distance, busName = dijkstraAlgo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            pathID, total_distance, busName = shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             busName = convertBusIDListToNameList(busName)
             path_time = getBusRouteDuration(total_distance)
         elif option == "2": #Fastest-time
-            busName, pathID, path_time = aStarAlgo.aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            busName, pathID, path_time = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
 
         #Step 7:
         #Get the list of [busStopID , names, lat , long] 
@@ -81,7 +81,7 @@ def route_planner(start_coordinates, end_coordinates, option):
 
             # Get walking directions from last bus stop to destination
             if(end_bus_stop['Distance'] > 0):
-                footer = "\nDirections to %s\n" % destination
+                # footer = "\nDirections to %s\n" % destination
                 end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
                 path_end_instructions = end_instructions.replace("\n","<br>")
 
