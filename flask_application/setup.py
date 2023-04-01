@@ -1,11 +1,11 @@
 from cloud_config import *
 from utils import *
+from graphviz import Digraph
 
 import mysql.connector
 import networkx as nx
 import matplotlib.pyplot as plt
 import pydot
-from graphviz import Digraph
 import json
 
 #Function to call SQL to get result
@@ -136,7 +136,7 @@ def createGraph():
 
 	# pickle object to file path
     if(graph is not None):
-        pickle_object(graph,'Dataset/graph.pkl')
+        pickle_object(graph,'files/graph.pkl')
         print("Graph is created and saved...")
     else:
         print("Error: Graph is Empty...")            

@@ -1,6 +1,5 @@
 from cloud_config import *
 from setup import *
-# from algorithms import *
 
 from bs4 import BeautifulSoup as bs_4
 from email.mime.text import MIMEText            
@@ -9,6 +8,7 @@ from email.header import Header
 from email.utils import formataddr    
 from queue import PriorityQueue
 from pathlib import Path
+
 import re
 import mysql.connector
 import datetime
@@ -381,327 +381,11 @@ def send_email(incoming_email, subject, message):
         # Close server regardless whether the email was sent successfully or not
         server.quit ()
         return email_sent
-    
-def test_function():
-    for start_bus_stop_id in range(1, 168):
-        print("Bus Stop: %s (%s)" % (start_bus_stop_id, len(get_fastest_bus_stop(start_bus_stop_id))))
 
-#------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-def getData():
-    """ 
-    Function to load graph and return the graph object to caller 
-    """
-
-    # Open the pickled file in read binary mode
-    data = None
-    with open(file_pkl_graph, 'rb') as f:
-        # Load the contents of the file
-        data = pickle.load(f)
-
-    # Close the file
-    f.close()
-    return data
-
-def shortest_path_with_min_transfers(start, end):
-	"""
-	Dijkstra algo to get the shortest path with minumum # of transfers
-    
-    Parameters:
-    -----------
-	start - FromBusStopID
-	end - EndBusStopID
-
-	Output:
-	------
-	path_data = {
-		"Path":[ busStopID_1, busStopID_2, busStopID_3 ], 
-		"Total-Distance": Distance for journey from start to end bus stop
-	}
-    """
-
-	#Get Graph
-	graph = getData()
-
-	if graph is None:
-		return None #Error
-
-	# Create a dictionary to keep track of the minimum number of transfers required to reach each node
-	min_transfers = {node: float('inf') for node in graph.nodes()}
-	min_transfers[start] = 0
-
-	# Create a dictionary to keep track of the total distance from the source to each node
-	total_distance = {node: float('inf') for node in graph.nodes()}
-	total_distance[start] = 0
-
-	# Create a dictionary to keep track of the number of transfers made so far
-	num_transfers = {node: 0 for node in graph.nodes()}
-
-	# Create a dictionary to keep track of the previous node in the shortest
-	# path from the source to each node
-	previous = {node: None for node in graph.nodes()}
-
-	# Create a priority queue to store the nodes to be visited
-	queue = [(0, start, 0)]  # (total_distance, node, num_transfers)
-
-	while queue:
-		curr_distance, curr_node, curr_transfers = heapq.heappop(queue)
-
-		# Check if we've reached the target
-		if curr_node == end:
-			# Construct the shortest path from the previous nodes
-			path = []
-
-			while curr_node is not None:
-				path.append(curr_node)
-				curr_node = previous[curr_node]
-
-			path.reverse()
-			path_data = {"Path":path, "Total-Distance":total_distance[end]}
-
-
-			# #Print the routes and the distance between each edge
-			# shortest_path = {}
-
-			# for i in range(len(path)-1):
-			#     u, v = path[i], path[i+1]
-			#     data = graph.get_edge_data(u, v)
-			#     min_weight = round(total_distance[v] - total_distance[u],3)
-			#     bus = next(sub_data['bus'] for sub_data in data.values() if sub_data['weight'] == min_weight)
-
-			#     shortest_path[f"{u}-{v}"] = f"bus-{bus}, distance={min_weight}"
-			#     distance += min_weight
-        
-			return path,total_distance[end]
-
-		# Check if we've already visited this node with a smaller number of transfers
-		if curr_transfers > min_transfers[curr_node]:
-			continue
-
-		# Update the minimum number of transfers required to reach each neighbor
-		for neighbor in graph.neighbors(curr_node):
-			#If visited then ignore
-			if previous[curr_node] == neighbor:
-				continue
-
-			#Calculate minimum of the current->neighbor. Two nodes two different routes.
-			#E.g A->C, route 1 and route 2
-			min_route_to_prev_neighbor = None	
-			min_route_to_neighbor = min(graph[curr_node][neighbor].values(), key=lambda x: x['weight'])
-			if previous[curr_node] is not None:
-				min_route_to_prev_neighbor = min(graph[previous[curr_node]][curr_node].values(), key=lambda x: x['weight'])
-
-			# Calculate the number of transfers made to reach this neighbor
-			# previous[current_node] = gives the linking node to this current_node
-			if previous[curr_node] is None or min_route_to_neighbor['bus'] != min_route_to_prev_neighbor['bus']:
-				transfers = curr_transfers + 1
-			else:
-				transfers = curr_transfers
-
-			# Calculate the total distance from the source to this neighbor
-			distance = curr_distance + min_route_to_neighbor['weight']
-
-			# Update the minimum number of transfers required to reach this neighbor
-			if transfers < min_transfers[neighbor]:
-				min_transfers[neighbor] = transfers
-
-			# Check if we've found a shorter path to this neighbor
-			if distance < total_distance[neighbor]:
-				# Update the total distance to this neighbor
-				total_distance[neighbor] = distance
-
-				# Update the number of transfers made to reach this neighbor
-				num_transfers[neighbor] = transfers
-
-				# Update the previous node in the shortest path to this neighbor
-				previous[neighbor] = curr_node
-
-				# Add this neighbor to the priority queue
-				heapq.heappush(queue, (distance, neighbor, transfers))
-
-	# If we've exhausted all possible paths and haven't found the target,
-	# return None to indicate that there is no path between the nodes
-	return None
-
-def getBusRouteDuration(total_distance):
-    total_duration = total_distance / 70 * 60 * 60  # in seconds
-    
-    # Convert the total duration to hours, minutes, and seconds
-    hours = int(total_duration // 3600)
-    minutes = int((total_duration % 3600) // 60)
-    seconds = int(total_duration % 60)
-
-    duration = str(hours) + " hr " + str(minutes) + " min"
-    # Print the total duration in the desired format
-    print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
-    return duration
-
-#------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-# A-Star algoritm which is Djikstra but with heuristic function
-def aStarAlgo(startNode, endNode):
-    # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
-    unvisited = PriorityQueue()
-    unvisited.put((0, startNode)) 
-    
-    # Set of nodes which has been visited and neighbors have been inspected
-    visited = set([])
-
-    # Store time from startNode to other nodes
-    time = {}
-    time[startNode] = 0
-
-    # Store current node as parent to check edges
-    previous = {}
-    previous[startNode] = startNode
-
-    # Store bus changes along the way
-    previousBus = None
-    busChanges = {}
-    busChanges[startNode] = previousBus
-
-    # Traverse through all nodes that hasnt been visited
-    while not unvisited.empty():
-        # Get neighbors of the current node with smallest f(n) value
-        f, neighbour = unvisited.get()  
-
-        # If node is endNode, goal reached and reverse path to show travel sequence
-        if neighbour == endNode:
-            tempPath = {}    
-            busList = []
-            stopList = []
-
-            # Convert journet time in mins to hours, minutes and seconds 
-            totalTime = getTimeFromHour(time[neighbour] / 60)
-
-            # Take note of current and previous node to get route info and reverse the list
-            while previous[neighbour] != neighbour:
-                previousNode = previous[neighbour]
-                previousBus = busChanges[neighbour]
-                stopList.append(previousNode)
-
-                if previousBus != None:
-                    tempPath[str(previousNode) + "-" + str(neighbour)] = getBusFromBusID(previousBus)
-                    busList.append(getBusFromBusID(previousBus))
-                neighbour = previousNode
-
-            # Reverse dictionary and print sequential steps
-            stopList.reverse()
-            # reversedDict = {}
-            #print("No | Stops      Bus")
-            #print("------------------------")
-            
-            # # Count stops and busIDs for bus changes
-            # for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
-            #     reversedDict[key] = str(value)
-
-            #     # Print format to left align with 3 and 11 width counts
-            #     print(f"{count: <3}| {key: <11}{reversedDict[key]}")
-
-            # Prints total duration of journey
-            print("\nJourney time is estimated to be about {} hours {} minutes {} seconds".format(totalTime[0], totalTime[1], totalTime[2]))
-            duration = str(totalTime[0]) + " hr " + str(totalTime[1]) + " min"
-
-            return busList, stopList, duration
-
-        # Add neighbour to visited because edges will be inspected
-        visited.add(neighbour)
-
-        # Iterate current node's neighbours
-        for (node, weight, busID) in getNeighbours(neighbour, previousBus):
-            # If any node not in visited set new time for it
-            if node not in visited:
-                newTime = time[neighbour] + weight
-
-                if node not in time or newTime < time[node]:
-                    time[node] = newTime
-                    f = newTime + getHeuristic(node, endNode) 
-                    previous[node] = neighbour
-                    unvisited.put((f, node))
-                    busChanges[node] = busID if previousBus != busID else busChanges[neighbour]
-
-            previousBus = busID
-
-    print("No path found")
-    return None
-
-# Method to get edgeTo nodes yet to be visited and its data given its currentNode. Eg. total time (waiting + travelling) and busID
-def getNeighbours(currentNode, previousBus):
-    # Returns a list of dictionaries that with each busstop details/schdules
-    fastestBusList = get_fastest_bus_stop(currentNode)
-
-    neighbours = []
-
-    # Convert list of dictionaries into tuples to read multiple data at once
-    for index in fastestBusList:
-        busStopID = index['BusStopID']
-        busID = index['BusID']
-        weight = index['Duration']
-        totalTime = index['Total']
-
-        # Check if there is a bus change or not
-        if previousBus != busID:
-            neighbours.append((busStopID, totalTime, busID))
-            
-        else:
-            neighbours.append((busStopID, weight, busID))
-
-    # print("\nCurrent node: ", currentNode)
-    # print("Current bus: ", previousBus)
-    # print("\n", neighbours)
-
-    # Return tuple with BusStopID[x], Time[x], BusID[x]
-    return neighbours
-
-# Method to get estimated time to endNode given its currentNode 
-def getHeuristic(currentNode, endNode):
-    # Get coordinates of both current and end stops
-    currentNodeCoord = getCoordinatesOfBusStop(currentNode)
-    endNodeCoord = getCoordinatesOfBusStop(endNode)
-    
-    # Filter into location1 and location2
-    loc1 = currentNodeCoord[0][0], currentNodeCoord[0][1]
-    loc2 = endNodeCoord[0][0], endNodeCoord[0][1]
-
-    # Get Haversine/Euclidean distance of location1 and location2
-    distance1 = hs.haversine(loc1, loc2)
-    
-    # Get estimated time in minutes between the 2 busstops. Time = Distance / Speed
-    time = distance1 / bus_speed
-    estimatedTime = getTimeFromHour(time)
-
-    # Return heuristic time of currentNode in minutes
-    return estimatedTime[1]
-
-# Method to get time in hours, minutes and seconds given the hours in decimals 
-def getTimeFromHour(time):
-    totalSeconds = int(time * 3600)
-    hours = totalSeconds // 3600
-    minutes = (totalSeconds % 3600) // 60
-    seconds = totalSeconds % 60
-    timeList = [hours, minutes, seconds]
-    return timeList
-
-# Method to get coordinates of busstop given its busStopID
-def getCoordinatesOfBusStop(busStopID):
-    # Connection cursor
-    connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
-    cursor = connection.cursor()
-
-    # Get latitude and longitude from BusStop table in DB
-    query = "SELECT Latitude, Longitude FROM BusStop WHERE BusStopID = {}".format(busStopID)
-    cursor.execute(query)
-    result = cursor.fetchall()
-
-    # Close the cursor and connection
-    cursor.close()
-    connection.close()
-
-    # Return coordinates in list form [Latitude][Longitude]
-    return result
-
-# Method to get bus numbers given its busID
 def getBusFromBusID(busID):
+    """
+    Function to get bus numbers given its busID
+    """
     # Initialise database connection
     connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     cursor = connection.cursor()
@@ -718,36 +402,29 @@ def getBusFromBusID(busID):
     # Return next fastest path
     return result[0]
 
-#Store all BusStopID and corresponding names and coordinates into name_list 
-def getBusStopNamesFromID():
-    # Connection cursor
-    connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
-    cursor = connection.cursor()
-
-    # Get BusStopID,Names,Latitude and longitude from BusStop table in DB
-    query = "SELECT * FROM BusStop"
-    cursor.execute(query)
-
-
-    # Store the result set in a list
-    result_set = []
-    for row in cursor:
-        result_set.append(row)
-
-    # Close the cursor and connection
-    cursor.close()
-    connection.close()
-
-
-    # Return coordinates in list form [Latitude][Longitude]
-    return result_set
-
 def convertBusIDListToNameList(busIDList):
     busNameList = []
     for busID in busIDList:
         busName = getBusFromBusID(busID)
         busNameList.append(busName)
     return busNameList
+
+def getBusRouteDuration(total_distance):
+    total_duration = total_distance / 70 * 60 * 60  # in seconds
+    
+    # Convert the total duration to hours, minutes, and seconds
+    hours = int(total_duration // 3600)
+    minutes = int((total_duration % 3600) // 60)
+    seconds = int(total_duration % 60)
+
+    duration = str(hours) + " hr " + str(minutes) + " min"
+    # Print the total duration in the desired format
+    print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
+    return duration
+
+def test_function():
+    for start_bus_stop_id in range(1, 168):
+        print("Bus Stop: %s (%s)" % (start_bus_stop_id, len(get_fastest_bus_stop(start_bus_stop_id))))
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 

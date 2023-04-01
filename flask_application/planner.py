@@ -1,9 +1,7 @@
 from mapping import *
 from utils import *
-from algorithms import dijkstra_Algo
-from algorithms import *
-
-
+from algorithms.aStarAlgo import *
+from algorithms.dijkstraAlgo import *
 
 # Function to get the coordinates of a given coordinate/address input
 def process_inputs(address):
@@ -81,7 +79,7 @@ def process_data(start, destination, option):
 
         if option == '1':  #Shortest-Distance
             print("Dijsktra!")
-            pathID,total_distance,busName = dijkstra_Algo.shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            pathID,total_distance,busName = shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             busName = convertBusIDListToNameList(busName)
             path_time = getBusRouteDuration(total_distance)
 

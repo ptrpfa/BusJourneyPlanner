@@ -1,6 +1,3 @@
-import os
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils import *
 from queue import PriorityQueue
 
@@ -13,8 +10,7 @@ import matplotlib.pyplot as plt
 BUSSPEED = 70 #km/h  
 
 # A-Star algoritm which is Djikstra but with heuristic function
-def get_path(startNode, endNode):
-
+def aStarAlgo(startNode, endNode):
     # Unvisited is priority queue of nodes which has been visited but neighbors havent all been inspected
     unvisited = PriorityQueue()
     unvisited.put((0, startNode)) 
@@ -35,7 +31,6 @@ def get_path(startNode, endNode):
     busChanges = {}
     busChanges[startNode] = previousBus
 
-
     # Traverse through all nodes that hasnt been visited
     while not unvisited.empty():
         # Get neighbors of the current node with smallest f(n) value
@@ -44,6 +39,8 @@ def get_path(startNode, endNode):
         # If node is endNode, goal reached and reverse path to show travel sequence
         if neighbour == endNode:
             tempPath = {}    
+            busList = []
+            stopList = []
 
             # Convert journet time in mins to hours, minutes and seconds 
             totalTime = getTimeFromHour(time[neighbour] / 60)
@@ -52,30 +49,35 @@ def get_path(startNode, endNode):
             while previous[neighbour] != neighbour:
                 previousNode = previous[neighbour]
                 previousBus = busChanges[neighbour]
+                stopList.append(previousNode)
 
                 if previousBus != None:
                     tempPath[str(previousNode) + "-" + str(neighbour)] = getBusFromBusID(previousBus)
+                    busList.append(getBusFromBusID(previousBus))
                 neighbour = previousNode
 
             # Reverse dictionary and print sequential steps
-            reversedDict = {}
-            print("No | Stops      Bus")
-            print("------------------------")
+            stopList.reverse()
+            # reversedDict = {}
+            #print("No | Stops      Bus")
+            #print("------------------------")
             
-            # Count stops and busIDs for bus changes
-            for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
-                reversedDict[key] = str(value)
+            # # Count stops and busIDs for bus changes
+            # for count, (key, value) in enumerate(reversed(tempPath.items()), start=1):                
+            #     reversedDict[key] = str(value)
 
-                # Print format to left align with 3 and 11 width counts
-                print(f"{count: <3}| {key: <11}{reversedDict[key]}")
+            #     # Print format to left align with 3 and 11 width counts
+            #     print(f"{count: <3}| {key: <11}{reversedDict[key]}")
 
             # Prints total duration of journey
             print("\nJourney time is estimated to be about {} hours {} minutes {} seconds".format(totalTime[0], totalTime[1], totalTime[2]))
-            return tempPath
+            duration = str(totalTime[0]) + " hr " + str(totalTime[1]) + " min"
+
+            return busList, stopList, duration
 
         # Add neighbour to visited because edges will be inspected
         visited.add(neighbour)
-        
+
         # Iterate current node's neighbours
         for (node, weight, busID) in getNeighbours(neighbour, previousBus):
             # If any node not in visited set new time for it
@@ -136,7 +138,7 @@ def getHeuristic(currentNode, endNode):
     distance1 = hs.haversine(loc1, loc2)
     
     # Get estimated time in minutes between the 2 busstops. Time = Distance / Speed
-    time = distance1 / BUSSPEED
+    time = distance1 / bus_speed
     estimatedTime = getTimeFromHour(time)
 
     # Return heuristic time of currentNode in minutes
@@ -169,23 +171,29 @@ def getCoordinatesOfBusStop(busStopID):
     # Return coordinates in list form [Latitude][Longitude]
     return result
 
-# Method to get bus numbers given its busID
-def getBusFromBusID(busID):
-    # Initialise database connection
+#Store all BusStopID and corresponding names and coordinates into name_list 
+def getBusStopNamesFromID():
+    # Connection cursor
     connection = mysql.connector.connect(host=db_host, user=db_user, password=db_password, database=db_schema)
     cursor = connection.cursor()
 
-    # Get busName from busID from Bus table in DB
-    query = "SELECT Name FROM Bus WHERE BusID = {}".format(busID)
+    # Get BusStopID,Names,Latitude and longitude from BusStop table in DB
+    query = "SELECT * FROM BusStop"
     cursor.execute(query)
-    result = cursor.fetchone()
+
+
+    # Store the result set in a list
+    result_set = []
+    for row in cursor:
+        result_set.append(row)
 
     # Close the cursor and connection
     cursor.close()
     connection.close()
 
-    # Return next fastest path
-    return result[0]
+
+    # Return coordinates in list form [Latitude][Longitude]
+    return result_set
 
 # (NOT IN USE ANYMORE) Method to get and display graph with weight and edges
 def VisualiseGraph(multiGraph):
