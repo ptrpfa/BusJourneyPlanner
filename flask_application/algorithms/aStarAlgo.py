@@ -40,7 +40,7 @@ def aStarAlgo(startNode, endNode):
         if neighbour == endNode:
             tempPath = {}    
             busList = []
-            stopList = []
+            stopList = [endNode]
 
             # Convert journet time in mins to hours, minutes and seconds 
             totalTime = getTimeFromHour(time[neighbour] / 60)
