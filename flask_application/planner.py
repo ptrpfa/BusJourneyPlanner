@@ -49,7 +49,7 @@ def process_data(start, destination, option):
     # Check for invalid inputs
     if(invalid_input):
         my_dict['error'] = error_header + invalid_input
-
+        return jsonify(my_dict)
     # Step 2: Get nearest bus stop to starting coordinates
     start_bus_stop = get_nearest_bus_stop(start_coordinates[0], start_coordinates[1])
     print("Starting Bus Stop: ", start_bus_stop['StopID'], start_bus_stop['Name'])
@@ -59,7 +59,7 @@ def process_data(start, destination, option):
     # Check for invalid inputs
     if(invalid_input):
         my_dict['error'] = error_header + invalid_input
-
+        return jsonify(my_dict)
     # Step 4: Get nearest bus stop to ending coordinates
     #start_bus_stop = {StopID, Name, Coordinate}
     end_bus_stop = get_nearest_bus_stop(end_coordinates[0], end_coordinates[1])
@@ -68,6 +68,7 @@ def process_data(start, destination, option):
     # Check if start and end locations are the same
     if(start_coordinates == end_coordinates): 
         my_dict['error'] = error_header + "Both starting and ending locations are the same! No bus journey planning will be provided."
+        return jsonify(my_dict)
     else:
         #Step 5 Guide user to nearest bus stop => Error in Google AP
         
