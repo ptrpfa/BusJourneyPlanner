@@ -138,10 +138,11 @@ function submitForm(value) {
             var map_html = data.map_html;
             var routes = data.routes;
             var duration = data.duration;
+            var distance = data.distance;
             var bus = data.bus;
             var path_start_instructions = data.path_start_instructions;
             var path_end_instructions = data.path_end_instructions;
-
+            console.log(data)
             // Check for invalid inputs
             if (data.hasOwnProperty("error")) {
                 console.log(data.error);
@@ -158,7 +159,7 @@ function submitForm(value) {
 
                 // Show Duration
                 var newDuration = document.createElement('p')
-                newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</h4></div>'
+                newDuration.innerHTML = '<div class="duration"><h4>Duration: '+ duration + '</br>' + 'Distance: '+ distance + 'km</h4></div>'
                 $('#results').append(newDuration);
                 overall_directions += newDuration.innerHTML;
 

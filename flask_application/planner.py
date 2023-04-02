@@ -75,19 +75,21 @@ def process_data(start, destination, option):
         return jsonify(my_dict)
     
     else:
-        # Step 5 Guide user to nearest bus stop => Error in Google AP
-        
-        # Step 6 Find Shortest Path for bus to travel to end bus stop
+        # Find Shortest / Fastest Path for bus to travel to end bus stop
         # Check algorithm requested
         if option == '1':  # Shortest-Distance
             print("Dijsktra!")
             pathID, total_distance, busName = shortest_path_with_min_transfers(start_bus_stop['StopID'],end_bus_stop['StopID'])
             busName = convertBusIDListToNameList(busName)
             path_time = getBusRouteDuration(total_distance)
-            # USE TOTAL DISTANCE
+            total_distance = round(total_distance, 2)
         elif option == '2': #Shortest-Time
             print("A STAR!")
             busName, pathID, path_time = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            # Get distance between points (in km)
+            current_dist = gmaps.distance_matrix((start_bus_stop['Latitude'], start_bus_stop['Longitude']), (end_bus_stop['Latitude'], end_bus_stop['Longitude']), mode='driving')
+            total_distance= current_dist['rows'][0]['elements'][0]['distance']['value'] / 1000
+            total_distance = round(total_distance, 2)
         else:
             # Erroneous input
             my_dict['error'] = error_header + "Wrong option selected!"
@@ -133,6 +135,7 @@ def process_data(start, destination, option):
             my_dict['map_html'] = map_html
             my_dict['routes'] = path_names
             my_dict['duration'] = path_time
+            my_dict['distance'] = total_distance
             my_dict['bus'] = bus
             my_dict['path_start_instructions'] = path_start_instructions
             my_dict['path_end_instructions'] = path_end_instructions
