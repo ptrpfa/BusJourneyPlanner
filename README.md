@@ -90,7 +90,7 @@ The main user interface for this application is deployed using the [Flask](https
 ---
 Two different algorithms are used to provide journey planning: 
 
-Overall both algorithms uses these defauly Python libraries:
+Overall both algorithms uses these default Python libraries:
 1. Networkx module to generate a Directional Graph
 2. Matplotlib module to plot graph into JPG for visualisation
 3. Heapq/Priority queue to maintain smallest element for dequeueing
@@ -195,7 +195,7 @@ The following user flow is used for the entire journey planner application:
 1. User enter inputs
     - Starting Address 
     - Destination Address
-Route option (Shortest or Fastest Path)
+    - Route option (Shortest or Fastest Path)
 2. Validate user’s inputs
     - Convert address to coordinates or vice versa
     - Locate nearest bus stop from start address and end address
@@ -206,7 +206,7 @@ Route option (Shortest or Fastest Path)
     - Determine bus route from nearest bus stop 
     - Display the bus route and number to take at each bus stop
 5. Guide user to endpoint, if not already there (walking directions)
-- Guide user to destination
+    - Guide user to destination
 
 ## Project Components
 ---
@@ -258,7 +258,7 @@ Follow the instructions below to setup a local database for the application:
     ```
     mysql -u<username> -p < crawler/sql/DB_24March2023.sql
     ```
-3. Modify the configuration file in `flask_application` to connect to the local database instead of the cloud database. The following changes are required:
+3. Modify the configuration file `cloud_config.py` in `flask_application` to connect to the local database instead of the cloud database. The following changes are required:
     ```
     db_host = "localhost"
     db_user = "username"
@@ -312,21 +312,21 @@ Follow the instructions below to setup an empty database, and populate it with c
     db_schema = "DSA_JP" (Generally unchanged, unless your schema has a different name)
     ```
 ### Program Execution
-To run on browser:
+To run the web application:
 1. Run the Flask application using the following command on a terminal:
     <br>**Ensure that you are in the `/flask_application` directory*
     ```
     python3 run.py 
     ```
 
-    If you want to utilise live bus data with the A Star algorithm, modify the following program flag in `cloud_config.py` to `True`:
+    If you want to utilise live bus data with the A Star algorithm, modify the following program flag in `cloud_config.py` to `True` (note: algorithm will be slow due to quadratic time complexity):
     ```
     INTEGRATE_LIVE_BUS = False # Change to True
     ```
 
 2. Navigate to [`localhost:8080`](http://localhost:8080) on your browser, and start journey planning!
 
-To run on Telegram:
+To run the Telegram Bot:
 1.  Run the Telegram Bot application using the following command on a terminal:
     <br>**Ensure that you are in the `/flask_application` directory*
     ```
