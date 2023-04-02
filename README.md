@@ -296,9 +296,19 @@ Follow the instructions below to setup an empty database, and populate it with c
     db_schema = "DSA_JP" (Generally unchanged, unless your schema has a different name)
     ```
 ### Program Execution
+To run on browser:
 1. Run the Flask application using the following command on a terminal:
     <br>**Ensure that you are in the `/flask_application` directory*
     ```
     python3 run.py 
     ```
 2. Navigate to [`localhost:8080`](http://localhost:8080) on your browser, and start journey planning!
+
+To run on Telegram:
+1.  Run the Telegram Bot application using the following command on a terminal:
+    <br>**Ensure that you are in the `/flask_application` directory*
+    ```
+    python3 telebot_server.py 
+    ```
+2. Search "Johor_Planner_Bot" on your Telegram and activate bot with '/start', and start journey planning!
+    <br>**You can also use browser by navigating to [Telegram bot](https://t.me/Johor_Planner_Bot)*
