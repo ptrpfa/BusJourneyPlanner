@@ -103,6 +103,9 @@ Two different algorithms are used to provide journey planning:
     - Performs like Dijkstra but with heuristic function calculating estimated weight to end node
     - Calculated using Haversine distance and must be admissible (NEVER overestimated)
 
+[A Star Loop](/docs/a_star_loop.png)
+[Heuristic Function](/docs/heuristic_function.png)
+
 ## Features
 ---
 <u>Flask User Interface</u><br>
