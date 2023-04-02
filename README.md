@@ -253,4 +253,4 @@ To run on Telegram:
     python3 telebot_server.py 
     ```
 2. Search "Johor_Planner_Bot" on your Telegram and activate bot with '/start', and start journey planning!
-    <br>**You can also use browser by navigating to [Telegram bot](https://t.me/Johor_Planner_Bot)
+    <br>**You can also use browser by navigating to [Telegram bot](https://t.me/Johor_Planner_Bot)*
