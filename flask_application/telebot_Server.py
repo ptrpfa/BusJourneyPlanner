@@ -2,6 +2,7 @@ from cloud_config import *
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler    
 from telegram import ChatAction
 from time import sleep
+import textwrap
 
 from utils import *
 from algorithms.aStarAlgo import *
@@ -9,7 +10,7 @@ from algorithms.dijkstraAlgo import *
 import planner
 
 print("Bot started...")
-START, END = range(2)
+START, END, EMAIL = range(3)
 # Fixed string for errors
 ERROR_HEADER = "ERROR: "
 
@@ -55,36 +56,46 @@ def route_planner(start_coordinates, end_coordinates, option):
             busName, pathID, path_time = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
 
         #Step 7:
-        #Get the list of [busStopID , names, lat , long] 
+        # Get the list of [busStopID , names, lat , long] 
         ID_Name_Coordinates = getBusStopNamesFromID()
 
         # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
         id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
 
-        # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary [(name, lat, lng), (name, lat, lng)]
+        # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
         path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
-
-        #Extract the coordinates from the list of names and coordinates
-        path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
+        path_names = [name for name, lat, long in path_names_coordinates]
 
         # Initialise instructions
         path_start_instructions = ""
         path_end_instructions = ""
+
+        path_bus_str = ""
+
+        for name, bus in zip(path_names_coordinates, busName):
+            path_bus_str += (name[0] +  "\n" + bus + "\n\n")
 
         if path_names_coordinates: #For Checking 
             #Step 8: Guide user 
             # Get walking directions to starting bus stop
             if(start_bus_stop['Distance'] > 0 ):
                 path_start_instructions = get_directions(start_coordinates, start_bus_stop['Coordinates'])
-                path_start_instructions = path_start_instructions.replace("\n","<br>")
-
+                path_start_instructions2 = path_start_instructions.replace("\n","<br>")
+                
             # Get walking directions from last bus stop to destination
             if(end_bus_stop['Distance'] > 0):
                 # footer = "\nDirections to %s\n" % destination
-                end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
-                path_end_instructions = end_instructions.replace("\n","<br>")
+                path_end_instructions = get_directions(end_bus_stop['Coordinates'], end_coordinates)
+                path_end_instructions2 = path_end_instructions.replace("\n","<br>")
 
-            return path_start_instructions
+            my_dict = {}
+            my_dict['path_bus_str'] = path_bus_str
+            my_dict['path_start_instructions'] = path_start_instructions
+            my_dict['path_end_instructions'] = path_end_instructions
+            my_dict['path_start_instructions2'] = path_start_instructions2
+            my_dict['path_end_instructions2'] = path_end_instructions2
+
+            return my_dict
         else: 
             return ERROR_HEADER + "Well directions not found..."
 
@@ -163,11 +174,13 @@ def Options_Keyboard():
     return reply, keyBoard
 
 def callback_options(update, context):
-    
+
     query = update.callback_query
     # Get the VehNum
     option = query.data
 
+    context.bot.sendChatAction(chat_id=update.callback_query.message.chat.id, action=ChatAction.TYPING)
+    
     #Get the start location
     start = context.user_data['start']
     start_coordinates = context.user_data['start_coordinates']
@@ -176,16 +189,68 @@ def callback_options(update, context):
     destination = context.user_data['destination']
     end_coordinates = context.user_data['end_coordinates'] 
 
-    end_instructions = route_planner(start_coordinates, end_coordinates, option)
+    dict_routes = route_planner(start_coordinates, end_coordinates, option)
 
-    if end_instructions.startswith("ERROR:"):
-        update.message.reply_text(end_instructions)
-        return restart(update, context)
+
+    # if end_instructions.startswith("ERROR:"):
+    #     context.bot.send_message(chat_id=query.message.chat_id, text=end_instructions, reply_to_message_id=query.message.message_id)
+    #     return restart(update, context)
+
+    #Store the instructions
+    context.user_data['dict_routes'] = dict_routes
+    
+    path_bus_str = dict_routes['path_bus_str'] 
+    path_start_instructions = dict_routes['path_start_instructions'] 
+    path_end_instructions = dict_routes['path_end_instructions'] 
+
+    #Directions to first bus stop
+    for chunk in [path_start_instructions[i:i+4096] for i in range(0, len(path_start_instructions), 4096)]:
+        updater.bot.sendMessage(chat_id=update.callback_query.message.chat.id, text=chunk)
+
+    updater.bot.sendMessage(chat_id=update.callback_query.message.chat.id, text="Bus and Bus Stop")
+
+    #Buses and Bus Stops
+    for chunk in textwrap.wrap(path_bus_str, width=4096, replace_whitespace=False):
+        updater.bot.sendMessage(chat_id=update.callback_query.message.chat.id, text=chunk)
+
+    #Direction to destination
+    for chunk in [path_end_instructions[i:i+4096] for i in range(0, len(path_end_instructions), 4096)]:
+        updater.bot.sendMessage(chat_id=update.callback_query.message.chat.id, text=chunk)
+
+    updater.bot.sendMessage(chat_id=update.callback_query.message.chat.id, text="Aiya, send me your email. I send you details.")
+
+    return EMAIL
+
+
+def email_location(update, context):
+    email = update.message.text
+    context.bot.sendChatAction(chat_id=update.message.chat_id, action=ChatAction.TYPING)
+    sleep(1)
+
+    start = context.user_data['start']
+    destination = context.user_data['destination']
+    subject = "Directions from " + start + " to " + destination;
+
+    dict_routes = context.user_data['dict_routes']
+    
+    path_bus_str = dict_routes['path_bus_str']
+    path_bus_str2 = path_bus_str.replace("\n","<br>")
+    
+    message = dict_routes['path_start_instructions2']  + "<br>" + path_bus_str2 + "<br>" + dict_routes['path_end_instructions2'] 
+
+    if(send_email(email, subject, message)):
+        update.message.reply_text("Success, check your email!")
+        print("Sucess")
     else:
-        update.message.reply_text(f"Alright! From {start} heading to {destination}...")
-        update.message.reply_text(end_instructions)
+        update.message.reply_text("Failed! Until next time...")
+        print("Failed")
 
     return ConversationHandler.END
+
+
+def send_popup_message(update, context):
+    query = update.callback_query
+    query.answer('This is a popup message!')
 
 def cancel(update, context):    
     update.message.reply_text("Thank you for using Johor Planner")
@@ -200,6 +265,7 @@ def error(update, context):
     print(f"Update {update} caused error {context.error}")
 
 def main():
+    global updater
     updater = Updater(TELEGRAM_KEY, use_context=True)
     dp = updater.dispatcher
 
@@ -209,13 +275,14 @@ def main():
         states={
             START: [MessageHandler(Filters.text & (~ Filters.command), start_location)],
             END: [MessageHandler(Filters.text & (~ Filters.command), end_location), CallbackQueryHandler(callback_options)],
+            EMAIL: [MessageHandler(Filters.text & (~ Filters.command), email_location)]
         },
-        fallbacks=[CommandHandler('cancel', cancel), CommandHandler('restart', restart)],
-        per_message=False
+        fallbacks=[CommandHandler('cancel', cancel), CommandHandler('restart', restart)]
     )
 
     dp.add_handler(conv_handler)
     #dp.add_handler(MessageHandler(Filters.text, handle_message))
+    
     dp.add_error_handler(error)
 
     updater.start_polling()
