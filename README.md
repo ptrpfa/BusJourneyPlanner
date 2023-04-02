@@ -1,5 +1,5 @@
 # 🚌 CSC1108 (Group 7) Journey Planner
-Journey Planning application designed to enable commuters to plan their journey across Johor Bahru, Malaysia using the state's free bus service, Bas Muafakat Johor ([BAJ](https://paj.com.my/bas-muafakat-johor/)).
+Journey Planning application designed to enable commuters to plan their journey across Johor Bahru, Malaysia using the state's free bus service, Bas Muafakat Johor ([BAJ](https://paj.com.my/bas-muafakat-johor/)). A video demonstration of the application is provided in this [link](https://www.youtube.com/watch?v=iclYNXT16lM).
 
 ## Team Members
 - Peter Febrianto Afandy​ (2200959)​​
@@ -8,11 +8,13 @@ Journey Planning application designed to enable commuters to plan their journey 
 - Ryan Lai Wei Shao (2201159)​​
 - Jeffrey Yap Wan Lin​ (2201018)​
 
-
 ## List of Contents
 - [Project Scope & Assumptions](#project-scope--assumptions)
 - [System Design](#system-design)
 - [Features](#features)
+- [User Flow](#user-flow)
+- [Algorithms Used](#algorithms-used)
+- [Data Structures Used](#data-structures-used)
 - [Project Components](#project-components)
 - [Getting Started](#getting-started)
 - [Program Usage](#program-usage)
@@ -85,8 +87,57 @@ This application utilises a MySQL database hosted on the cloud through the [Goog
 
 The main user interface for this application is deployed using the [Flask](https://flask.palletsprojects.com/en/2.2.x/) Python web framework. The Flask application is responsible for getting all user inputs, the processing of the path to a given destination, and displaying the results to the user. A chat-based user interface using a [Telegram bot](https://t.me/Johor_Planner_Bot) is also provided.
 
+## Data Structures Used
+---
+![Data Structures](/docs/data-structure.png)
+
+## Algorithms Used
+---
+Two different algorithms are used to provide journey planning: 
+
+1. Dijkstra Shortest Path with minimum bus transfer
+    - Dijkstra’s seeks the shortest path between start node and next node
+
+2. A Star algorithm with heuristic function
+    - A Star seeks the shortest time between start node and end node
+    - Performs like Dijkstra but with heuristic function calculating estimated weight to end node
+    - Calculated using Haversine distance and must be admissible (NEVER overestimated)
+
+A Star Node Selection loop<br>
+![A Star Loop](/docs/a_star_loop.png)
+
+Heuristic Function<br>
+![Heuristic Function](/docs/heuristic_function.png)
+
 ## Features
 ---
+<u>Flask User Interface</u><br>
+The main user interface for this application is hosted using the Flask web framework. Flask is used to integrate Python code together with the various web components (HTML, CSS and Javascript). A sample screenshot of the user interface is provided below:
+![User Interface](/docs/ui.png)
+
+<u>Telegram Bot User Interface</u><br>
+To supplement the main application, a [Telegram bot](https://t.me/Johor_Planner_Bot) was also created for users to perform bus journey planning using a chat-base interface. A sample screenshot of the chat-based interface is provided below:
+![Chat Interface](/docs/telebot.png)
+
+<u>Pengangkutan Awam Johor (PAJ) API</u><br>
+The API provided by Malaysia's (Johor) public transportation provider, [PAJ](https://dataapi.paj.com.my/) is used during the initial population of data into the database, and the planning of routes (specifically live bus data). Live bus data will be presented in the displayed map, and live bus data can be toggled to be integrated into the route planning with the A Star algorithm.
+
+<u>Google Maps API</u><br>
+The [API](https://developers.google.com/maps) provided by Google Maps is used, specifically for the calculation of distances between bus stops, as well as general wayfinding to the starting bus stop and to the destination point during the last mile connectivity. The following API were used:
+- Distance Matrix
+- Geoencoding
+- Reverse Geoencoding
+- Directions
+
+<u>Web Crawler</u><br>
+To facilitate future route expansion and to automate the getting of bus schedule information, a web crawler was created to programmatically scrape the relevant bus schedule information. The crawler is designed for portability for ease of future expansion.
+
+<u>User Validations</u><br>
+Validation of user inputs, such as their given coordinates and text addresses was performed to make the application more robust.
+
+<u>Email</u><br>
+Upon completion of the bus journey planning, users can choose to send a copy of the planned journey to themselves via email.
+
 <u>Database</u><br>
 A MySQL database was designed to store the bus route information. The database design is provided in the Entity Relationship Diagram below.
 ![Database Design](docs/database.png)
@@ -128,12 +179,24 @@ A high level overview of each table in the database is provided below:
         - `1`: Distance
         - `2`: Duration
 
-<u>Pengangkutan Awam Johor (PAJ) API</u><br>
-The API provided by Malaysia's (Johor) public transportation provider, [PAJ](https://dataapi.paj.com.my/) is used during the initial population of data into the database, and the planning of routes (specifically live bus data).
-
-<u>Google Maps API</u><br>
-The [API](https://developers.google.com/maps) provided by Google Maps is used, specifically for the calculation of distances between bus stops, as well as general wayfinding to the starting bus stop and to the destination point during the last mile connectivity.
-
+## User Flow
+---
+The following user flow is used for the entire journey planner application:
+1. User enter inputs
+    - Starting Address 
+    - Destination Address
+Route option (Shortest or Fastest Path)
+2. Validate user’s inputs
+    - Convert address to coordinates or vice versa
+    - Locate nearest bus stop from start address and end address
+3. Guide user to bus stop, if not already there (walking directions)
+    - Guide user to nearest bus stop
+4. Determine bus route
+    - Run selected path algorithm (Shortest or Fastest Path)
+    - Determine bus route from nearest bus stop 
+    - Display the bus route and number to take at each bus stop
+5. Guide user to endpoint, if not already there (walking directions)
+- Guide user to destination
 
 ## Project Components
 ---
@@ -155,6 +218,7 @@ There are two main components/folders for this project:
     - Programs in this folder are generally not required to be executed as the necessary information have already been obtained, unless you are planning on setting up the database from scratch again. More instructions will be provided in the [program usage](#program-usage) section below.
 2. Flask Application
     - Used to run the main user interface for the Journey Planner application.
+    - Used to run the Telegram chat-based interface for the Journey Planner application.
     - This folder holds all necessary program components for getting the user's inputs, processing the path to a given destination, and outputting the results.
 
 ## Getting Started
@@ -238,9 +302,25 @@ Follow the instructions below to setup an empty database, and populate it with c
     db_schema = "DSA_JP" (Generally unchanged, unless your schema has a different name)
     ```
 ### Program Execution
+To run on browser:
 1. Run the Flask application using the following command on a terminal:
     <br>**Ensure that you are in the `/flask_application` directory*
     ```
     python3 run.py 
     ```
+
+    If you want to utilise live bus data with the A Star algorithm, modify the following program flag in `cloud_config.py` to `True`:
+    ```
+    INTEGRATE_LIVE_BUS = False # Change to True
+    ```
+
 2. Navigate to [`localhost:8080`](http://localhost:8080) on your browser, and start journey planning!
+
+To run on Telegram:
+1.  Run the Telegram Bot application using the following command on a terminal:
+    <br>**Ensure that you are in the `/flask_application` directory*
+    ```
+    python3 telebot_server.py 
+    ```
+2. Search "Johor_Planner_Bot" on your Telegram and activate bot with '/start', and start journey planning!
+    <br>**You can also use browser by navigating to [Telegram bot](https://t.me/Johor_Planner_Bot)*
