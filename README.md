@@ -76,10 +76,14 @@ The following assumptions were also taken to simplify the development of the app
 This application consists of the following components:
 1. Database (GCP Cloud server)
 2. Flask Web Application
+3. Telegram Bot
+4. API Integrations (Google Map, OSRAM, PAJ, Gmail)
+
+![System Design](/docs/system-design.png)
 
 This application utilises a MySQL database hosted on the cloud through the [Google Cloud Platform](https://cloud.google.com/sql). However, the application also supports the use of a local MySQL database, should the cloud server be unavailable. 
 
-The main user interface for this application is deployed using the [Flask](https://flask.palletsprojects.com/en/2.2.x/) Python web framework. The Flask application is responsible for getting all user inputs, the processing of the path to a given destination, and displaying the results to the user.
+The main user interface for this application is deployed using the [Flask](https://flask.palletsprojects.com/en/2.2.x/) Python web framework. The Flask application is responsible for getting all user inputs, the processing of the path to a given destination, and displaying the results to the user. A chat-based user interface using a [Telegram bot](https://t.me/Johor_Planner_Bot) is also provided.
 
 ## Features
 ---

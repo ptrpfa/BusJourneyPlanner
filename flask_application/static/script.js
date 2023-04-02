@@ -142,7 +142,8 @@ function submitForm(value) {
             var bus = data.bus;
             var path_start_instructions = data.path_start_instructions;
             var path_end_instructions = data.path_end_instructions;
-            console.log(data)
+            var array_routes = []
+            
             // Check for invalid inputs
             if (data.hasOwnProperty("error")) {
                 console.log(data.error);
@@ -179,12 +180,20 @@ function submitForm(value) {
                 $('#results').append(routeButton)
                 
                 // Show Bus route
-                routes.forEach(names => {
+                for (var i = 0; i < routes.length; i++) {
                     var newElement = document.createElement('div');
-                    newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + names + "</h3><p style=\"font-size:14px;\">" + "Bus Number: " + bus + '</p></div>';
-                    $('#results').append(newElement);
-                    overall_directions += newElement.innerHTML;
-                });
+                    if(i > 0 && bus[i] != bus[i - 1]) {
+                        newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + routes[i] + "</h3><p style=\"font-size:14px;\">" + "Bus Number: " + bus[i] + '<span style="color:blue"> (Change Bus!)</span></p></div>';;
+                    }
+                    else {
+                        newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + routes[i] + "</h3><p style=\"font-size:14px;\">" + "Bus Number: " + bus[i] + '</p></div>';;
+                    }
+                    array_routes.push(newElement);
+                }
+                for (var i = 0; i < array_routes.length; i++) {
+                    $('#results').append(array_routes[i]);
+                    overall_directions += array_routes[i].innerHTML;
+                }
                 
                 // Show end walking route
                 if(path_end_instructions.length > 0) {

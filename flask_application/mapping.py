@@ -82,12 +82,6 @@ def generateUserMap(path_names_coordinates, start_coordinates, end_coordinates,s
         route = response.json()['routes'][0]['geometry']
         decoded_route = polyline.decode(route) # One whole bus route in driving mode
 
-        # Add markers for each stop in stops list
-        for i, stop in enumerate(stops):   
-            folium.Marker(stop, popup=f'Stop {i+1}', icon=folium.Icon(color='blue')).add_to(map)
-
-        add_markers(path_names_coordinates, map)
-
         # Add a polyline for the bus path
         folium.PolyLine(decoded_route, color='blue').add_to(map)
         
@@ -123,7 +117,7 @@ def update_markers():
     }
 
     # Define the routes to display
-    routes_to_display = ["P101", "P102", "P106"]
+    routes_to_display = loop_buses + one_way_buses
 
     # API endpoint and key
     api_endpoint = 'https://dataapi.paj.com.my/api/v1'

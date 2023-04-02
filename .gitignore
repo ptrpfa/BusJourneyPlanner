@@ -4,4 +4,3 @@ brief/
 .venv/
 ~*
 **/__pycache__
-**/local_config.py

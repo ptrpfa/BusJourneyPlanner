@@ -86,6 +86,7 @@ def process_data(start, destination, option):
         elif option == '2': #Shortest-Time
             print("A STAR!")
             busName, pathID, path_time = aStarAlgo(start_bus_stop['StopID'],end_bus_stop['StopID'])
+            busName.append(busName[-1])
             # Get distance between points (in km)
             current_dist = gmaps.distance_matrix((start_bus_stop['Latitude'], start_bus_stop['Longitude']), (end_bus_stop['Latitude'], end_bus_stop['Longitude']), mode='driving')
             total_distance= current_dist['rows'][0]['elements'][0]['distance']['value'] / 1000
@@ -136,7 +137,7 @@ def process_data(start, destination, option):
             my_dict['routes'] = path_names
             my_dict['duration'] = path_time
             my_dict['distance'] = total_distance
-            my_dict['bus'] = bus
+            my_dict['bus'] = busName
             my_dict['path_start_instructions'] = path_start_instructions
             my_dict['path_end_instructions'] = path_end_instructions
             return jsonify(my_dict)
