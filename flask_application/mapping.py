@@ -117,7 +117,7 @@ def update_markers():
     }
 
     # Define the routes to display
-    routes_to_display = ["P101", "P102", "P106"]
+    routes_to_display = loop_buses + one_way_buses
 
     # API endpoint and key
     api_endpoint = 'https://dataapi.paj.com.my/api/v1'
