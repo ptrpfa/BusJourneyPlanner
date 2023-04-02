@@ -302,6 +302,12 @@ To run on browser:
     ```
     python3 run.py 
     ```
+
+    If you want to utilise live bus data with the A Star algorithm, modify the following program flag in `cloud_config.py` to `True`:
+    ```
+    INTEGRATE_LIVE_BUS = False # Change to True
+    ```
+
 2. Navigate to [`localhost:8080`](http://localhost:8080) on your browser, and start journey planning!
 
 To run on Telegram:
