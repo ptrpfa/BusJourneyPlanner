@@ -109,8 +109,7 @@ def process_data(start, destination, option):
 
         # Print out Bus stop names and coordinates 
         for name, bus in zip(path_names_coordinates, busName):
-            # print(name[0], ",", bus, end="\n\n")
-            pass
+            print(name[0], ",", bus, end="\n\n")
         
         # Initialise instructions
         path_start_instructions = ""
@@ -138,24 +137,3 @@ def process_data(start, destination, option):
             my_dict['path_start_instructions'] = path_start_instructions
             my_dict['path_end_instructions'] = path_end_instructions
             return jsonify(my_dict)
-
-            # return map_html, path_names_coordinates
-
-        # Check for email notification
-        # user_input = input("\nDo you want a copy of these directions sent to your email? (Yes or No): ")
-        # if(user_input.lower() == "yes"):
-        #     user_email = input("Enter your email address: ")
-        #     # Send email
-        #     email_subject = "Directions from %s to %s" % (start_address, end_address)
-        #     email_message = header + start_instructions + footer + end_instructions
-        #     email_message = email_message.replace("\n", "<br>")
-        #     if(send_email(user_email, email_subject, email_message)):
-        #         print("Email sent to", user_email, "!")
-
-                                           
-
-# for testing 
-# start = 'Larkin Terminal'
-# end = 'Hospital Sultanah Aminah'
-# user_input = '1'
-# process_data(start, end, user_input)

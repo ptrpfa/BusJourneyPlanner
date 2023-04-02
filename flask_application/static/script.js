@@ -162,8 +162,8 @@ function submitForm(value) {
                 $('#results').append(newDuration);
                 overall_directions += newDuration.innerHTML;
 
-                var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary instruction\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p>"+ path_start_instructions +"</p><\/div>"
-                var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary instruction\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p>"+ path_end_instructions +"</p><\/div>"
+                var parsedStartInstructions = "<button data-toggle=\"collapse\" data-target=\"#start_info\" class=\"btn btn-primary instruction\">📍 Directions to Bus Stop<\/button><div id=\"start_info\" class=\"collapse\"><p style=\"font-size:14px;\" >"+ path_start_instructions +"</p><\/div>"
+                var parsedEndInstructions = "<button data-toggle=\"collapse\" data-target=\"#end_info\" class=\"btn btn-primary instruction\">🏁 Directions to Destination<\/button><div id=\"end_info\" class=\"collapse\"><p style=\"font-size:14px;\">"+ path_end_instructions +"</p><\/div>"
 
                 // Show start walking route
                 if(path_start_instructions.length > 0) {
@@ -180,7 +180,7 @@ function submitForm(value) {
                 // Show Bus route
                 routes.forEach(names => {
                     var newElement = document.createElement('div');
-                    newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + names + "</h3><p>" + "Bus Number: " + bus + '</p></div>';
+                    newElement.innerHTML = '<div id="routeInfo" class="route collapse" style="margin-left:10px;"><h3>' + names + "</h3><p style=\"font-size:14px;\">" + "Bus Number: " + bus + '</p></div>';
                     $('#results').append(newElement);
                     overall_directions += newElement.innerHTML;
                 });
