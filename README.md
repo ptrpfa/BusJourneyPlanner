@@ -89,24 +89,35 @@ The main user interface for this application is deployed using the [Flask](https
 
 ## Data Structures Used
 ---
-![Data Structures](/docs/data-structure.png)
-
-## Algorithms Used
----
 Two different algorithms are used to provide journey planning: 
 
+Overall both algorithms uses these defauly Python libraries:
+1. Networkx module to generate a Directional Graph
+2. Matplotlib module to plot graph into JPG for visualisation
+3. Heapq/Priority queue to maintain smallest element for dequeueing
+
+<u>Algorithms:</u>
 1. Dijkstra Shortest Path with minimum bus transfer
     - Dijkstra’s seeks the shortest path between start node and next node
+
+Dijkstra node selection<br>
+![Dijkstra1](/docs/dijkstra1.png)
+
+Dijkstra checking of shorter paths<br>
+![Dijkstra2](/docs/dijkstra2.png)
+
+Dijkstra output<br>
+![Dijkstra3](/docs/dijkstra3.png)
 
 2. A Star algorithm with heuristic function
     - A Star seeks the shortest time between start node and end node
     - Performs like Dijkstra but with heuristic function calculating estimated weight to end node
     - Calculated using Haversine distance and must be admissible (NEVER overestimated)
 
-A Star Node Selection loop<br>
+A Star node selection loop<br>
 ![A Star Loop](/docs/a_star_loop.png)
 
-Heuristic Function<br>
+A Star heuristic function<br>
 ![Heuristic Function](/docs/heuristic_function.png)
 
 ## Features
