@@ -330,7 +330,7 @@ To run the Telegram Bot:
 1.  Run the Telegram Bot application using the following command on a terminal:
     <br>**Ensure that you are in the `/flask_application` directory*
     ```
-    python3 telebot_server.py 
+    python3 telebot_Server.py 
     ```
 2. Search "Johor_Planner_Bot" on your Telegram and activate bot with '/start', and start journey planning!
     <br>**You can also use browser by navigating to [Telegram bot](https://t.me/Johor_Planner_Bot)*
