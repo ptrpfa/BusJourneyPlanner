@@ -13,8 +13,7 @@ Journey Planning application designed to enable commuters to plan their journey 
 - [System Design](#system-design)
 - [Features](#features)
 - [User Flow](#user-flow)
-- [Algorithms Used](#algorithms-used)
-- [Data Structures Used](#data-structures-used)
+- [Data Structures and Algotihms Used](#data-structures-and-algorithms-used)
 - [Project Components](#project-components)
 - [Getting Started](#getting-started)
 - [Program Usage](#program-usage)
@@ -87,7 +86,7 @@ This application utilises a MySQL database hosted on the cloud through the [Goog
 
 The main user interface for this application is deployed using the [Flask](https://flask.palletsprojects.com/en/2.2.x/) Python web framework. The Flask application is responsible for getting all user inputs, the processing of the path to a given destination, and displaying the results to the user. A chat-based user interface using a [Telegram bot](https://t.me/Johor_Planner_Bot) is also provided.
 
-## Data Structures Used
+## Data Structures and Algorithms Used
 ---
 Two different algorithms are used to provide journey planning: 
 
@@ -100,25 +99,25 @@ Overall both algorithms uses these defauly Python libraries:
 1. Dijkstra Shortest Path with minimum bus transfer
     - Dijkstra’s seeks the shortest path between start node and next node
 
+![Dijkstra1](/docs/dijkstra1.png)<br>
 Dijkstra node selection<br>
-![Dijkstra1](/docs/dijkstra1.png)
 
+![Dijkstra2](/docs/dijkstra2.png)<br>
 Dijkstra checking of shorter paths<br>
-![Dijkstra2](/docs/dijkstra2.png)
 
+![Dijkstra3](/docs/dijkstra3.png)<br>
 Dijkstra output<br>
-![Dijkstra3](/docs/dijkstra3.png)
 
 2. A Star algorithm with heuristic function
     - A Star seeks the shortest time between start node and end node
     - Performs like Dijkstra but with heuristic function calculating estimated weight to end node
     - Calculated using Haversine distance and must be admissible (NEVER overestimated)
 
+![A Star Loop](/docs/a_star_loop.png)<br>
 A Star node selection loop<br>
-![A Star Loop](/docs/a_star_loop.png)
 
+![Heuristic Function](/docs/heuristic_function.png)<br>
 A Star heuristic function<br>
-![Heuristic Function](/docs/heuristic_function.png)
 
 ## Features
 ---
