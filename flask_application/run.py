@@ -7,15 +7,12 @@ from utils import send_email
 
 app=Flask(__name__)
 
-# def processRoutes():
-#     processRoutes = planner.process_routes()
-#     data_str = ', '.join([str(item) for item in processRoutes])
-#     return data_str
-
+# Root
 @app.route('/')
 def root():
     return render_template('index.html')
 
+# Webhook for processing user inputs
 @app.route("/process-data", methods=["POST"])
 def process_data():
     # Get the input data from the request
@@ -30,6 +27,7 @@ def process_data():
 
     # return render_template('index.html', path_names_coordinates=planner.path_names_coordinates)
 
+# Webhook for sending email to user
 @app.route("/email", methods=["POST"])
 def email_user():
     # Get the input data from the request
@@ -41,7 +39,6 @@ def email_user():
     else:
         return "Failed"
 
-
 #Updating the live map periodically
 @app.route('/update_map', methods=["GET"])
 def update_map():
@@ -51,25 +48,6 @@ def update_map():
 
     return json.dumps(data)
 
+# Program entrypoint
 if __name__ == '__main__':
     app.run(host="localhost", port=8080, debug=True)                                                                         
-
-
-# Process the data
-"""
-    1) Call the 'utils.get_coordinates' -> This is the starting coordinate
-    2) Call the 'utils.get_nearest_bus_stop' -> This is the "Starting" stopID, name, coord, distance
-    3) Call the 'utils.get_coordinates' -> This is the ending coordinate
-    4) Call the 'utils.get_nearest_bus_stop' -> This is the "Ending" stopID, name, coord, distance
-    5) Send to either of the if below to get the path (startId, endID), returns [bustopID1, bustop2]
-    6) Get the coordinates all the busstopID, create a function
-    6) Plot into folium, coordinates, bus stop name, with marker and route
-    7) Get the 'util.getDirection' for populating the Route in html
-    
-    1) -> 4) see main.py in util folder for example
-"""
-# if option == 1: #Shortest path
-
-# elif option == 2: #Shortest Time
-
-

@@ -422,48 +422,7 @@ def getBusRouteDuration(total_distance):
     print(f"Bus journey time is estimated to be about {hours} hours {minutes} minutes {seconds} seconds\n")
     return duration
 
+# Unit testing
 def test_function():
     for start_bus_stop_id in range(1, 168):
         print("Bus Stop: %s (%s)" % (start_bus_stop_id, len(get_fastest_bus_stop(start_bus_stop_id))))
-
-#------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-# def mainTest(start, end, option):
-
-#     # user_input = input("Select route method:\n1) Shortest time\n2) Shortest path \n")
-
-#     if option == '1':
-#         #If Shortest time in BusStopID
-#         busName,pathID = aStarAlgo(start, end)
-
-
-#     elif option == '2':
-#         #If Shortest path in BusStopID
-#         pathID,total_distance= shortest_path_with_min_transfers(start, end)
-#         print(total_distance)
-
-#     #Get the list of busStopID , names, lat , long from sql
-#     ID_Name_Coordinates = getBusStopNamesFromID()
-        
-    
-#     # Create a dictionary that maps each numeric ID to its corresponding name and coordinates
-#     id_to_name_coordinates = {id_: (name, lat, long) for id_, name, lat, long in ID_Name_Coordinates}
-
-#     # Convert the pathID list to a list of names and coordinates using the id_to_name_coordinates dictionary
-#     path_names_coordinates = [id_to_name_coordinates[id_] for id_ in pathID]
-
-#     # Extract the coordinates from the list of names and coordinates
-#     path_coordinates = [(lat, long) for _, lat, long in path_names_coordinates]
-
-#     # Print out Bus stop names and coordinates 
-#     for name, bus in zip(path_names_coordinates, busName):
-#         print(name[0], bus)
-#         print()
-
-    # return path_names_coordinates, path_coordinates
-
-
-# start = int(input("Enter starting busStopID: "))
-# end = int(input("Enter ending busStopID: "))
-# user_input = input("\n1) Shortest time\n2) Shortest path \nSelect route method: ")
-# mainTest(start, end, user_input)

@@ -13,14 +13,13 @@ START, END = range(2)
 # Fixed string for errors
 ERROR_HEADER = "ERROR: "
 
-
 def sample_responses(input_text):
     user_message = str(input_text).lower()
 
     if user_message in ('hello', 'hi'):
-        return "Hi Ni Ma!"
+        return "Hi!"
 
-    return "Pu Ki Ma Kow! Press /start lah..."
+    return "Press /start lah..."
 
 def handle_message(update, context):
     text = str(update.message.text).lower()

@@ -185,10 +185,3 @@ def mainTest(start, end):
 	graph = getData()
 
 	path_data = shortest_path_with_min_transfers(start, end)
-
-	#print(path_data)
-
-
-# for testing algro
-#mainTest(25, 30)        
-

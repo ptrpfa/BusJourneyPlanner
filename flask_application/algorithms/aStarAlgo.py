@@ -223,10 +223,3 @@ def VisualiseGraph(multiGraph):
     # Display the visualization and save to file
     # plt.savefig("amogus.jpg", format='jpg')
     plt.show()
-
-
-# Current location and destination
-# currentBusStop = 1
-# endBusStop = 2
-
-# aStarAlgo(currentBusStop, endBusStop)
