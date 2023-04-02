@@ -106,7 +106,7 @@ Two different algorithms are used to provide journey planning:
 A Star node selectop loop
 ![A Star Loop](/docs/a_star_loop.png)
 
-Heuristic Function
+Heuristic Function<br>
 ![Heuristic Function](/docs/heuristic_function.png)
 
 ## Features
