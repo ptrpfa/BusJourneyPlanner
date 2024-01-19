@@ -8,10 +8,10 @@ UPDATE_WEIGHTS = True  # Boolean to configure the updating of weights
 
 # PAJ API
 api_endpoint = 'https://dataapi.paj.com.my/api/v1'
-api_key = 'a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a'
+api_key = ''
 
 # Google Map API
-gmap_api_key = 'AIzaSyBV9jbLm29r5xYKHjJrv0UtZk5qMe-KPt4'
+gmap_api_key = ''
 
 # Bus Links
 schedule_link = "https://businterchange.net/johorbus/routes/routeinfo.php?service="
@@ -23,10 +23,10 @@ one_way_buses = ["P102", "P211", "P411"]            # Buses that only run one wa
 bus_speed = 70                                      # Assumed bus speed (km/h)
 
 # Database
-db_host = "34.143.210.189"
-db_user = "root"
-db_password = "LKP_OOP_STRONG"
-db_schema = "DSA_JP"
+db_host = ""
+db_user = ""
+db_password = ""
+db_schema = ""
 if(LOCAL_DB):
     from local_config import *
 

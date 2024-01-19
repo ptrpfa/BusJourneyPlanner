@@ -1,12 +1,12 @@
-# 🚌 CSC1108 (Group 7) Journey Planner
+# 🚌 Malaysia BAJ Bus Journey Planner
 Journey Planning application designed to enable commuters to plan their journey across Johor Bahru, Malaysia using the state's free bus service, Bas Muafakat Johor ([BAJ](https://paj.com.my/bas-muafakat-johor/)). A video demonstration of the application is provided in this [link](https://www.youtube.com/watch?v=iclYNXT16lM). Our presentation is available at this [link](https://www.youtube.com/watch?v=-M8_QqLqNdI).
 
 ## Team Members
-- Peter Febrianto Afandy​ (2200959)​​
-- Adrian Pang Zi Jian​ (2200692)​​
-- Muhammad Nur Dinie Bin Aziz (2200936)​​
-- Ryan Lai Wei Shao (2201159)​​
-- Jeffrey Yap Wan Lin​ (2201018)​
+- Peter Febrianto Afandy​
+- Adrian Pang Zi Jian​
+- Muhammad Nur Dinie Bin Aziz
+- Ryan Lai Wei Shao
+- Jeffrey Yap Wan Lin​
 
 ## List of Contents
 - [Project Scope & Assumptions](#project-scope--assumptions)
