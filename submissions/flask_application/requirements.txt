@@ -18,7 +18,7 @@ distro-info===1.1build1
 et-xmlfile==1.1.0
 Flask==2.2.3
 folium==0.14.0
-fonttools==4.39.0
+fonttools==4.43.0
 googlemaps==4.10.0
 graphviz==0.20.1
 h11==0.14.0
